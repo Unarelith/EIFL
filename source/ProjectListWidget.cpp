@@ -17,16 +17,24 @@
 #include "ProjectListWidget.hpp"
 
 ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Projects", parent) {
-	QWidget *layoutWidget = new QWidget;
-	QHBoxLayout *layout = new QHBoxLayout(layoutWidget);
-
 	m_projectListWidget.setColumnCount(1);
 	m_projectListWidget.setHeaderLabel("Name");
 
+	QWidget *subLayoutWidget = new QWidget;
+	subLayoutWidget->setMinimumWidth(m_projectScheduleWidget.calendarWidget().width() / 2);
+
+	QVBoxLayout *subLayout = new QVBoxLayout(subLayoutWidget);
+	subLayout->addWidget(&m_projectScheduleWidget);
+	subLayout->addWidget(&m_projectInfoWidget);
+
+	QWidget *layoutWidget = new QWidget;
+	QHBoxLayout *layout = new QHBoxLayout(layoutWidget);
 	layout->addWidget(&m_projectListWidget);
-	layout->addWidget(&m_projectInfoWidget);
+	layout->addWidget(subLayoutWidget);
+
 	setWidget(layoutWidget);
 
+	connect(&m_projectListWidget, &QTreeWidget::itemClicked, &m_projectScheduleWidget, &ProjectScheduleWidget::displayProjectDates);
 	connect(&m_projectListWidget, &QTreeWidget::itemClicked, &m_projectInfoWidget, &ProjectInfoWidget::update);
 }
 

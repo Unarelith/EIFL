@@ -352,6 +352,33 @@ source/ProjectListWidget.cpp.s:
 	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/ProjectListWidget.cpp.s
 .PHONY : source/ProjectListWidget.cpp.s
 
+source/ProjectScheduleWidget.o: source/ProjectScheduleWidget.cpp.o
+
+.PHONY : source/ProjectScheduleWidget.o
+
+# target to build an object file
+source/ProjectScheduleWidget.cpp.o:
+	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/ProjectScheduleWidget.cpp.o
+.PHONY : source/ProjectScheduleWidget.cpp.o
+
+source/ProjectScheduleWidget.i: source/ProjectScheduleWidget.cpp.i
+
+.PHONY : source/ProjectScheduleWidget.i
+
+# target to preprocess a source file
+source/ProjectScheduleWidget.cpp.i:
+	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/ProjectScheduleWidget.cpp.i
+.PHONY : source/ProjectScheduleWidget.cpp.i
+
+source/ProjectScheduleWidget.s: source/ProjectScheduleWidget.cpp.s
+
+.PHONY : source/ProjectScheduleWidget.s
+
+# target to generate assembly for a file
+source/ProjectScheduleWidget.cpp.s:
+	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/ProjectScheduleWidget.cpp.s
+.PHONY : source/ProjectScheduleWidget.cpp.s
+
 source/ScheduleWidget.o: source/ScheduleWidget.cpp.o
 
 .PHONY : source/ScheduleWidget.o
@@ -440,6 +467,9 @@ help:
 	@echo "... source/ProjectListWidget.o"
 	@echo "... source/ProjectListWidget.i"
 	@echo "... source/ProjectListWidget.s"
+	@echo "... source/ProjectScheduleWidget.o"
+	@echo "... source/ProjectScheduleWidget.i"
+	@echo "... source/ProjectScheduleWidget.s"
 	@echo "... source/ScheduleWidget.o"
 	@echo "... source/ScheduleWidget.i"
 	@echo "... source/ScheduleWidget.s"

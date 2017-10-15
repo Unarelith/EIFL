@@ -26,8 +26,8 @@ class MainWindow : public QMainWindow {
 
 		void keyPressEvent(QKeyEvent *event) override;
 
-		static const unsigned int width = 640;
-		static const unsigned int height = 480;
+		static const unsigned int width = 800;
+		static const unsigned int height = 600;
 
 	private:
 		IntraData m_intraData;
