@@ -1,9 +1,17 @@
 # EIFL
 ## Epitech Intra for Linux
 
-This project aims to give a Linux interface to Epitech intranet.
+This project aims to provide a Linux interface to Epitech intranet.
 
 ### Requirements
+
+- `cmake`
+- `qt5-base`
+- `qtkeychain`
+- `curl`
+- `cpr-git` (AUR)
+
+### Requirements (for old python project)
 
 - `python`
 - `python-pyqt5`

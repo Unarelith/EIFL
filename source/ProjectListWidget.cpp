@@ -16,7 +16,7 @@
 #include "IntraData.hpp"
 #include "ProjectListWidget.hpp"
 
-ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("ProjectList", parent) {
+ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Projects", parent) {
 	QWidget *layoutWidget = new QWidget;
 	QHBoxLayout *layout = new QHBoxLayout(layoutWidget);
 
