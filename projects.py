@@ -52,7 +52,7 @@ class IntraSession:
             exit(1)
 
     def getProjects(self):
-        r = self.session.get("https://intra.epitech.eu/?format=json")
+        r = self.session.get(self.url + "?format=json")
 
         projects = []
         projects_data = json.loads(r.content)["board"]["projets"]

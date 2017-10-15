@@ -1,0 +1,12 @@
+\#*#
+.#*
+*~
+*.o
+*.a
+*.d
+a.out
+vgcore.*
+.gdb_history
+*.so
+eifl
+build
