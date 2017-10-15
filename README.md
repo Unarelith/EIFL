@@ -5,6 +5,8 @@ This project aims to provide a Linux interface to Epitech intranet.
 
 ### Requirements
 
+For ArchLinux users:
+
 - `cmake`
 - `qt5-base`
 - `qtkeychain`

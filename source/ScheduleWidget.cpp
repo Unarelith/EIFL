@@ -11,11 +11,37 @@
  *
  * =====================================================================================
  */
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QVBoxLayout>
+
 #include "IntraData.hpp"
 #include "ScheduleWidget.hpp"
 
 ScheduleWidget::ScheduleWidget(QWidget *parent) : QDockWidget("Schedule", parent) {
-	setWidget(&m_calendarWidget);
+	QWidget *subLayoutWidget = new QWidget;
+	QHBoxLayout *subLayout = new QHBoxLayout(subLayoutWidget);
+
+	QPushButton *clearButton = new QPushButton("Clear");
+	QPushButton *todayButton = new QPushButton("Select today");
+
+	connect(clearButton, &QPushButton::clicked, [&] {
+		m_calendarWidget.setDateTextFormat(QDate(), QTextCharFormat());
+	});
+
+	connect(todayButton, &QPushButton::clicked, [&] {
+		m_calendarWidget.setSelectedDate(QDate::currentDate());
+	});
+
+	subLayout->addWidget(clearButton);
+	subLayout->addWidget(todayButton);
+
+	QWidget *layoutWidget = new QWidget;
+	QVBoxLayout *layout = new QVBoxLayout(layoutWidget);
+	layout->addWidget(&m_calendarWidget);
+	layout->addWidget(subLayoutWidget);
+
+	setWidget(layoutWidget);
 
 	m_currentProjectFormat.setBackground(QBrush(QColor(0, 64, 128)));
 

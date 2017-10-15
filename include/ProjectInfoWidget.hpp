@@ -26,6 +26,7 @@ class ProjectInfoWidget : public QGroupBox {
 
 	private:
 		QLabel m_name;
+		QLabel m_link;
 
 		QLabel m_registerDate;
 		QLabel m_beginDate;
