@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  ProjectScheduleWidget.cpp
+ *       Filename:  CalendarWidget.cpp
  *
  *    Description:
  *
@@ -16,9 +16,9 @@
 #include <QVBoxLayout>
 
 #include "IntraData.hpp"
-#include "ProjectScheduleWidget.hpp"
+#include "CalendarWidget.hpp"
 
-ProjectScheduleWidget::ProjectScheduleWidget(QWidget *parent) : QGroupBox("Project schedule", parent) {
+CalendarWidget::CalendarWidget(QWidget *parent) : QWidget(parent) {
 	QWidget *subLayoutWidget = new QWidget;
 	QHBoxLayout *subLayout = new QHBoxLayout(subLayoutWidget);
 
@@ -50,9 +50,13 @@ ProjectScheduleWidget::ProjectScheduleWidget(QWidget *parent) : QGroupBox("Proje
 
 	m_endDateFormat.setBackground(QBrush(QColor(0, 0, 128)));
 	m_endDateFormat.setFontUnderline(QTextCharFormat::SingleUnderline);
+
+	connect(&m_calendarWidget, &QCalendarWidget::selectionChanged, [this] {
+		emit dateHasChanged(m_calendarWidget.selectedDate());
+	});
 }
 
-void ProjectScheduleWidget::displayProjectDates(QTreeWidgetItem *item, unsigned int) {
+void CalendarWidget::displayProjectDates(QTreeWidgetItem *item, unsigned int) {
 	for (const IntraProject &project : IntraData::getInstance().projectList()) {
 		if (item->text(0).toStdString() == project.name()) {
 			m_calendarWidget.setDateTextFormat(QDate(), QTextCharFormat());

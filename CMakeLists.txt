@@ -2,7 +2,7 @@
 # CMakeLists.txt
 # By Quentin Bazin
 #------------------------------------------------------------------------------
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.8)
 
 project(eifl)
 
@@ -32,13 +32,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wfatal-errors")
 #------------------------------------------------------------------------------
 # - Qt5
 #------------------------------------------------------------------------------
-find_package(Qt5 COMPONENTS Widgets Keychain REQUIRED)
-
-include_directories(${Qt5_INCLUDE_DIRS})
-add_definitions(${Qt5_DEFINITIONS})
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5_EXECUTABLE_COMPILE_FLAGS}")
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 #------------------------------------------------------------------------------
 # - QtKeychain
@@ -60,7 +57,8 @@ include_directories(${CPR_INCLUDE_DIRS})
 # Add executable
 #------------------------------------------------------------------------------
 add_executable(${CMAKE_PROJECT_NAME}
-               ${SOURCE_FILES})
+               ${SOURCE_FILES}
+               ${HEADER_FILES})
 
 #------------------------------------------------------------------------------
 # Link options
@@ -68,6 +66,7 @@ add_executable(${CMAKE_PROJECT_NAME}
 target_link_libraries(${CMAKE_PROJECT_NAME}
                       ${CURL_LIBRARIES}
                       ${CPR_LIBRARIES}
-                      ${QTKEYCHAIN_LIBRARIES}
-                      Qt5::Widgets)
+                      ${QTKEYCHAIN_LIBRARIES})
+
+QT5_USE_MODULES(${CMAKE_PROJECT_NAME} Widgets)
 

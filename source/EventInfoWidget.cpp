@@ -16,14 +16,17 @@
 #include "IntraData.hpp"
 #include "EventInfoWidget.hpp"
 
-EventInfoWidget::EventInfoWidget(QWidget *parent) : QGroupBox("Informations", parent) {
-	QFormLayout *layout = new QFormLayout(this);
+EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event informations", parent) {
+	QWidget *layoutWidget = new QWidget;
+	QFormLayout *layout = new QFormLayout(layoutWidget);
 
 	layout->addRow("Name:", &m_name);
 	layout->addRow("Module:", &m_moduleName);
 	layout->addRow("Registrable:", &m_isRegistrable);
 	layout->addRow("Registered:", &m_isRegistered);
 	layout->addRow("Appointment:", &m_appointmentDate);
+
+	setWidget(layoutWidget);
 }
 
 void EventInfoWidget::update(QTreeWidgetItem *item, unsigned int) {

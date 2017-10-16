@@ -16,10 +16,13 @@
 
 #include <QMainWindow>
 
+#include "CalendarWidget.hpp"
+#include "EventInfoWidget.hpp"
+#include "EventListWidget.hpp"
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
+#include "ProjectInfoWidget.hpp"
 #include "ProjectListWidget.hpp"
-#include "ScheduleWidget.hpp"
 
 class MainWindow : public QMainWindow {
 	public:
@@ -27,15 +30,20 @@ class MainWindow : public QMainWindow {
 
 		void keyPressEvent(QKeyEvent *event) override;
 
-		static const unsigned int width = 800;
-		static const unsigned int height = 600;
+		static const unsigned int width = 1280;
+		static const unsigned int height = 720;
 
 	private:
 		IntraData m_intraData;
 		IntraSession m_intraSession;
 
+		CalendarWidget m_calendarWidget;
+
+		ProjectInfoWidget m_projectInfoWidget;
 		ProjectListWidget m_projectListWidget;
-		ScheduleWidget m_scheduleWidget;
+
+		EventInfoWidget m_eventInfoWidget;
+		EventListWidget m_eventlistWidget;
 };
 
 #endif // MAINWINDOW_HPP_

@@ -16,8 +16,9 @@
 #include "IntraData.hpp"
 #include "ProjectInfoWidget.hpp"
 
-ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QGroupBox("Informations", parent) {
-	QFormLayout *layout = new QFormLayout(this);
+ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QDockWidget("Project informations", parent) {
+	QWidget *layoutWidget = new QWidget;
+	QFormLayout *layout = new QFormLayout(layoutWidget);
 
 	m_link.setTextInteractionFlags(Qt::TextBrowserInteraction);
 	m_link.setOpenExternalLinks(true);
@@ -29,9 +30,11 @@ ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QGroupBox("Informations"
 	layout->addRow("Register date:", &m_registerDate);
 	layout->addRow("Begin date:", &m_beginDate);
 	layout->addRow("End date:", &m_endDate);
+
+	setWidget(layoutWidget);
 }
 
-void ProjectInfoWidget::update(QTreeWidgetItem *item, unsigned int) {
+void ProjectInfoWidget::update(QTreeWidgetItem *item, int) {
 	for (const IntraProject &project : IntraData::getInstance().projectList()) {
 		if (item->text(0).toStdString() == project.name()) {
 			m_name.setText(QString::fromStdString(project.name()));

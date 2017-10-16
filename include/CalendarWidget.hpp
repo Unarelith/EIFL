@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  ProjectScheduleWidget.hpp
+ *       Filename:  CalendarWidget.hpp
  *
  *    Description:
  *
@@ -11,21 +11,26 @@
  *
  * =====================================================================================
  */
-#ifndef PROJECTSCHEDULEWIDGET_HPP_
-#define PROJECTSCHEDULEWIDGET_HPP_
+#ifndef CALENDARWIDGET_HPP_
+#define CALENDARWIDGET_HPP_
 
 #include <QCalendarWidget>
-#include <QGroupBox>
+#include <QDockWidget>
 #include <QTextCharFormat>
 #include <QTreeWidgetItem>
 
-class ProjectScheduleWidget : public QGroupBox {
+class CalendarWidget : public QWidget {
+	Q_OBJECT
+
 	public:
-		ProjectScheduleWidget(QWidget *parent = nullptr);
+		CalendarWidget(QWidget *parent = nullptr);
 
 		void displayProjectDates(QTreeWidgetItem *item, unsigned int column);
 
 		const QCalendarWidget &calendarWidget() const { return m_calendarWidget; }
+
+	signals:
+		void dateHasChanged(const QDate &date);
 
 	private:
 		QTextCharFormat m_currentProjectFormat;
@@ -36,4 +41,4 @@ class ProjectScheduleWidget : public QGroupBox {
 		QCalendarWidget m_calendarWidget;
 };
 
-#endif // PROJECTSCHEDULEWIDGET_HPP_
+#endif // CALENDARWIDGET_HPP_

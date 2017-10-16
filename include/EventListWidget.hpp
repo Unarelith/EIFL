@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  ScheduleWidget.hpp
+ *       Filename:  EventListWidget.hpp
  *
  *    Description:
  *
@@ -11,26 +11,22 @@
  *
  * =====================================================================================
  */
-#ifndef SCHEDULEWIDGET_HPP_
-#define SCHEDULEWIDGET_HPP_
+#ifndef EVENTLISTWIDGET_HPP_
+#define EVENTLISTWIDGET_HPP_
 
-#include <QCalendarWidget>
 #include <QDockWidget>
 #include <QTreeWidget>
 
-#include "EventInfoWidget.hpp"
-
-class ScheduleWidget : public QDockWidget {
+class EventListWidget : public QDockWidget {
 	public:
-		ScheduleWidget(QWidget *parent = nullptr);
+		EventListWidget(QWidget *parent = nullptr);
 
-		void update();
+		void setDate(const QDate &date);
+
+		const QTreeWidget &eventListWidget() const { return m_eventListWidget; }
 
 	private:
-		QCalendarWidget m_calendarWidget;
-
-		EventInfoWidget m_eventInfoWidget;
 		QTreeWidget m_eventListWidget;
 };
 
-#endif // SCHEDULEWIDGET_HPP_
+#endif // EVENTLISTWIDGET_HPP_

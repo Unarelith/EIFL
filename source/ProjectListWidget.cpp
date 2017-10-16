@@ -16,27 +16,12 @@
 #include "IntraData.hpp"
 #include "ProjectListWidget.hpp"
 
-ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Projects", parent) {
+ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Project list", parent) {
 	m_projectListWidget.setColumnCount(2);
 	m_projectListWidget.setHeaderLabels({"Name", "Registered"});
 	m_projectListWidget.setColumnWidth(0, 300);
 
-	QWidget *subLayoutWidget = new QWidget;
-	subLayoutWidget->setMinimumWidth(m_projectScheduleWidget.calendarWidget().width() / 2);
-
-	QVBoxLayout *subLayout = new QVBoxLayout(subLayoutWidget);
-	subLayout->addWidget(&m_projectScheduleWidget);
-	subLayout->addWidget(&m_projectInfoWidget);
-
-	QWidget *layoutWidget = new QWidget;
-	QHBoxLayout *layout = new QHBoxLayout(layoutWidget);
-	layout->addWidget(&m_projectListWidget);
-	layout->addWidget(subLayoutWidget);
-
-	setWidget(layoutWidget);
-
-	connect(&m_projectListWidget, &QTreeWidget::itemClicked, &m_projectScheduleWidget, &ProjectScheduleWidget::displayProjectDates);
-	connect(&m_projectListWidget, &QTreeWidget::itemClicked, &m_projectInfoWidget, &ProjectInfoWidget::update);
+	setWidget(&m_projectListWidget);
 }
 
 void ProjectListWidget::update() {

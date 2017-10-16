@@ -15,11 +15,11 @@
 #define EVENTINFOWIDGET_HPP_
 
 #include <QDate>
-#include <QGroupBox>
+#include <QDockWidget>
 #include <QLabel>
 #include <QTreeWidgetItem>
 
-class EventInfoWidget : public QGroupBox {
+class EventInfoWidget : public QDockWidget {
 	public:
 		EventInfoWidget(QWidget *parent = nullptr);
 

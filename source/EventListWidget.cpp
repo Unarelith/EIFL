@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  ScheduleWidget.cpp
+ *       Filename:  EventListWidget.cpp
  *
  *    Description:
  *
@@ -15,33 +15,19 @@
 #include <QVBoxLayout>
 
 #include "IntraData.hpp"
-#include "ScheduleWidget.hpp"
+#include "EventListWidget.hpp"
 
-ScheduleWidget::ScheduleWidget(QWidget *parent) : QDockWidget("Schedule", parent) {
-	connect(&m_calendarWidget, &QCalendarWidget::selectionChanged, this, &ScheduleWidget::update);
-	connect(&m_eventListWidget, &QTreeWidget::itemClicked, &m_eventInfoWidget, &EventInfoWidget::update);
-
+EventListWidget::EventListWidget(QWidget *parent) : QDockWidget("Event list", parent) {
 	m_eventListWidget.setColumnCount(5);
 	m_eventListWidget.setHeaderLabels({"Start", "End", "Type", "Module", "Name"});
 
-	QWidget *subLayoutWidget = new QWidget;
-	QHBoxLayout *subLayout = new QHBoxLayout(subLayoutWidget);
-	subLayout->addWidget(&m_calendarWidget);
-	subLayout->addWidget(&m_eventInfoWidget, 1);
-
-	QWidget *layoutWidget = new QWidget;
-	QVBoxLayout *layout = new QVBoxLayout(layoutWidget);
-	layout->addWidget(subLayoutWidget);
-	layout->addWidget(&m_eventListWidget);
-
-	setWidget(layoutWidget);
+	setWidget(&m_eventListWidget);
 }
 
-void ScheduleWidget::update() {
+void EventListWidget::setDate(const QDate &date) {
 	m_eventListWidget.clear();
-	m_eventInfoWidget.setDate(m_calendarWidget.selectedDate());
 
-	auto eventList = IntraData::getInstance().getEventList(m_calendarWidget.selectedDate());
+	auto eventList = IntraData::getInstance().getEventList(date);
 	for (const IntraEvent &event : eventList) {
 		if (event.isModuleRegistered()) // FIXME: ADD A FCKIN CHECKBOX
 			m_eventListWidget.addTopLevelItem(new QTreeWidgetItem({

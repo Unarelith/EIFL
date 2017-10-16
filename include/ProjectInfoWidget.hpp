@@ -14,15 +14,15 @@
 #ifndef PROJECTINFOWIDGET_HPP_
 #define PROJECTINFOWIDGET_HPP_
 
-#include <QGroupBox>
+#include <QDockWidget>
 #include <QLabel>
 #include <QTreeWidgetItem>
 
-class ProjectInfoWidget : public QGroupBox {
+class ProjectInfoWidget : public QDockWidget {
 	public:
 		ProjectInfoWidget(QWidget *parent = nullptr);
 
-		void update(QTreeWidgetItem *item, unsigned int column);
+		void update(QTreeWidgetItem *item, int column);
 
 	private:
 		QLabel m_name;

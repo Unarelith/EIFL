@@ -18,7 +18,6 @@
 #include <QTreeWidget>
 
 #include "ProjectInfoWidget.hpp"
-#include "ProjectScheduleWidget.hpp"
 
 class ProjectListWidget : public QDockWidget {
 	public:
@@ -26,11 +25,10 @@ class ProjectListWidget : public QDockWidget {
 
 		void update();
 
+		const QTreeWidget &projectListWidget() const { return m_projectListWidget; }
+
 	private:
 		QTreeWidget m_projectListWidget;
-
-		ProjectInfoWidget m_projectInfoWidget;
-		ProjectScheduleWidget m_projectScheduleWidget;
 };
 
 #endif // PROJECTLISTWIDGET_HPP_
