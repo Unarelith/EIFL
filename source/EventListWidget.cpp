@@ -45,6 +45,9 @@ void EventListWidget::setDate(const QDate &date) {
 			}
 			else if (event.isMissed()) {
 				item->setIcon(0, QIcon("res/icons/missed.svg"));
+
+				for (int i = 0 ; i < item->columnCount() ; ++i)
+					item->setBackgroundColor(i, Qt::darkRed);
 			}
 			else {
 				item->setIcon(0, QIcon("res/icons/locked.svg"));
