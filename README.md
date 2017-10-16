@@ -13,3 +13,13 @@ For ArchLinux users:
 - `curl`
 - `cpr-git` (AUR)
 
+### Features
+
+- Calendar with filters (same parameters as intra website)
+- List of projects (timeline on calendar)
+- List of events (current day of calendar)
+
+### Screenshot
+
+![EIFL screenshot](/res/misc/screenshot.png?raw=true)
+
