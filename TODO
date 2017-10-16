@@ -4,4 +4,5 @@ TODO
 • DONE: `ScheduleWidget` → `EventListWidget`
 • TODO: Trouver une meilleur disposition pour l’UI
 • TODO: Régler tous les `FIXME`
+• TODO: Sauvegarder et charger le layout des dockwidgets
 

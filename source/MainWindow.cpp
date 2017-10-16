@@ -32,6 +32,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	addDockWidget(Qt::LeftDockWidgetArea, &m_projectInfoWidget, Qt::Vertical);
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventlistWidget, Qt::Horizontal);
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventInfoWidget, Qt::Horizontal);
+	addDockWidget(Qt::RightDockWidgetArea, &m_calendarSettingsWidget, Qt::Vertical);
 
 	setCentralWidget(&m_calendarWidget);
 

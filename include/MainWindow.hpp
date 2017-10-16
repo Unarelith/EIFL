@@ -17,6 +17,7 @@
 #include <QMainWindow>
 
 #include "CalendarWidget.hpp"
+#include "CalendarSettingsWidget.hpp"
 #include "EventInfoWidget.hpp"
 #include "EventListWidget.hpp"
 #include "IntraData.hpp"
@@ -38,6 +39,7 @@ class MainWindow : public QMainWindow {
 		IntraSession m_intraSession;
 
 		CalendarWidget m_calendarWidget;
+		CalendarSettingsWidget m_calendarSettingsWidget;
 
 		ProjectInfoWidget m_projectInfoWidget;
 		ProjectListWidget m_projectListWidget;
