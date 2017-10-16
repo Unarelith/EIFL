@@ -17,9 +17,8 @@
 #include "ProjectListWidget.hpp"
 
 ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Project list", parent) {
-	m_projectListWidget.setColumnCount(2);
-	m_projectListWidget.setHeaderLabels({"Name", "Registered"});
-	m_projectListWidget.setColumnWidth(0, 300);
+	m_projectListWidget.setColumnCount(1);
+	m_projectListWidget.setHeaderLabel("Name");
 
 	setWidget(&m_projectListWidget);
 }
@@ -29,10 +28,18 @@ void ProjectListWidget::update() {
 
 	auto &projectList = IntraData::getInstance().projectList();
 	for (auto &project : projectList) {
-		m_projectListWidget.addTopLevelItem(new QTreeWidgetItem({
-			QString::fromStdString(project.name()),
-			(project.isRegistered() ? "Yes" : "No")
-		}));
+		auto *item = new QTreeWidgetItem(&m_projectListWidget);
+		item->setText(0, QString::fromStdString(project.name()));
+
+		if (project.isRegistered()) {
+			item->setIcon(0, QIcon("res/icons/registered.svg"));
+		}
+		else if (project.isRegistrable()) {
+			item->setIcon(0, QIcon("res/icons/registrable.svg"));
+		}
+		else {
+			item->setIcon(0, QIcon("res/icons/locked.svg"));
+		}
 	}
 }
 

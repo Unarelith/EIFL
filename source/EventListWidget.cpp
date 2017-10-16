@@ -29,14 +29,24 @@ void EventListWidget::setDate(const QDate &date) {
 
 	auto eventList = IntraData::getInstance().getEventList(date);
 	for (const IntraEvent &event : eventList) {
-		if (event.isModuleRegistered()) // FIXME: ADD A FCKIN CHECKBOX
-			m_eventListWidget.addTopLevelItem(new QTreeWidgetItem({
-				event.beginDate().toString("HH:mm"),
-				event.endDate().toString("HH:mm"),
-				QString::fromStdString(event.typeTitle()),
-				QString::fromStdString(event.moduleName()),
-				QString::fromStdString(event.name())
-			}));
+		if (event.isModuleRegistered()) { // FIXME: ADD A FCKIN CHECKBOX
+			auto *item = new QTreeWidgetItem(&m_eventListWidget);
+			item->setText(0, event.beginDate().toString("HH:mm"));
+			item->setText(1, event.endDate().toString("HH:mm"));
+			item->setText(2, QString::fromStdString(event.typeTitle()));
+			item->setText(3, QString::fromStdString(event.moduleName()));
+			item->setText(4, QString::fromStdString(event.name()));
+
+			if (event.isRegistered()) {
+				item->setIcon(0, QIcon("res/icons/registered.svg"));
+			}
+			else if (event.isRegistrable()) {
+				item->setIcon(0, QIcon("res/icons/registrable.svg"));
+			}
+			else {
+				item->setIcon(0, QIcon("res/icons/locked.svg"));
+			}
+		}
 	}
 }
 
