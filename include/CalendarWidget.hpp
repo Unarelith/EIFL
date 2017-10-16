@@ -31,6 +31,10 @@ class CalendarWidget : public QWidget {
 
 		const QCalendarWidget &calendarWidget() const { return m_calendarWidget; }
 
+	public slots:
+		void clearAction() { m_calendarWidget.setDateTextFormat(QDate(), QTextCharFormat()); }
+		void todayAction() { m_calendarWidget.setSelectedDate(QDate::currentDate()); }
+
 	signals:
 		void dateHasChanged(const QDate &date);
 

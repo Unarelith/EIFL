@@ -15,6 +15,7 @@
 #define INTRADATA_HPP_
 
 #include <deque>
+#include <vector>
 
 #include "IntraEvent.hpp"
 #include "IntraProject.hpp"
@@ -24,7 +25,7 @@ class IntraData {
 		void update();
 		void updateProjectList();
 
-		std::deque<IntraEvent> getEventList(const QDate &date, const std::initializer_list<int> &semesters = {0, 5}) const;
+		std::deque<IntraEvent> getEventList(const QDate &date, const std::vector<int> &semesters) const;
 
 		const std::deque<IntraProject> &projectList() const { return m_projectList; }
 

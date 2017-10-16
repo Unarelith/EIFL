@@ -24,12 +24,15 @@ EventListWidget::EventListWidget(QWidget *parent) : QDockWidget("Event list", pa
 	setWidget(&m_eventListWidget);
 }
 
-void EventListWidget::setDate(const QDate &date) {
+void EventListWidget::update() {
 	m_eventListWidget.clear();
 
-	auto eventList = IntraData::getInstance().getEventList(date);
+	auto eventList = IntraData::getInstance().getEventList(m_date, m_semesters);
 	for (const IntraEvent &event : eventList) {
-		if (event.isModuleRegistered()) { // FIXME: ADD A FCKIN CHECKBOX
+		// FIXME: Find a way to get current semester
+		if ((!m_isCurrentSemesterEnabled || (event.semester() == 5 || event.semester() == 0))
+		 && (!m_isRegisteredModulesEnabled || event.isModuleRegistered())
+		 && (!m_isRegisteredEventsEnabled || event.isRegistered())) {
 			auto *item = new QTreeWidgetItem(&m_eventListWidget);
 			item->setText(0, event.beginDate().toString("HH:mm"));
 			item->setText(1, event.endDate().toString("HH:mm"));
@@ -54,5 +57,13 @@ void EventListWidget::setDate(const QDate &date) {
 			}
 		}
 	}
+}
+
+void EventListWidget::setFilters(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled, bool isRegisteredEventsEnabled) {
+	m_isCurrentSemesterEnabled = isCurrentSemesterEnabled;
+	m_isRegisteredModulesEnabled = isRegisteredModulesEnabled;
+	m_isRegisteredEventsEnabled = isRegisteredEventsEnabled;
+
+	update();
 }
 

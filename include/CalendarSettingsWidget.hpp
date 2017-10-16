@@ -22,12 +22,24 @@
 #include <QPushButton>
 
 class CalendarSettingsWidget : public QDockWidget {
+	Q_OBJECT
+
 	public:
 		CalendarSettingsWidget(QWidget *parent = nullptr);
 
 		QGroupBox *createFiltersBox();
 		QGroupBox *createSemesterBox();
 		QGroupBox *createActionsBox();
+
+		void filterBoxClicked();
+		void semesterBoxClicked();
+
+		const QPushButton &clearHightlight() const { return m_clearHighlight; }
+		const QPushButton &selectToday() const { return m_selectToday; }
+
+	signals:
+		void filterStateHasChanged(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled, bool isRegisteredEventsEnabled);
+		void semesterStateHasChanged(const std::vector<int> &semesterState);
 
 	private:
 		QCheckBox m_currentSemesterOnly{"Current semester only"};

@@ -23,27 +23,50 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	IntraData::setInstance(m_intraData);
 	IntraSession::setInstance(m_intraSession);
 
+	setupWidgets();
+	setupDocks();
+	connectObjects();
+}
+
+void MainWindow::setupWidgets() {
 	m_intraData.update();
 	m_projectListWidget.update();
-	m_eventlistWidget.setDate(QDate::currentDate());
 	m_eventInfoWidget.setDate(QDate::currentDate());
+	m_eventListWidget.setDate(QDate::currentDate());
 
+	// FIXME
+	m_eventListWidget.setSemesters({0,5});
+	m_eventListWidget.setFilters(true, true, false);
+}
+
+void MainWindow::setupDocks() {
 	addDockWidget(Qt::LeftDockWidgetArea, &m_projectListWidget, Qt::Vertical);
 	addDockWidget(Qt::LeftDockWidgetArea, &m_projectInfoWidget, Qt::Vertical);
-	addDockWidget(Qt::BottomDockWidgetArea, &m_eventlistWidget, Qt::Horizontal);
+	addDockWidget(Qt::BottomDockWidgetArea, &m_eventListWidget, Qt::Horizontal);
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventInfoWidget, Qt::Horizontal);
 	addDockWidget(Qt::RightDockWidgetArea, &m_calendarSettingsWidget, Qt::Vertical);
 
 	setCentralWidget(&m_calendarWidget);
 
-	connect(&m_projectListWidget.projectListWidget(), &QTreeWidget::itemClicked, &m_projectInfoWidget, &ProjectInfoWidget::update);
-	connect(&m_projectListWidget.projectListWidget(), &QTreeWidget::itemClicked, &m_calendarWidget, &CalendarWidget::displayProjectDates);
-	connect(&m_calendarWidget, &CalendarWidget::dateHasChanged, &m_eventlistWidget, &EventListWidget::setDate);
-	connect(&m_calendarWidget, &CalendarWidget::dateHasChanged, &m_eventInfoWidget, &EventInfoWidget::setDate);
-	connect(&m_eventlistWidget.eventListWidget(), &QTreeWidget::itemClicked, &m_eventInfoWidget, &EventInfoWidget::update);
-
 	// tabifyDockWidget(&m_projectListWidget, &m_eventlistWidget);
 	// m_projectListWidget.raise();
+}
+
+void MainWindow::connectObjects() {
+	connect(&m_projectListWidget.projectListWidget(), &QTreeWidget::itemClicked, &m_projectInfoWidget, &ProjectInfoWidget::update);
+	connect(&m_projectListWidget.projectListWidget(), &QTreeWidget::itemClicked, &m_calendarWidget, &CalendarWidget::displayProjectDates);
+
+	connect(&m_calendarWidget, &CalendarWidget::dateHasChanged, &m_eventListWidget, &EventListWidget::setDate);
+	connect(&m_calendarWidget, &CalendarWidget::dateHasChanged, &m_eventInfoWidget, &EventInfoWidget::setDate);
+
+	connect(&m_calendarSettingsWidget, &CalendarSettingsWidget::filterStateHasChanged, &m_eventListWidget, &EventListWidget::setFilters);
+	connect(&m_calendarSettingsWidget, &CalendarSettingsWidget::semesterStateHasChanged, &m_eventListWidget, &EventListWidget::setSemesters);
+	connect(&m_calendarSettingsWidget, &CalendarSettingsWidget::semesterStateHasChanged, &m_eventInfoWidget, &EventInfoWidget::setSemesters);
+
+	connect(&m_calendarSettingsWidget.clearHightlight(), &QPushButton::clicked, &m_calendarWidget, &CalendarWidget::clearAction);
+	connect(&m_calendarSettingsWidget.selectToday(), &QPushButton::clicked, &m_calendarWidget, &CalendarWidget::todayAction);
+
+	connect(&m_eventListWidget.eventListWidget(), &QTreeWidget::itemClicked, &m_eventInfoWidget, &EventInfoWidget::update);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {

@@ -19,20 +19,8 @@
 #include "CalendarWidget.hpp"
 
 CalendarWidget::CalendarWidget(QWidget *parent) : QWidget(parent) {
-	QPushButton *clearButton = new QPushButton("Clear highlight");
-	QPushButton *todayButton = new QPushButton("Select today");
-
-	connect(clearButton, &QPushButton::clicked, [&] { m_calendarWidget.setDateTextFormat(QDate(), QTextCharFormat()); });
-	connect(todayButton, &QPushButton::clicked, [&] { m_calendarWidget.setSelectedDate(QDate::currentDate()); });
-
-	QWidget *subLayoutWidget = new QWidget;
-	QHBoxLayout *subLayout = new QHBoxLayout(subLayoutWidget);
-	subLayout->addWidget(clearButton);
-	subLayout->addWidget(todayButton);
-
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->addWidget(&m_calendarWidget);
-	layout->addWidget(subLayoutWidget);
 
 	connect(&m_calendarWidget, &QCalendarWidget::selectionChanged, [this] {
 		emit dateHasChanged(m_calendarWidget.selectedDate());

@@ -30,7 +30,7 @@ EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event informati
 }
 
 void EventInfoWidget::update(QTreeWidgetItem *item, unsigned int) {
-	for (const IntraEvent &event : IntraData::getInstance().getEventList(m_date)) {
+	for (const IntraEvent &event : IntraData::getInstance().getEventList(m_date, m_semesters)) {
 		if (item->text(4).toStdString() == event.name()) {
 			m_name.setText(QString::fromStdString(event.name()));
 			m_moduleName.setText(QString::fromStdString(event.moduleName()));

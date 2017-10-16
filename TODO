@@ -3,9 +3,10 @@ TODO
 • DONE: `ProjectScheduleWidget` → `CalendarWidget`
 • DONE: `ScheduleWidget` → `EventListWidget`
 • DONE: Trouver une meilleure disposition pour l’UI
-• TODO: Rendre le `CalendarSettingsWidget` totalement fonctionnel
+• DONE: Rendre le `CalendarSettingsWidget` totalement fonctionnel
 • TODO: Sauvegarder et charger le layout des dockwidgets
 • TODO: Trouver des couleurs qui rendent bien sans mon thème
+• TODO: Créer un enum pour les status des projets/events (`Registrable`, `Missed`, `TokenRequired`)
 
 • TODO: Régler tous les `FIXME`
 

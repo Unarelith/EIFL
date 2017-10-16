@@ -29,6 +29,10 @@ class MainWindow : public QMainWindow {
 	public:
 		MainWindow();
 
+		void setupWidgets();
+		void setupDocks();
+		void connectObjects();
+
 		void keyPressEvent(QKeyEvent *event) override;
 
 		static const unsigned int width = 1280;
@@ -38,14 +42,14 @@ class MainWindow : public QMainWindow {
 		IntraData m_intraData;
 		IntraSession m_intraSession;
 
-		CalendarWidget m_calendarWidget;
-		CalendarSettingsWidget m_calendarSettingsWidget;
-
 		ProjectInfoWidget m_projectInfoWidget;
 		ProjectListWidget m_projectListWidget;
 
 		EventInfoWidget m_eventInfoWidget;
-		EventListWidget m_eventlistWidget;
+		EventListWidget m_eventListWidget;
+
+		CalendarWidget m_calendarWidget;
+		CalendarSettingsWidget m_calendarSettingsWidget;
 };
 
 #endif // MAINWINDOW_HPP_
