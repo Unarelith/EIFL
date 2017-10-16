@@ -29,7 +29,17 @@ class IntraSession {
 		using ParameterList = std::map<std::string, std::string>;
 		QJsonDocument get(const std::string &apiEndpoint, const ParameterList &parameters = {}) const;
 
+		static const IntraSession &getInstance() {
+			return *s_instance;
+		}
+
+		static void setInstance(const IntraSession &instance) {
+			s_instance = &instance;
+		}
+
 	private:
+		static const IntraSession *s_instance;
+
 		void askPassword();
 
 		cpr::Cookies m_cookies;

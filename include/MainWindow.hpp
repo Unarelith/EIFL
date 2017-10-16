@@ -17,6 +17,7 @@
 #include <QMainWindow>
 
 #include "IntraData.hpp"
+#include "IntraSession.hpp"
 #include "ProjectListWidget.hpp"
 #include "ScheduleWidget.hpp"
 
@@ -31,6 +32,7 @@ class MainWindow : public QMainWindow {
 
 	private:
 		IntraData m_intraData;
+		IntraSession m_intraSession;
 
 		ProjectListWidget m_projectListWidget;
 		ScheduleWidget m_scheduleWidget;

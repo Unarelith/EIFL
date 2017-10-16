@@ -18,12 +18,11 @@
 
 #include "IntraEvent.hpp"
 #include "IntraProject.hpp"
-#include "IntraSession.hpp"
 
 class IntraData {
 	public:
 		void update();
-		void updateProjectList(const QJsonDocument &json);
+		void updateProjectList();
 
 		std::deque<IntraEvent> getEventList(const QDate &date) const;
 
@@ -39,8 +38,6 @@ class IntraData {
 
 	private:
 		static const IntraData *s_instance;
-
-		IntraSession m_session;
 
 		std::deque<IntraProject> m_projectList;
 };

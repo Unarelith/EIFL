@@ -21,6 +21,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	resize(width, height);
 
 	IntraData::setInstance(m_intraData);
+	IntraSession::setInstance(m_intraSession);
+
 	m_intraData.update();
 	m_projectListWidget.update();
 	m_scheduleWidget.update();

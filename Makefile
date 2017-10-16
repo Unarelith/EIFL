@@ -163,6 +163,33 @@ eifl_autogen/mocs_compilation.cpp.s:
 	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/eifl_autogen/mocs_compilation.cpp.s
 .PHONY : eifl_autogen/mocs_compilation.cpp.s
 
+source/EventInfoWidget.o: source/EventInfoWidget.cpp.o
+
+.PHONY : source/EventInfoWidget.o
+
+# target to build an object file
+source/EventInfoWidget.cpp.o:
+	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/EventInfoWidget.cpp.o
+.PHONY : source/EventInfoWidget.cpp.o
+
+source/EventInfoWidget.i: source/EventInfoWidget.cpp.i
+
+.PHONY : source/EventInfoWidget.i
+
+# target to preprocess a source file
+source/EventInfoWidget.cpp.i:
+	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/EventInfoWidget.cpp.i
+.PHONY : source/EventInfoWidget.cpp.i
+
+source/EventInfoWidget.s: source/EventInfoWidget.cpp.s
+
+.PHONY : source/EventInfoWidget.s
+
+# target to generate assembly for a file
+source/EventInfoWidget.cpp.s:
+	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/EventInfoWidget.cpp.s
+.PHONY : source/EventInfoWidget.cpp.s
+
 source/IntraData.o: source/IntraData.cpp.o
 
 .PHONY : source/IntraData.o
@@ -473,6 +500,9 @@ help:
 	@echo "... eifl_autogen/mocs_compilation.o"
 	@echo "... eifl_autogen/mocs_compilation.i"
 	@echo "... eifl_autogen/mocs_compilation.s"
+	@echo "... source/EventInfoWidget.o"
+	@echo "... source/EventInfoWidget.i"
+	@echo "... source/EventInfoWidget.s"
 	@echo "... source/IntraData.o"
 	@echo "... source/IntraData.i"
 	@echo "... source/IntraData.s"

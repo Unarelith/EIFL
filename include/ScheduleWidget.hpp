@@ -18,6 +18,8 @@
 #include <QDockWidget>
 #include <QTreeWidget>
 
+#include "EventInfoWidget.hpp"
+
 class ScheduleWidget : public QDockWidget {
 	public:
 		ScheduleWidget(QWidget *parent = nullptr);
@@ -26,6 +28,8 @@ class ScheduleWidget : public QDockWidget {
 
 	private:
 		QCalendarWidget m_calendarWidget;
+
+		EventInfoWidget m_eventInfoWidget;
 		QTreeWidget m_eventListWidget;
 };
 

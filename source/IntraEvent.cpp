@@ -24,6 +24,12 @@ IntraEvent::IntraEvent(const QJsonObject &jsonObject) {
 	m_moduleName = jsonObject.value("titlemodule").toString().toStdString();
 	m_isModuleRegistered = jsonObject.value("module_registered").toBool();
 
+	m_isAppointment = jsonObject.value("is_rdv").toBool();
+	m_appointmentDate = QDateTime::fromString(jsonObject.value("rdv_group_registered").toString().left(19), "yyyy-MM-dd HH:mm:ss");
+
+	m_isRegistrable = jsonObject.value("allow_register").toBool();
+	m_isRegistered = jsonObject.value("event_registered").toBool() || !m_appointmentDate.isNull();
+
 	m_beginDate = QDateTime::fromString(jsonObject.value("start").toString(), "yyyy-MM-dd HH:mm:ss");
 	m_endDate = QDateTime::fromString(jsonObject.value("end").toString(), "yyyy-MM-dd HH:mm:ss");
 }

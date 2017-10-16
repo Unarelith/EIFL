@@ -17,6 +17,8 @@
 
 #include "IntraSession.hpp"
 
+const IntraSession *IntraSession::s_instance = nullptr;
+
 IntraSession::IntraSession() {
 	login();
 }
@@ -25,10 +27,11 @@ void IntraSession::login() {
 	if (!m_keyring.hasPassword())
 		askPassword();
 
+	// FIXME: LOGIN IS HARDCODED
 	auto r = cpr::Post(cpr::Url{"https://intra.epitech.eu"},
-	                    cpr::Payload{{"login",    "quentin.bazin@epitech.eu"},
-	                                 {"password", m_keyring.getPassword().toStdString()},
-	                                 {"remind",   "on"}});
+	                   cpr::Payload{{"login",    "quentin.bazin@epitech.eu"},
+	                                {"password", m_keyring.getPassword().toStdString()},
+	                                {"remind",   "on"}});
 	if (r.status_code == 200) {
 		m_cookies = r.cookies;
 	}

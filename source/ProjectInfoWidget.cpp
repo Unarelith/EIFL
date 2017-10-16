@@ -17,8 +17,6 @@
 #include "ProjectInfoWidget.hpp"
 
 ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QGroupBox("Informations", parent) {
-	hide();
-
 	QFormLayout *layout = new QFormLayout(this);
 
 	m_link.setTextInteractionFlags(Qt::TextBrowserInteraction);
@@ -26,6 +24,8 @@ ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QGroupBox("Informations"
 
 	layout->addRow("Name:", &m_name);
 	layout->addRow("Link:", &m_link);
+	layout->addRow("Registrable:", &m_isRegistrable);
+	layout->addRow("Registered:", &m_isRegistered);
 	layout->addRow("Register date:", &m_registerDate);
 	layout->addRow("Begin date:", &m_beginDate);
 	layout->addRow("End date:", &m_endDate);
@@ -37,12 +37,12 @@ void ProjectInfoWidget::update(QTreeWidgetItem *item, unsigned int) {
 			m_name.setText(QString::fromStdString(project.name()));
 			m_link.setText("<a href=\"https://intra.epitech.eu" + QString::fromStdString(project.link()) + "project\">" + "Go to project" + "</a>");
 
+			m_isRegistrable.setText(project.isRegistrable() ? "Yes" : "No");
+			m_isRegistered.setText(project.isRegistered() ? "Yes" : "No");
 			m_registerDate.setText(project.registerDate().toString(Qt::SystemLocaleShortDate));
 			m_beginDate.setText(project.beginDate().toString(Qt::SystemLocaleShortDate));
 			m_endDate.setText(project.endDate().toString(Qt::SystemLocaleShortDate));
 		}
 	}
-
-	show();
 }
 

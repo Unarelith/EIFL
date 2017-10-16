@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  ProjectInfoWidget.hpp
+ *       Filename:  EventInfoWidget.hpp
  *
  *    Description:
  *
@@ -11,28 +11,33 @@
  *
  * =====================================================================================
  */
-#ifndef PROJECTINFOWIDGET_HPP_
-#define PROJECTINFOWIDGET_HPP_
+#ifndef EVENTINFOWIDGET_HPP_
+#define EVENTINFOWIDGET_HPP_
 
+#include <QDate>
 #include <QGroupBox>
 #include <QLabel>
 #include <QTreeWidgetItem>
 
-class ProjectInfoWidget : public QGroupBox {
+class EventInfoWidget : public QGroupBox {
 	public:
-		ProjectInfoWidget(QWidget *parent = nullptr);
+		EventInfoWidget(QWidget *parent = nullptr);
 
 		void update(QTreeWidgetItem *item, unsigned int column);
 
+		void setDate(const QDate &date) { m_date = date; }
+
 	private:
 		QLabel m_name;
-		QLabel m_link;
+
+		QLabel m_moduleName;
 
 		QLabel m_isRegistrable;
 		QLabel m_isRegistered;
-		QLabel m_registerDate;
-		QLabel m_beginDate;
-		QLabel m_endDate;
+
+		QLabel m_appointmentDate;
+
+		QDate m_date;
 };
 
-#endif // PROJECTINFOWIDGET_HPP_
+#endif // EVENTINFOWIDGET_HPP_

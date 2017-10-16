@@ -17,8 +17,9 @@
 #include "ProjectListWidget.hpp"
 
 ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Projects", parent) {
-	m_projectListWidget.setColumnCount(1);
-	m_projectListWidget.setHeaderLabel("Name");
+	m_projectListWidget.setColumnCount(2);
+	m_projectListWidget.setHeaderLabels({"Name", "Registered"});
+	m_projectListWidget.setColumnWidth(0, 300);
 
 	QWidget *subLayoutWidget = new QWidget;
 	subLayoutWidget->setMinimumWidth(m_projectScheduleWidget.calendarWidget().width() / 2);
@@ -43,7 +44,10 @@ void ProjectListWidget::update() {
 
 	auto &projectList = IntraData::getInstance().projectList();
 	for (auto &project : projectList) {
-		m_projectListWidget.addTopLevelItem(new QTreeWidgetItem({QString::fromStdString(project.name())}));
+		m_projectListWidget.addTopLevelItem(new QTreeWidgetItem({
+			QString::fromStdString(project.name()),
+			(project.isRegistered() ? "Yes" : "No")
+		}));
 	}
 }
 

@@ -31,6 +31,12 @@ class IntraEvent {
 		const std::string &moduleName() const { return m_moduleName; };
 		bool isModuleRegistered() const { return m_isModuleRegistered; }
 
+		bool isAppointment() const { return m_isAppointment; }
+		const QDateTime &appointmentDate() const { return m_appointmentDate; }
+
+		bool isRegistrable() const { return m_isRegistrable; }
+		bool isRegistered() const { return m_isRegistered; }
+
 		const QDateTime &beginDate() const { return m_beginDate; }
 		const QDateTime &endDate() const { return m_endDate; }
 
@@ -44,6 +50,12 @@ class IntraEvent {
 
 		std::string m_moduleName;
 		bool m_isModuleRegistered;
+
+		bool m_isAppointment;
+		QDateTime m_appointmentDate;
+
+		bool m_isRegistered;
+		bool m_isRegistrable;
 
 		QDateTime m_beginDate;
 		QDateTime m_endDate;

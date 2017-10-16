@@ -15,17 +15,18 @@
 #include <QJsonObject>
 
 #include "IntraData.hpp"
+#include "IntraSession.hpp"
 
 const IntraData *IntraData::s_instance = nullptr;
 
 void IntraData::update() {
-	m_projectList.clear();
-
-	QJsonDocument json = m_session.get("/");
-	updateProjectList(json);
+	updateProjectList();
 }
 
-void IntraData::updateProjectList(const QJsonDocument &json) {
+void IntraData::updateProjectList() {
+	m_projectList.clear();
+
+	QJsonDocument json = IntraSession::getInstance().get("/");
 	QJsonArray projectArray = json.object().value("board").toObject().value("projets").toArray();
 	for (QJsonValue value : projectArray) {
 		m_projectList.emplace_back(value.toObject());
@@ -34,9 +35,11 @@ void IntraData::updateProjectList(const QJsonDocument &json) {
 
 std::deque<IntraEvent> IntraData::getEventList(const QDate &date) const {
 	QString dateString = date.toString("yyyy-MM-dd");
-	QJsonDocument json = m_session.get("/planning/load", {std::make_pair("start", dateString.toStdString()),
-	                                                      std::make_pair("end", dateString.toStdString()),
-	                                                      std::make_pair("semester", "5")});
+	QJsonDocument json = IntraSession::getInstance().get("/planning/load", {
+		std::make_pair("start", dateString.toStdString()),
+		std::make_pair("end", dateString.toStdString()),
+		std::make_pair("semester", "5")
+	});
 	// FIXME: SEMESTER IS HARDCODED, BUUUUH
 
 	std::deque<IntraEvent> eventList;

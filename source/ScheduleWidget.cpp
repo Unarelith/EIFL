@@ -11,6 +11,7 @@
  *
  * =====================================================================================
  */
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 
 #include "IntraData.hpp"
@@ -18,13 +19,19 @@
 
 ScheduleWidget::ScheduleWidget(QWidget *parent) : QDockWidget("Schedule", parent) {
 	connect(&m_calendarWidget, &QCalendarWidget::selectionChanged, this, &ScheduleWidget::update);
+	connect(&m_eventListWidget, &QTreeWidget::itemClicked, &m_eventInfoWidget, &EventInfoWidget::update);
 
 	m_eventListWidget.setColumnCount(5);
 	m_eventListWidget.setHeaderLabels({"Start", "End", "Type", "Module", "Name"});
 
+	QWidget *subLayoutWidget = new QWidget;
+	QHBoxLayout *subLayout = new QHBoxLayout(subLayoutWidget);
+	subLayout->addWidget(&m_calendarWidget);
+	subLayout->addWidget(&m_eventInfoWidget, 1);
+
 	QWidget *layoutWidget = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout(layoutWidget);
-	layout->addWidget(&m_calendarWidget);
+	layout->addWidget(subLayoutWidget);
 	layout->addWidget(&m_eventListWidget);
 
 	setWidget(layoutWidget);
@@ -32,10 +39,11 @@ ScheduleWidget::ScheduleWidget(QWidget *parent) : QDockWidget("Schedule", parent
 
 void ScheduleWidget::update() {
 	m_eventListWidget.clear();
+	m_eventInfoWidget.setDate(m_calendarWidget.selectedDate());
 
 	auto eventList = IntraData::getInstance().getEventList(m_calendarWidget.selectedDate());
 	for (const IntraEvent &event : eventList) {
-		if (event.isModuleRegistered()) // FIXME: ADD A FCKIN COMBOBOX
+		if (event.isModuleRegistered()) // FIXME: ADD A FCKIN CHECKBOX
 			m_eventListWidget.addTopLevelItem(new QTreeWidgetItem({
 				event.beginDate().toString("HH:mm"),
 				event.endDate().toString("HH:mm"),
