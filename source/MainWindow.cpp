@@ -23,12 +23,13 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	IntraData::setInstance(m_intraData);
 	m_intraData.update();
 	m_projectListWidget.update();
+	m_scheduleWidget.update();
 
 	addDockWidget(Qt::TopDockWidgetArea, &m_projectListWidget, Qt::Horizontal);
 	addDockWidget(Qt::TopDockWidgetArea, &m_scheduleWidget, Qt::Horizontal);
 
 	tabifyDockWidget(&m_projectListWidget, &m_scheduleWidget);
-	m_projectListWidget.raise();
+	// m_projectListWidget.raise();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {

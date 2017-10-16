@@ -14,11 +14,19 @@
 #ifndef SCHEDULEWIDGET_HPP_
 #define SCHEDULEWIDGET_HPP_
 
+#include <QCalendarWidget>
 #include <QDockWidget>
+#include <QTreeWidget>
 
 class ScheduleWidget : public QDockWidget {
 	public:
 		ScheduleWidget(QWidget *parent = nullptr);
+
+		void update();
+
+	private:
+		QCalendarWidget m_calendarWidget;
+		QTreeWidget m_eventListWidget;
 };
 
 #endif // SCHEDULEWIDGET_HPP_

@@ -22,7 +22,7 @@ ProjectScheduleWidget::ProjectScheduleWidget(QWidget *parent) : QGroupBox("Proje
 	QWidget *subLayoutWidget = new QWidget;
 	QHBoxLayout *subLayout = new QHBoxLayout(subLayoutWidget);
 
-	QPushButton *clearButton = new QPushButton("Clear");
+	QPushButton *clearButton = new QPushButton("Clear highlight");
 	QPushButton *todayButton = new QPushButton("Select today");
 
 	connect(clearButton, &QPushButton::clicked, [&] {

@@ -26,7 +26,8 @@ class IntraSession {
 
 		void login();
 
-		QJsonDocument get(const std::string &apiEndpoint);
+		using ParameterList = std::map<std::string, std::string>;
+		QJsonDocument get(const std::string &apiEndpoint, const ParameterList &parameters = {}) const;
 
 	private:
 		void askPassword();

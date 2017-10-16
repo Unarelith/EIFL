@@ -25,11 +25,9 @@ void IntraSession::login() {
 	if (!m_keyring.hasPassword())
 		askPassword();
 
-	QString password = m_keyring.getPassword();
-
 	auto r = cpr::Post(cpr::Url{"https://intra.epitech.eu"},
 	                    cpr::Payload{{"login",    "quentin.bazin@epitech.eu"},
-	                                 {"password", password.toStdString()},
+	                                 {"password", m_keyring.getPassword().toStdString()},
 	                                 {"remind",   "on"}});
 	if (r.status_code == 200) {
 		m_cookies = r.cookies;
@@ -43,8 +41,12 @@ void IntraSession::login() {
 	}
 }
 
-QJsonDocument IntraSession::get(const std::string &apiEndpoint) {
-	auto r = cpr::Get(cpr::Url{"https://intra.epitech.eu" + apiEndpoint + "?format=json"}, m_cookies);
+QJsonDocument IntraSession::get(const std::string &apiEndpoint, const ParameterList &parameters) const {
+	std::string url = "https://intra.epitech.eu" + apiEndpoint + "?format=json";
+	for (auto &parameter : parameters)
+		url += "&" + parameter.first + "=" + parameter.second;
+
+	auto r = cpr::Get(cpr::Url{url}, m_cookies);
 	return QJsonDocument::fromJson(QByteArray::fromStdString(r.text));
 }
 

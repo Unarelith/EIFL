@@ -32,3 +32,18 @@ void IntraData::updateProjectList(const QJsonDocument &json) {
 	}
 }
 
+std::deque<IntraEvent> IntraData::getEventList(const QDate &date) const {
+	QString dateString = date.toString("yyyy-MM-dd");
+	QJsonDocument json = m_session.get("/planning/load", {std::make_pair("start", dateString.toStdString()),
+	                                                      std::make_pair("end", dateString.toStdString()),
+	                                                      std::make_pair("semester", "5")});
+	// FIXME: SEMESTER IS HARDCODED, BUUUUH
+
+	std::deque<IntraEvent> eventList;
+	for (QJsonValue value : json.array()) {
+		eventList.emplace_back(value.toObject());
+	}
+
+	return eventList;
+}
+

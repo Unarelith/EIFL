@@ -190,6 +190,33 @@ source/IntraData.cpp.s:
 	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/IntraData.cpp.s
 .PHONY : source/IntraData.cpp.s
 
+source/IntraEvent.o: source/IntraEvent.cpp.o
+
+.PHONY : source/IntraEvent.o
+
+# target to build an object file
+source/IntraEvent.cpp.o:
+	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/IntraEvent.cpp.o
+.PHONY : source/IntraEvent.cpp.o
+
+source/IntraEvent.i: source/IntraEvent.cpp.i
+
+.PHONY : source/IntraEvent.i
+
+# target to preprocess a source file
+source/IntraEvent.cpp.i:
+	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/IntraEvent.cpp.i
+.PHONY : source/IntraEvent.cpp.i
+
+source/IntraEvent.s: source/IntraEvent.cpp.s
+
+.PHONY : source/IntraEvent.s
+
+# target to generate assembly for a file
+source/IntraEvent.cpp.s:
+	$(MAKE) -f CMakeFiles/eifl.dir/build.make CMakeFiles/eifl.dir/source/IntraEvent.cpp.s
+.PHONY : source/IntraEvent.cpp.s
+
 source/IntraProject.o: source/IntraProject.cpp.o
 
 .PHONY : source/IntraProject.o
@@ -449,6 +476,9 @@ help:
 	@echo "... source/IntraData.o"
 	@echo "... source/IntraData.i"
 	@echo "... source/IntraData.s"
+	@echo "... source/IntraEvent.o"
+	@echo "... source/IntraEvent.i"
+	@echo "... source/IntraEvent.s"
 	@echo "... source/IntraProject.o"
 	@echo "... source/IntraProject.i"
 	@echo "... source/IntraProject.s"

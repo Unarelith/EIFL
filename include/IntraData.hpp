@@ -16,6 +16,7 @@
 
 #include <deque>
 
+#include "IntraEvent.hpp"
 #include "IntraProject.hpp"
 #include "IntraSession.hpp"
 
@@ -23,6 +24,8 @@ class IntraData {
 	public:
 		void update();
 		void updateProjectList(const QJsonDocument &json);
+
+		std::deque<IntraEvent> getEventList(const QDate &date) const;
 
 		const std::deque<IntraProject> &projectList() const { return m_projectList; }
 

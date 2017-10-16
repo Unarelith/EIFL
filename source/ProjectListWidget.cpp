@@ -43,7 +43,7 @@ void ProjectListWidget::update() {
 
 	auto &projectList = IntraData::getInstance().projectList();
 	for (auto &project : projectList) {
-		m_projectListWidget.addTopLevelItem(new QTreeWidgetItem(QStringList(QString::fromStdString(project.name()))));
+		m_projectListWidget.addTopLevelItem(new QTreeWidgetItem({QString::fromStdString(project.name())}));
 	}
 }
 
