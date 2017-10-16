@@ -37,14 +37,19 @@ void IntraData::updateProjectList() {
 	});
 }
 
-std::deque<IntraEvent> IntraData::getEventList(const QDate &date) const {
+std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::initializer_list<int> &semesters) const {
 	QString dateString = date.toString("yyyy-MM-dd");
+	QString semesterString;
+	for (int n : semesters) {
+		semesterString += QString::number(n) + ",";
+	}
+	semesterString.chop(1);
+
 	QJsonDocument json = IntraSession::getInstance().get("/planning/load", {
 		std::make_pair("start", dateString.toStdString()),
 		std::make_pair("end", dateString.toStdString()),
-		std::make_pair("semester", "0,5")
+		std::make_pair("semester", semesterString.toStdString())
 	});
-	// FIXME: SEMESTER IS HARDCODED, BUUUUH
 
 	std::deque<IntraEvent> eventList;
 	for (QJsonValue value : json.array()) {

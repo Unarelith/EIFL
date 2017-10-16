@@ -2,7 +2,10 @@ TODO
 
 • DONE: `ProjectScheduleWidget` → `CalendarWidget`
 • DONE: `ScheduleWidget` → `EventListWidget`
-• TODO: Trouver une meilleur disposition pour l’UI
-• TODO: Régler tous les `FIXME`
+• DONE: Trouver une meilleure disposition pour l’UI
+• TODO: Rendre le `CalendarSettingsWidget` totalement fonctionnel
 • TODO: Sauvegarder et charger le layout des dockwidgets
+• TODO: Trouver des couleurs qui rendent bien sans mon thème
+
+• TODO: Régler tous les `FIXME`
 
