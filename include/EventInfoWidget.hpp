@@ -29,7 +29,6 @@ class EventInfoWidget : public QGroupBox {
 
 	private:
 		QLabel m_name;
-
 		QLabel m_moduleName;
 
 		QLabel m_isRegistrable;
