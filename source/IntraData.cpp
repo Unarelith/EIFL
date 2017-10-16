@@ -42,7 +42,7 @@ std::deque<IntraEvent> IntraData::getEventList(const QDate &date) const {
 	QJsonDocument json = IntraSession::getInstance().get("/planning/load", {
 		std::make_pair("start", dateString.toStdString()),
 		std::make_pair("end", dateString.toStdString()),
-		std::make_pair("semester", "5")
+		std::make_pair("semester", "0,5")
 	});
 	// FIXME: SEMESTER IS HARDCODED, BUUUUH
 

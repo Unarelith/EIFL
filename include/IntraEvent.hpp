@@ -36,6 +36,8 @@ class IntraEvent {
 
 		bool isRegistrable() const { return m_isRegistrable; }
 		bool isRegistered() const { return m_isRegistered; }
+		bool isMissed() const { return m_isMissed; }
+		bool isTokenWritable() const { return m_isTokenWritable; }
 
 		const QDateTime &beginDate() const { return m_beginDate; }
 		const QDateTime &endDate() const { return m_endDate; }
@@ -56,6 +58,8 @@ class IntraEvent {
 
 		bool m_isRegistered;
 		bool m_isRegistrable;
+		bool m_isMissed;
+		bool m_isTokenWritable;
 
 		QDateTime m_beginDate;
 		QDateTime m_endDate;

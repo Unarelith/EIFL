@@ -28,8 +28,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	m_eventlistWidget.setDate(QDate::currentDate());
 	m_eventInfoWidget.setDate(QDate::currentDate());
 
-	addDockWidget(Qt::LeftDockWidgetArea, &m_projectInfoWidget, Qt::Vertical);
 	addDockWidget(Qt::LeftDockWidgetArea, &m_projectListWidget, Qt::Vertical);
+	addDockWidget(Qt::LeftDockWidgetArea, &m_projectInfoWidget, Qt::Vertical);
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventlistWidget, Qt::Horizontal);
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventInfoWidget, Qt::Horizontal);
 

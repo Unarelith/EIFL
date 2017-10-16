@@ -43,6 +43,9 @@ void EventListWidget::setDate(const QDate &date) {
 			else if (event.isRegistrable()) {
 				item->setIcon(0, QIcon("res/icons/registrable.svg"));
 			}
+			else if (event.isMissed()) {
+				item->setIcon(0, QIcon("res/icons/missed.svg"));
+			}
 			else {
 				item->setIcon(0, QIcon("res/icons/locked.svg"));
 			}
