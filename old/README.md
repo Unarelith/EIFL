@@ -7,9 +7,8 @@ This project aims to provide a Linux interface to Epitech intranet.
 
 For ArchLinux users:
 
-- `cmake`
-- `qt5-base`
-- `qtkeychain`
-- `curl`
-- `cpr-git` (AUR)
+- `python`
+- `python-pyqt5`
+- `python-keyring`
+- `python-requests`
 
