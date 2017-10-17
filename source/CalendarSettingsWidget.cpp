@@ -50,7 +50,7 @@ QGroupBox *CalendarSettingsWidget::createSemesterBox() {
 		m_semesters.emplace_back("Semester " + QString::number(i));
 		semesterLayout->addWidget(&m_semesters.back(), i / 2, i % 2);
 
-		// FIXME
+		// FIXME: Find a way to get current semester
 		if (i == 0 || i == 5)
 			m_semesters.back().setCheckState(Qt::Checked);
 

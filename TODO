@@ -7,8 +7,15 @@ TODO
 • DONE: Trouver une meilleure disposition pour l’UI
 • DONE: Rendre le `CalendarSettingsWidget` totalement fonctionnel
 • DONE: Afficher la salle pour les events
+• TODO: Ajouter un onglet “User” au widget central
+• TODO: Ajouter un widget de notifications
+• TODO: Mettre à jour la liste des projets toutes les x minutes
 
 • TODO: Régler tous les `FIXME`
+   ◦ TODO: Trouver un moyen de récupérer le semestre courant
+   ◦ TODO: Ajouter une vraie fenêtre de login et stocker le login entré
+   ◦ TODO: Afficher la deadline des projets au lieu de la date de fin
+   ◦ TODO: Mettre à jour les dates dans `IntraProject::update`
 
 # Code improvements
 
