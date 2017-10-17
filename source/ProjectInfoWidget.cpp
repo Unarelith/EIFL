@@ -35,7 +35,7 @@ ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QDockWidget("Project inf
 
 void ProjectInfoWidget::update(QTreeWidgetItem *item) {
 	for (const IntraProject &project : IntraData::getInstance().projectList()) {
-		if (item->text(0) == project.name()) {
+		if (item->text(item->columnCount() - 1) == project.name()) {
 			m_name.setText(project.name());
 			m_link.setText("<a href=\"" + QString(IntraSession::baseUrl) + project.link() + "project\">" + "Go to project" + "</a>");
 

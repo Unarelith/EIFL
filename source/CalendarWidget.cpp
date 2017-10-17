@@ -44,7 +44,7 @@ void CalendarWidget::loadFormats() {
 
 void CalendarWidget::displayProjectDates(QTreeWidgetItem *item) {
 	for (const IntraProject &project : IntraData::getInstance().projectList()) {
-		if (item->text(0) == project.name()) {
+		if (item->text(item->columnCount() - 1) == project.name()) {
 			m_calendarWidget.setDateTextFormat(QDate(), QTextCharFormat());
 
 			for (QDateTime i = project.beginDate() ; i < project.endDate() ; i = i.addDays(1)) {

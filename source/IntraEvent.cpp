@@ -33,8 +33,10 @@ IntraEvent::IntraEvent(const QJsonObject &jsonObject) {
 	m_isTokenWritable = jsonObject.value("allow_token").toBool();
 
 	QStringList roomInfos = jsonObject.value("room").toObject().value("code").toString().split('/');
-	m_buildingName = roomInfos[2];
-	m_roomName = roomInfos[3];
+	if (roomInfos.size() > 2)
+		m_buildingName = roomInfos.at(2);
+	if (roomInfos.size() > 3)
+		m_roomName = roomInfos.at(3);
 
 	m_beginDate = QDateTime::fromString(jsonObject.value("start").toString(), "yyyy-MM-dd HH:mm:ss");
 	m_endDate = QDateTime::fromString(jsonObject.value("end").toString(), "yyyy-MM-dd HH:mm:ss");

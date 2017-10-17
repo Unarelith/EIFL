@@ -55,10 +55,6 @@ std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::vec
 		eventList.emplace_back(value.toObject());
 	}
 
-	std::sort(eventList.begin(), eventList.end(), [&] (const IntraEvent &e1, const IntraEvent &e2) {
-		return e1.beginDate() < e2.beginDate();
-	});
-
 	return eventList;
 }
 
