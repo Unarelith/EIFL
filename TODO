@@ -45,6 +45,7 @@ TODO
 
 # Code improvements
 
+• TODO: `Module` → `Unit`
 • TODO: Créer un enum pour les status des projets/events/modules (`Registrable`, `Missed`, `TokenRequired`)
 
 # UI improvements

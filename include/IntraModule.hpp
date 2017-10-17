@@ -20,6 +20,15 @@ class IntraModule {
 	public:
 		IntraModule(const QJsonObject &jsonObject);
 
+		enum class Flags {
+			Optional = 1,
+			Progressive = 2,
+			RoadblockCycle = 4,
+			RoadblockYear = 8,
+			MultipleRegistration = 32,
+			Mandatory = 128
+		};
+
 		const QString &name() const { return m_name; }
 
 		unsigned int semester() const { return m_semester; }
@@ -27,6 +36,8 @@ class IntraModule {
 
 		bool isRegistrable() const { return m_isRegistrable; }
 		bool isRegistered() const { return m_isRegistered; }
+
+		Flags flags() const { return m_flags; }
 
 	private:
 		QString m_name;
@@ -36,6 +47,8 @@ class IntraModule {
 
 		bool m_isRegistrable;
 		bool m_isRegistered;
+
+		Flags m_flags;
 };
 
 #endif // INTRAMODULE_HPP_
