@@ -1,39 +1,56 @@
 TODO
 
-# Missing GET features
+# Missing features
 
-## General
+## Missing GET features
+
+### General
 
 • DONE: Ajouter la liste des modules
 • TODO: Ajouter les notifications
 • TODO: Ajouter les alertes
 • TODO: Ajouter les notifications de rdv
 
-## User
+### User
 
 • TODO: Permettre de voir le profil d’un autre user
 • TODO: Afficher les notes d’un utilisateur
 • TODO: Afficher le log netsoul d’un utilisateur
 • TODO: Afficher les binômes d’un utilisateur
 
-## Project
+### Project
 
 • TODO: Onglet d’informations détaillées pour les projets
    ◦ TODO: Ajouter fichiers et description
    ◦ TODO: Ajouter rdv liés
 
-## Modules
+### Modules
 
-• TODO: Onglet d’informations détaillées pour les modules
+• TODO: Afficher les activités sur l’onglet
+   ◦ TODO: Créer `ActivityListWidget`
+   ◦ TODO: Créer `IntraActivity` (qui ne sera contenue que par `IntraModule`)
+   ◦ TODO: Trouver une solution pour faire matcher les éléments des listes autre que le nom (genre les id)
+• TODO: Afficher les propriétés de l’activité sélectionnée et link au projet/event
 
-# Missing POST features
+## Missing POST features
 
 • TODO: Inscription à un module
 • TODO: Inscription à un projet
 • TODO: Inscription à une session
 • TODO: Entrée du token
 
+                                     * * *
+
 # Client features
+
+• TODO: /Urgent/ Trouver une solution pour stocker activités et events
+   → On peut récupérer la liste des modules
+   → On peut récupérer la liste des activités sur la page d’un module
+   → On peut récupérer la liste des events dans les activités sur la page d’un module
+   → On peut récupérer la liste des projets dans les activités sur la page d’un module
+   Donc
+   → On peut générer une liste de modules/activités par module/events par activité/projets par module
+   → Il faut lier les modules / activités / events / projets
 
 • TODO: Mettre à jour la liste des projets toutes les x minutes
 • TODO: Mettre à jour les infos de l’user quand l’utilisateur ouvre l’onglet
@@ -43,9 +60,12 @@ TODO
    ◦ TODO: Afficher la deadline des projets en plus de la date de fin
    ◦ TODO: Mettre à jour les dates dans `IntraProject::update`
 
+                                     * * *
+
 # Code improvements
 
 • TODO: `Module` → `Unit`
+• TODO: Organiser le code dans des sous-dossiers
 • TODO: Créer un enum pour les status des projets/events/modules (`Registrable`, `Missed`, `TokenRequired`)
 
 # UI improvements
