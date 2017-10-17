@@ -12,6 +12,7 @@
  * =====================================================================================
  */
 #include <QKeyEvent>
+#include <QMenuBar>
 
 #include "MainWindow.hpp"
 
@@ -25,6 +26,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 
 	setupWidgets();
 	setupDocks();
+	setupMenus();
 	connectObjects();
 }
 
@@ -50,6 +52,11 @@ void MainWindow::setupDocks() {
 
 	// tabifyDockWidget(&m_projectListWidget, &m_eventlistWidget);
 	// m_projectListWidget.raise();
+}
+
+void MainWindow::setupMenus() {
+	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+	fileMenu->addAction(new QAction(tr("&Exit"), this));
 }
 
 void MainWindow::connectObjects() {

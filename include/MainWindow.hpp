@@ -31,6 +31,7 @@ class MainWindow : public QMainWindow {
 
 		void setupWidgets();
 		void setupDocks();
+		void setupMenus();
 		void connectObjects();
 
 		void keyPressEvent(QKeyEvent *event) override;

@@ -18,8 +18,8 @@
 #include "EventListWidget.hpp"
 
 EventListWidget::EventListWidget(QWidget *parent) : QDockWidget("Event list", parent) {
-	m_eventListWidget.setColumnCount(5);
-	m_eventListWidget.setHeaderLabels({"Start", "End", "Type", "Module", "Name"});
+	m_eventListWidget.setColumnCount(6);
+	m_eventListWidget.setHeaderLabels({"Start", "End", "Room", "Type", "Module", "Name"});
 
 	setWidget(&m_eventListWidget);
 }
@@ -36,9 +36,10 @@ void EventListWidget::update() {
 			auto *item = new QTreeWidgetItem(&m_eventListWidget);
 			item->setText(0, event.beginDate().toString("HH:mm"));
 			item->setText(1, event.endDate().toString("HH:mm"));
-			item->setText(2, QString::fromStdString(event.typeTitle()));
-			item->setText(3, QString::fromStdString(event.moduleName()));
-			item->setText(4, QString::fromStdString(event.name()));
+			item->setText(2, event.roomName());
+			item->setText(3, event.typeTitle());
+			item->setText(4, event.moduleName());
+			item->setText(5, event.name());
 
 			if (event.isRegistered()) {
 				item->setIcon(0, QIcon(":/registered.svg"));

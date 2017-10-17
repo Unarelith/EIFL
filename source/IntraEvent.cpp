@@ -14,14 +14,14 @@
 #include "IntraEvent.hpp"
 
 IntraEvent::IntraEvent(const QJsonObject &jsonObject) {
-	m_name = jsonObject.value("acti_title").toString().toStdString();
+	m_name = jsonObject.value("acti_title").toString();
 
-	m_typeCode = jsonObject.value("type_code").toString().toStdString();
-	m_typeTitle = jsonObject.value("type_title").toString().toStdString();
+	m_typeCode = jsonObject.value("type_code").toString();
+	m_typeTitle = jsonObject.value("type_title").toString();
 
 	m_semester = jsonObject.value("semester").toInt();
 
-	m_moduleName = jsonObject.value("titlemodule").toString().toStdString();
+	m_moduleName = jsonObject.value("titlemodule").toString();
 	m_isModuleRegistered = jsonObject.value("module_registered").toBool();
 
 	m_isAppointment = jsonObject.value("is_rdv").toBool();
@@ -31,6 +31,10 @@ IntraEvent::IntraEvent(const QJsonObject &jsonObject) {
 	m_isRegistered = jsonObject.value("event_registered").toBool() || !m_appointmentDate.isNull();
 	m_isMissed = jsonObject.value("event_registered").toString() == "absent";
 	m_isTokenWritable = jsonObject.value("allow_token").toBool();
+
+	QStringList roomInfos = jsonObject.value("room").toObject().value("code").toString().split('/');
+	m_buildingName = roomInfos[2];
+	m_roomName = roomInfos[3];
 
 	m_beginDate = QDateTime::fromString(jsonObject.value("start").toString(), "yyyy-MM-dd HH:mm:ss");
 	m_endDate = QDateTime::fromString(jsonObject.value("end").toString(), "yyyy-MM-dd HH:mm:ss");
