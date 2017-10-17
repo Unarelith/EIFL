@@ -22,6 +22,7 @@
 #include "EventListWidget.hpp"
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
+#include "ModuleInfoWidget.hpp"
 #include "ModuleListWidget.hpp"
 #include "ProjectInfoWidget.hpp"
 #include "ProjectListWidget.hpp"
@@ -33,6 +34,7 @@ class MainWindow : public QMainWindow {
 
 		void setupWidgets();
 		void setupDocks();
+		void setupTabs();
 		void setupMenus();
 		void connectObjects();
 
@@ -48,6 +50,7 @@ class MainWindow : public QMainWindow {
 		ProjectInfoWidget m_projectInfoWidget;
 		ProjectListWidget m_projectListWidget;
 
+		ModuleInfoWidget m_moduleInfoWidget;
 		ModuleListWidget m_moduleListWidget;
 
 		EventInfoWidget m_eventInfoWidget;

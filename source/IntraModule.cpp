@@ -17,6 +17,7 @@ IntraModule::IntraModule(const QJsonObject &jsonObject) {
 	m_name = jsonObject.value("title").toString();
 
 	m_semester = jsonObject.value("semester").toInt();
+	m_creditCount = jsonObject.value("credits").toString().toInt();
 
 	m_isRegistrable = jsonObject.value("open").toString().toInt();
 	m_isRegistered = jsonObject.value("status").toString() != "notregistered";

@@ -1,11 +1,10 @@
 TODO
 
-# Missing features
+# Missing GET features
 
 ## General
 
-• TODO: Ajouter la liste des modules
-   → `https://intra.epitech.eu/course/filter?format=json`
+• DONE: Ajouter la liste des modules
 • TODO: Ajouter les notifications
 • TODO: Ajouter les alertes
 • TODO: Ajouter les notifications de rdv
@@ -19,14 +18,26 @@ TODO
 
 ## Project
 
-• TODO: Onglet d’informations détaillés pour les projets
+• TODO: Onglet d’informations détaillées pour les projets
    ◦ TODO: Ajouter fichiers et description
    ◦ TODO: Ajouter rdv liés
 
-# Main features
+## Modules
+
+• TODO: Onglet d’informations détaillées pour les modules
+
+# Missing POST features
+
+• TODO: Inscription à un module
+• TODO: Inscription à un projet
+• TODO: Inscription à une session
+• TODO: Entrée du token
+
+# Client features
 
 • TODO: Mettre à jour la liste des projets toutes les x minutes
 • TODO: Mettre à jour les infos de l’user quand l’utilisateur ouvre l’onglet
+• TODO: Afficher un changelog des fichiers de projet
 
 • TODO: Régler tous les `FIXME`
    ◦ TODO: Afficher la deadline des projets en plus de la date de fin

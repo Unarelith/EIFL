@@ -23,6 +23,7 @@ class IntraModule {
 		const QString &name() const { return m_name; }
 
 		unsigned int semester() const { return m_semester; }
+		unsigned int creditCount() const { return m_creditCount; }
 
 		bool isRegistrable() const { return m_isRegistrable; }
 		bool isRegistered() const { return m_isRegistered; }
@@ -31,6 +32,7 @@ class IntraModule {
 		QString m_name;
 
 		unsigned int m_semester;
+		unsigned int m_creditCount;
 
 		bool m_isRegistrable;
 		bool m_isRegistered;

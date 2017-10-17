@@ -26,6 +26,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 
 	setupWidgets();
 	setupDocks();
+	setupTabs();
 	setupMenus();
 	connectObjects();
 }
@@ -52,19 +53,28 @@ void MainWindow::setupWidgets() {
 void MainWindow::setupDocks() {
 	addDockWidget(Qt::RightDockWidgetArea, &m_projectInfoWidget, Qt::Vertical);
 	addDockWidget(Qt::RightDockWidgetArea, &m_projectListWidget, Qt::Vertical);
+
+	addDockWidget(Qt::RightDockWidgetArea, &m_moduleInfoWidget, Qt::Vertical);
 	addDockWidget(Qt::RightDockWidgetArea, &m_moduleListWidget, Qt::Vertical);
+
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventListWidget, Qt::Horizontal);
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventInfoWidget, Qt::Horizontal);
+
 	addDockWidget(Qt::LeftDockWidgetArea, &m_calendarSettingsWidget, Qt::Vertical);
 
+	tabifyDockWidget(&m_projectListWidget, &m_moduleListWidget);
+	tabifyDockWidget(&m_projectInfoWidget, &m_moduleInfoWidget);
+
+	m_projectListWidget.raise();
+	m_projectInfoWidget.raise();
+}
+
+void MainWindow::setupTabs() {
 	QTabWidget *tabWidget = new QTabWidget;
 	tabWidget->addTab(&m_calendarWidget, "Calendar");
 	tabWidget->addTab(&m_userInfoWidget, "User");
 
 	setCentralWidget(tabWidget);
-
-	tabifyDockWidget(&m_projectListWidget, &m_moduleListWidget);
-	m_projectListWidget.raise();
 }
 
 void MainWindow::setupMenus() {
@@ -92,6 +102,7 @@ void MainWindow::connectObjects() {
 	connect(&m_calendarSettingsWidget.clearHightlight(), &QPushButton::clicked, &m_calendarWidget, &CalendarWidget::clearAction);
 	connect(&m_calendarSettingsWidget.selectToday(), &QPushButton::clicked, &m_calendarWidget, &CalendarWidget::todayAction);
 
+	connect(&m_moduleListWidget.moduleListWidget(), &QTreeWidget::itemClicked, &m_moduleInfoWidget, &ModuleInfoWidget::update);
 	connect(&m_eventListWidget.eventListWidget(), &QTreeWidget::itemClicked, &m_eventInfoWidget, &EventInfoWidget::update);
 }
 
