@@ -3,7 +3,13 @@
 
 This project aims to provide a Linux interface to Epitech intranet.
 
-### Requirements
+## Installation
+
+For ArchLinux users:
+
+- `eifl-git` (AUR)
+
+## Build requirements
 
 For ArchLinux users:
 
@@ -13,13 +19,13 @@ For ArchLinux users:
 - `curl`
 - `cpr-git` (AUR)
 
-### Features
+## Features
 
 - Calendar with filters (same parameters as intra website)
 - List of projects (timeline on calendar)
 - List of events (current day of calendar)
 
-### Screenshot
+## Screenshot
 
 ![EIFL screenshot](/res/misc/screenshot.png?raw=true)
 
