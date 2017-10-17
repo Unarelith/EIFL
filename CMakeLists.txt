@@ -24,8 +24,10 @@ endforeach(HEADER_FILE)
 #------------------------------------------------------------------------------
 # Compiler flags
 #------------------------------------------------------------------------------
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wfatal-errors")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wfatal-errors")
 
 #------------------------------------------------------------------------------
 # Packages
@@ -64,9 +66,19 @@ add_executable(${CMAKE_PROJECT_NAME}
 # Link options
 #------------------------------------------------------------------------------
 target_link_libraries(${CMAKE_PROJECT_NAME}
-                      ${CURL_LIBRARIES}
                       ${CPR_LIBRARIES}
+                      ${CURL_LIBRARIES}
                       ${QTKEYCHAIN_LIBRARIES})
 
 QT5_USE_MODULES(${CMAKE_PROJECT_NAME} Widgets)
+
+#------------------------------------------------------------------------------
+# Install paths
+#------------------------------------------------------------------------------
+if(NOT DEFINED CMAKE_INSTALL_BINDIR)
+  set(CMAKE_INSTALL_BINDIR bin)
+endif()
+
+install(TARGETS ${CMAKE_PROJECT_NAME}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
