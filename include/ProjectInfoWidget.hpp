@@ -28,8 +28,6 @@ class ProjectInfoWidget : public QDockWidget {
 		QLabel m_name;
 		QLabel m_link;
 
-		QLabel m_isRegistrable;
-		QLabel m_isRegistered;
 		QLabel m_registerDate;
 		QLabel m_beginDate;
 		QLabel m_endDate;

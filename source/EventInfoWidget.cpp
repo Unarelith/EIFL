@@ -22,8 +22,6 @@ EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event informati
 
 	layout->addRow("Name:", &m_name);
 	layout->addRow("Module:", &m_moduleName);
-	layout->addRow("Registrable:", &m_isRegistrable);
-	layout->addRow("Registered:", &m_isRegistered);
 	layout->addRow("Appointment:", &m_appointmentDate);
 
 	setWidget(layoutWidget);
@@ -34,9 +32,6 @@ void EventInfoWidget::update(QTreeWidgetItem *item, unsigned int) {
 		if (item->text(item->columnCount() - 1) == event.name()) {
 			m_name.setText(event.name());
 			m_moduleName.setText(event.moduleName());
-
-			m_isRegistrable.setText(event.isRegistrable() ? "Yes" : "No");
-			m_isRegistered.setText(event.isRegistered() ? "Yes" : "No");
 
 			m_appointmentDate.setText(event.appointmentDate().toString(Qt::SystemLocaleShortDate));
 		}

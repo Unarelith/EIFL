@@ -32,9 +32,6 @@ class EventInfoWidget : public QDockWidget {
 		QLabel m_name;
 		QLabel m_moduleName;
 
-		QLabel m_isRegistrable;
-		QLabel m_isRegistered;
-
 		QLabel m_appointmentDate;
 
 		QDate m_date;
