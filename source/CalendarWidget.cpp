@@ -42,9 +42,9 @@ void CalendarWidget::loadFormats() {
 	m_endDateFormat.setFontUnderline(QTextCharFormat::SingleUnderline);
 }
 
-void CalendarWidget::displayProjectDates(QTreeWidgetItem *item, unsigned int) {
+void CalendarWidget::displayProjectDates(QTreeWidgetItem *item) {
 	for (const IntraProject &project : IntraData::getInstance().projectList()) {
-		if (item->text(0).toStdString() == project.name()) {
+		if (item->text(0) == project.name()) {
 			m_calendarWidget.setDateTextFormat(QDate(), QTextCharFormat());
 
 			for (QDateTime i = project.beginDate() ; i < project.endDate() ; i = i.addDays(1)) {

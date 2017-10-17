@@ -33,11 +33,11 @@ ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QDockWidget("Project inf
 	setWidget(layoutWidget);
 }
 
-void ProjectInfoWidget::update(QTreeWidgetItem *item, int) {
+void ProjectInfoWidget::update(QTreeWidgetItem *item) {
 	for (const IntraProject &project : IntraData::getInstance().projectList()) {
-		if (item->text(0).toStdString() == project.name()) {
-			m_name.setText(QString::fromStdString(project.name()));
-			m_link.setText("<a href=\"" + QString(IntraSession::baseUrl) + QString::fromStdString(project.link()) + "project\">" + "Go to project" + "</a>");
+		if (item->text(0) == project.name()) {
+			m_name.setText(project.name());
+			m_link.setText("<a href=\"" + QString(IntraSession::baseUrl) + project.link() + "project\">" + "Go to project" + "</a>");
 
 			m_registerDate.setText(project.registerDate().toString(Qt::SystemLocaleShortDate));
 			m_beginDate.setText(project.beginDate().toString(Qt::SystemLocaleShortDate));

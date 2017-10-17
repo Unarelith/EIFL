@@ -22,7 +22,7 @@ class ProjectInfoWidget : public QDockWidget {
 	public:
 		ProjectInfoWidget(QWidget *parent = nullptr);
 
-		void update(QTreeWidgetItem *item, int column);
+		void update(QTreeWidgetItem *item);
 
 	private:
 		QLabel m_name;

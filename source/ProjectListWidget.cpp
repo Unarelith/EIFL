@@ -12,6 +12,7 @@
  * =====================================================================================
  */
 #include <QHBoxLayout>
+#include <QHeaderView>
 
 #include "IntraData.hpp"
 #include "ProjectListWidget.hpp"
@@ -29,7 +30,7 @@ void ProjectListWidget::update() {
 	auto &projectList = IntraData::getInstance().projectList();
 	for (auto &project : projectList) {
 		auto *item = new QTreeWidgetItem(&m_projectListWidget);
-		item->setText(0, QString::fromStdString(project.name()));
+		item->setText(0, project.name());
 
 		if (project.isRegistered()) {
 			item->setIcon(0, QIcon(":/registered.svg"));

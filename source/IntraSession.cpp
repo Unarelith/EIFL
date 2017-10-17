@@ -44,12 +44,12 @@ void IntraSession::login() {
 	}
 }
 
-QJsonDocument IntraSession::get(const std::string &apiEndpoint, const ParameterList &parameters) const {
-	std::string url = baseUrl + apiEndpoint + "?format=json";
+QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList &parameters) const {
+	QString url = baseUrl + apiEndpoint + "?format=json";
 	for (auto &parameter : parameters)
 		url += "&" + parameter.first + "=" + parameter.second;
 
-	auto r = cpr::Get(cpr::Url{url}, m_cookies);
+	auto r = cpr::Get(cpr::Url{url.toStdString()}, m_cookies);
 	return QJsonDocument::fromJson(QByteArray::fromStdString(r.text));
 }
 

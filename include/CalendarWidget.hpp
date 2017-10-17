@@ -27,7 +27,7 @@ class CalendarWidget : public QWidget {
 
 		void loadFormats();
 
-		void displayProjectDates(QTreeWidgetItem *item, unsigned int column);
+		void displayProjectDates(QTreeWidgetItem *item);
 
 		const QCalendarWidget &calendarWidget() const { return m_calendarWidget; }
 

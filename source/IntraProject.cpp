@@ -15,8 +15,8 @@
 #include "IntraSession.hpp"
 
 IntraProject::IntraProject(const QJsonObject &jsonObject) {
-	m_name = jsonObject.value("title").toString().toStdString();
-	m_link = jsonObject.value("title_link").toString().toStdString();
+	m_name = jsonObject.value("title").toString();
+	m_link = jsonObject.value("title_link").toString();
 
 	// FIXME: project.deadline should be used instead of timeline_end
 	m_beginDate = QDateTime::fromString(jsonObject.value("timeline_start").toString(), "dd/MM/yyyy, HH:mm");

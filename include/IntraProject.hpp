@@ -25,8 +25,8 @@ class IntraProject {
 
 		void update();
 
-		const std::string &name() const { return m_name; }
-		const std::string &link() const { return m_link; }
+		const QString &name() const { return m_name; }
+		const QString &link() const { return m_link; }
 
 		const QDateTime &beginDate() const { return m_beginDate; }
 		const QDateTime &endDate() const { return m_endDate; }
@@ -38,8 +38,8 @@ class IntraProject {
 		bool isRegistered() const { return m_isRegistered; }
 
 	private:
-		std::string m_name;
-		std::string m_link;
+		QString m_name;
+		QString m_link;
 
 		QDateTime m_beginDate;
 		QDateTime m_endDate;

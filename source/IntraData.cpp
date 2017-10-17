@@ -45,9 +45,9 @@ std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::vec
 
 	QString dateString = date.toString("yyyy-MM-dd");
 	QJsonDocument json = IntraSession::getInstance().get("/planning/load", {
-		std::make_pair("start", dateString.toStdString()),
-		std::make_pair("end", dateString.toStdString()),
-		std::make_pair("semester", semesterString.toStdString())
+		std::make_pair("start", dateString),
+		std::make_pair("end", dateString),
+		std::make_pair("semester", semesterString)
 	});
 
 	std::deque<IntraEvent> eventList;

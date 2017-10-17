@@ -26,8 +26,8 @@ class IntraSession {
 
 		void login();
 
-		using ParameterList = std::map<std::string, std::string>;
-		QJsonDocument get(const std::string &apiEndpoint, const ParameterList &parameters = {}) const;
+		using ParameterList = std::map<QString, QString>;
+		QJsonDocument get(const QString &apiEndpoint, const ParameterList &parameters = {}) const;
 
 		static const IntraSession &getInstance() {
 			return *s_instance;
