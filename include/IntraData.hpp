@@ -19,6 +19,7 @@
 
 #include "IntraEvent.hpp"
 #include "IntraProject.hpp"
+#include "IntraUser.hpp"
 
 class IntraData {
 	public:
@@ -26,6 +27,7 @@ class IntraData {
 		void updateProjectList();
 
 		std::deque<IntraEvent> getEventList(const QDate &date, const std::vector<int> &semesters) const;
+		IntraUser getUserInfo(const QString &username) const;
 
 		const std::deque<IntraProject> &projectList() const { return m_projectList; }
 

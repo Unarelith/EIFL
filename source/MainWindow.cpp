@@ -33,6 +33,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 void MainWindow::setupWidgets() {
 	m_intraData.update();
 	m_projectListWidget.update();
+	m_userInfoWidget.update();
+
 	m_eventInfoWidget.setDate(QDate::currentDate());
 	m_eventListWidget.setDate(QDate::currentDate());
 
@@ -48,7 +50,11 @@ void MainWindow::setupDocks() {
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventInfoWidget, Qt::Horizontal);
 	addDockWidget(Qt::RightDockWidgetArea, &m_calendarSettingsWidget, Qt::Vertical);
 
-	setCentralWidget(&m_calendarWidget);
+	QTabWidget *tabWidget = new QTabWidget;
+	tabWidget->addTab(&m_calendarWidget, "Calendar");
+	tabWidget->addTab(&m_userInfoWidget, "User");
+
+	setCentralWidget(tabWidget);
 
 	// tabifyDockWidget(&m_projectListWidget, &m_eventlistWidget);
 	// m_projectListWidget.raise();

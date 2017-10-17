@@ -58,3 +58,8 @@ std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::vec
 	return eventList;
 }
 
+IntraUser IntraData::getUserInfo(const QString &username) const {
+	QJsonDocument json = IntraSession::getInstance().get("/user/" + username);
+	return {json.object()};
+}
+

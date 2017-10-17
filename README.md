@@ -24,6 +24,7 @@ For ArchLinux users:
 - Calendar with filters (same parameters as intra website)
 - List of projects (timeline on calendar)
 - List of events (current day of calendar)
+- Basic user information
 
 ## Screenshot
 
