@@ -44,11 +44,11 @@ void MainWindow::setupWidgets() {
 }
 
 void MainWindow::setupDocks() {
-	addDockWidget(Qt::LeftDockWidgetArea, &m_projectListWidget, Qt::Vertical);
-	addDockWidget(Qt::LeftDockWidgetArea, &m_projectInfoWidget, Qt::Vertical);
+	addDockWidget(Qt::RightDockWidgetArea, &m_projectInfoWidget, Qt::Vertical);
+	addDockWidget(Qt::RightDockWidgetArea, &m_projectListWidget, Qt::Vertical);
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventListWidget, Qt::Horizontal);
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventInfoWidget, Qt::Horizontal);
-	addDockWidget(Qt::RightDockWidgetArea, &m_calendarSettingsWidget, Qt::Vertical);
+	addDockWidget(Qt::LeftDockWidgetArea, &m_calendarSettingsWidget, Qt::Vertical);
 
 	QTabWidget *tabWidget = new QTabWidget;
 	tabWidget->addTab(&m_calendarWidget, "Calendar");

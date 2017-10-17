@@ -7,9 +7,11 @@ TODO
 • DONE: Trouver une meilleure disposition pour l’UI
 • DONE: Rendre le `CalendarSettingsWidget` totalement fonctionnel
 • DONE: Afficher la salle pour les events
-• TODO: Ajouter un onglet “User” au widget central
+• DONE: Ajouter un onglet “User” au widget central
+• TODO: Afficher les notes d’un utilisateur
 • TODO: Ajouter un widget de notifications
 • TODO: Mettre à jour la liste des projets toutes les x minutes
+• TODO: Mettre à jour les infos de l’user quand l’onglet est ouvert
 
 • TODO: Régler tous les `FIXME`
    ◦ TODO: Trouver un moyen de récupérer le semestre courant
@@ -20,6 +22,12 @@ TODO
 # Code improvements
 
 • TODO: Créer un enum pour les status des projets/events (`Registrable`, `Missed`, `TokenRequired`)
+
+# UI improvements
+
+• TODO: Afficher les photos sur le profil des utilisateurs
+• TODO: Ajouter la durée et le temps restant sur les projets
+• TODO: Ajouter la durée et le temps restant pour l’inscription sur les events
 
 # UX improvements
 
