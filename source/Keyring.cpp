@@ -23,7 +23,7 @@ void Keyring::store(const QString &key, const QString &value) {
 	startJob(job);
 
 	if (job.error())
-		std::cerr << "Failed to write password to keyring: " << qPrintable(job.errorString()) << std::endl;
+		std::cerr << "Failed to write value to keyring: " << qPrintable(job.errorString()) << std::endl;
 }
 
 void Keyring::remove(const QString &key) {
@@ -31,7 +31,7 @@ void Keyring::remove(const QString &key) {
 	startJob(job);
 
 	if (job.error())
-		std::cerr << "Failed to delete password from keyring: " << qPrintable(job.errorString()) << std::endl;
+		std::cerr << "Failed to delete value from keyring: " << qPrintable(job.errorString()) << std::endl;
 }
 
 bool Keyring::has(const QString &key) {
@@ -46,7 +46,7 @@ QString Keyring::get(const QString &key) {
 	startJob(job);
 
 	if (job.error())
-		std::cerr << "Failed to read password from keyring: " << qPrintable(job.errorString()) << std::endl;
+		std::cerr << "Failed to read value from keyring: " << qPrintable(job.errorString()) << std::endl;
 
 	return job.textData();
 }
