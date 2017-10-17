@@ -41,19 +41,19 @@ void EventListWidget::update() {
 			item->setText(4, QString::fromStdString(event.name()));
 
 			if (event.isRegistered()) {
-				item->setIcon(0, QIcon("res/icons/registered.svg"));
+				item->setIcon(0, QIcon(":/registered.svg"));
 			}
 			else if (event.isRegistrable()) {
-				item->setIcon(0, QIcon("res/icons/registrable.svg"));
+				item->setIcon(0, QIcon(":/registrable.svg"));
 			}
 			else if (event.isMissed()) {
-				item->setIcon(0, QIcon("res/icons/missed.svg"));
+				item->setIcon(0, QIcon(":/missed.svg"));
 
 				for (int i = 0 ; i < item->columnCount() ; ++i)
 					item->setBackgroundColor(i, Qt::darkRed);
 			}
 			else {
-				item->setIcon(0, QIcon("res/icons/locked.svg"));
+				item->setIcon(0, QIcon(":/locked.svg"));
 			}
 		}
 	}

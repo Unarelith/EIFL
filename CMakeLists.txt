@@ -15,6 +15,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 #------------------------------------------------------------------------------
 file(GLOB_RECURSE SOURCE_FILES source/*.cpp external/*.cpp)
 file(GLOB_RECURSE HEADER_FILES include/*.hpp external/*.hpp)
+file(GLOB_RECURSE QRC_FILES res/*.qrc)
 
 foreach(HEADER_FILE ${HEADER_FILES})
 	get_filename_component(HEADER_DIRECTORY ${HEADER_FILE} DIRECTORY)
@@ -34,8 +35,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wfatal-errors")
 #------------------------------------------------------------------------------
 # - Qt5
 #------------------------------------------------------------------------------
-set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
@@ -60,7 +62,8 @@ include_directories(${CPR_INCLUDE_DIRS})
 #------------------------------------------------------------------------------
 add_executable(${CMAKE_PROJECT_NAME}
                ${SOURCE_FILES}
-               ${HEADER_FILES})
+               ${HEADER_FILES}
+               ${QRC_FILES})
 
 #------------------------------------------------------------------------------
 # Link options

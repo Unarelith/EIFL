@@ -32,13 +32,13 @@ void ProjectListWidget::update() {
 		item->setText(0, QString::fromStdString(project.name()));
 
 		if (project.isRegistered()) {
-			item->setIcon(0, QIcon("res/icons/registered.svg"));
+			item->setIcon(0, QIcon(":/registered.svg"));
 		}
 		else if (project.isRegistrable()) {
-			item->setIcon(0, QIcon("res/icons/registrable.svg"));
+			item->setIcon(0, QIcon(":/registrable.svg"));
 		}
 		else {
-			item->setIcon(0, QIcon("res/icons/locked.svg"));
+			item->setIcon(0, QIcon(":/locked.svg"));
 		}
 	}
 }

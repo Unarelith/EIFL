@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource>
+	<file alias="ask.svg">icons/ask.svg</file>
+	<file alias="locked.svg">icons/locked.svg</file>
+	<file alias="missed.svg">icons/missed.svg</file>
+	<file alias="registered.svg">icons/registered.svg</file>
+	<file alias="registrable.svg">icons/registrable.svg</file>
+</qresource>
+</RCC>
