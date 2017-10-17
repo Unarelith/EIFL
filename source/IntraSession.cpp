@@ -28,7 +28,7 @@ void IntraSession::login() {
 		askPassword();
 
 	// FIXME: LOGIN IS HARDCODED
-	auto r = cpr::Post(cpr::Url{"https://intra.epitech.eu"},
+	auto r = cpr::Post(cpr::Url{baseUrl},
 	                   cpr::Payload{{"login",    "quentin.bazin@epitech.eu"},
 	                                {"password", m_keyring.getPassword().toStdString()},
 	                                {"remind",   "on"}});
@@ -45,7 +45,7 @@ void IntraSession::login() {
 }
 
 QJsonDocument IntraSession::get(const std::string &apiEndpoint, const ParameterList &parameters) const {
-	std::string url = "https://intra.epitech.eu" + apiEndpoint + "?format=json";
+	std::string url = baseUrl + apiEndpoint + "?format=json";
 	for (auto &parameter : parameters)
 		url += "&" + parameter.first + "=" + parameter.second;
 

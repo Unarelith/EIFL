@@ -14,6 +14,7 @@
 #include <QFormLayout>
 
 #include "IntraData.hpp"
+#include "IntraSession.hpp"
 #include "ProjectInfoWidget.hpp"
 
 ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QDockWidget("Project informations", parent) {
@@ -36,7 +37,7 @@ void ProjectInfoWidget::update(QTreeWidgetItem *item, int) {
 	for (const IntraProject &project : IntraData::getInstance().projectList()) {
 		if (item->text(0).toStdString() == project.name()) {
 			m_name.setText(QString::fromStdString(project.name()));
-			m_link.setText("<a href=\"https://intra.epitech.eu" + QString::fromStdString(project.link()) + "project\">" + "Go to project" + "</a>");
+			m_link.setText("<a href=\"" + QString(IntraSession::baseUrl) + QString::fromStdString(project.link()) + "project\">" + "Go to project" + "</a>");
 
 			m_registerDate.setText(project.registerDate().toString(Qt::SystemLocaleShortDate));
 			m_beginDate.setText(project.beginDate().toString(Qt::SystemLocaleShortDate));

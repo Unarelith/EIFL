@@ -37,6 +37,8 @@ class IntraSession {
 			s_instance = &instance;
 		}
 
+		static constexpr const char *baseUrl = "https://intra.epitech.eu";
+
 	private:
 		static const IntraSession *s_instance;
 
