@@ -17,7 +17,7 @@
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
 
-const IntraData *IntraData::s_instance = nullptr;
+IntraData *IntraData::s_instance = nullptr;
 
 void IntraData::update() {
 	updateProjectList();
@@ -37,7 +37,7 @@ void IntraData::updateProjectList() {
 	});
 }
 
-std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::vector<int> &semesters) const {
+std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::vector<unsigned int> &semesters) const {
 	QString semesterString;
 	for (int n : semesters)
 		semesterString += QString::number(n) + ",";
@@ -58,8 +58,14 @@ std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::vec
 	return eventList;
 }
 
-IntraUser IntraData::getUserInfo(const QString &username) const {
-	QJsonDocument json = IntraSession::getInstance().get("/user/" + username);
-	return {json.object()};
+IntraUser IntraData::getUserInfo(const QString &login) {
+	auto it = m_userInfoCache.find(login);
+	if (it == m_userInfoCache.end()) {
+		QJsonDocument json = IntraSession::getInstance().get("/user/" + login);
+		auto r = m_userInfoCache.emplace(login, json.object());
+		return r.first->second;
+	}
+
+	return it->second;
 }
 

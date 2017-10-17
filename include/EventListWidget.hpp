@@ -26,15 +26,17 @@ class EventListWidget : public QDockWidget {
 
 		const QTreeWidget &eventListWidget() const { return m_eventListWidget; }
 
+		bool hasSemester(unsigned int semester) { for (unsigned int s : m_semesters) if (s == semester) return true; return false; }
+
 		void setDate(const QDate &date) { m_date = date; update(); }
-		void setSemesters(const std::vector<int> &semesters) { m_semesters = semesters; update(); }
+		void setSemesters(const std::vector<unsigned int> &semesters) { m_semesters = semesters; update(); }
 		void setFilters(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled, bool isRegisteredEventsEnabled);
 
 	private:
 		QTreeWidget m_eventListWidget;
 
 		QDate m_date;
-		std::vector<int> m_semesters;
+		std::vector<unsigned int> m_semesters;
 
 		bool m_isCurrentSemesterEnabled;
 		bool m_isRegisteredModulesEnabled;

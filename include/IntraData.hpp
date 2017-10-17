@@ -15,6 +15,7 @@
 #define INTRADATA_HPP_
 
 #include <deque>
+#include <map>
 #include <vector>
 
 #include "IntraEvent.hpp"
@@ -26,23 +27,25 @@ class IntraData {
 		void update();
 		void updateProjectList();
 
-		std::deque<IntraEvent> getEventList(const QDate &date, const std::vector<int> &semesters) const;
-		IntraUser getUserInfo(const QString &username) const;
+		std::deque<IntraEvent> getEventList(const QDate &date, const std::vector<unsigned int> &semesters) const;
+		IntraUser getUserInfo(const QString &login);
 
 		const std::deque<IntraProject> &projectList() const { return m_projectList; }
 
-		static const IntraData &getInstance() {
+		static IntraData &getInstance() {
 			return *s_instance;
 		}
 
-		static void setInstance(const IntraData &instance) {
+		static void setInstance(IntraData &instance) {
 			s_instance = &instance;
 		}
 
 	private:
-		static const IntraData *s_instance;
+		static IntraData *s_instance;
 
 		std::deque<IntraProject> m_projectList;
+
+		std::map<QString, IntraUser> m_userInfoCache;
 };
 
 #endif // INTRADATA_HPP_

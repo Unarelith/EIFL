@@ -17,6 +17,7 @@
 
 #include "IntraData.hpp"
 #include "EventListWidget.hpp"
+#include "IntraData.hpp"
 
 EventListWidget::EventListWidget(QWidget *parent) : QDockWidget("Event list", parent) {
 	m_eventListWidget.setColumnCount(7);
@@ -36,8 +37,7 @@ void EventListWidget::update() {
 
 	auto eventList = IntraData::getInstance().getEventList(m_date, m_semesters);
 	for (const IntraEvent &event : eventList) {
-		// FIXME: Find a way to get current semester
-		if ((!m_isCurrentSemesterEnabled || (event.semester() == 5 || event.semester() == 0))
+		if ((!m_isCurrentSemesterEnabled || (event.semester() == IntraData::getInstance().getUserInfo("").currentSemester() || event.semester() == 0))
 		 && (!m_isRegisteredModulesEnabled || event.isModuleRegistered())
 		 && (!m_isRegisteredEventsEnabled || event.isRegistered())) {
 			auto *item = new QTreeWidgetItem(&m_eventListWidget);

@@ -34,12 +34,14 @@ class CalendarSettingsWidget : public QDockWidget {
 		void filterBoxClicked();
 		void semesterBoxClicked();
 
+		void setSemesters(const std::vector<unsigned int> &semesters);
+
 		const QPushButton &clearHightlight() const { return m_clearHighlight; }
 		const QPushButton &selectToday() const { return m_selectToday; }
 
 	signals:
 		void filterStateHasChanged(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled, bool isRegisteredEventsEnabled);
-		void semesterStateHasChanged(const std::vector<int> &semesterState);
+		void semesterStateHasChanged(const std::vector<unsigned int> &semesterState);
 
 	private:
 		QCheckBox m_currentSemesterOnly{"Current semester only"};

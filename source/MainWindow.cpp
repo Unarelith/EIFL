@@ -38,9 +38,11 @@ void MainWindow::setupWidgets() {
 	m_eventInfoWidget.setDate(QDate::currentDate());
 	m_eventListWidget.setDate(QDate::currentDate());
 
-	// FIXME: Find a way to get current semester
-	m_eventListWidget.setSemesters({0,5});
+	unsigned int currentSemester = m_intraData.getUserInfo("").currentSemester();
+	m_eventListWidget.setSemesters({0, currentSemester});
 	m_eventListWidget.setFilters(true, true, false);
+
+	m_calendarSettingsWidget.setSemesters({0, currentSemester});
 }
 
 void MainWindow::setupDocks() {

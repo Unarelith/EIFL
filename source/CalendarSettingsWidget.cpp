@@ -50,10 +50,6 @@ QGroupBox *CalendarSettingsWidget::createSemesterBox() {
 		m_semesters.emplace_back("Semester " + QString::number(i));
 		semesterLayout->addWidget(&m_semesters.back(), i / 2, i % 2);
 
-		// FIXME: Find a way to get current semester
-		if (i == 0 || i == 5)
-			m_semesters.back().setCheckState(Qt::Checked);
-
 		connect(&m_semesters.back(), &QCheckBox::stateChanged, this, &CalendarSettingsWidget::semesterBoxClicked);
 	}
 
@@ -82,12 +78,18 @@ void CalendarSettingsWidget::filterBoxClicked() {
 }
 
 void CalendarSettingsWidget::semesterBoxClicked() {
-	std::vector<int> semestersEnabled;
+	std::vector<unsigned int> semestersEnabled;
 	for (unsigned int i = 0 ; i < m_semesters.size() ; ++i) {
 		if (m_semesters[i].checkState() == Qt::Checked)
 			semestersEnabled.push_back(i);
 	}
 
 	emit semesterStateHasChanged(semestersEnabled);
+}
+
+void CalendarSettingsWidget::setSemesters(const std::vector<unsigned int> &semesters) {
+	for (unsigned int i : semesters) {
+		m_semesters.at(i).setCheckState(Qt::Checked);
+	}
 }
 
