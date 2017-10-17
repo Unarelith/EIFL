@@ -17,32 +17,32 @@
 
 #include "Keyring.hpp"
 
-void Keyring::storePassword(const QString &password) {
-	QKeychain::WritePasswordJob job(QString("EIFL"));
-	job.setBinaryData(password.toUtf8());
+void Keyring::store(const QString &key, const QString &value) {
+	QKeychain::WritePasswordJob job(key);
+	job.setBinaryData(value.toUtf8());
 	startJob(job);
 
 	if (job.error())
 		std::cerr << "Failed to write password to keyring: " << qPrintable(job.errorString()) << std::endl;
 }
 
-void Keyring::deletePassword() {
-	QKeychain::DeletePasswordJob job(QString("EIFL"));
+void Keyring::remove(const QString &key) {
+	QKeychain::DeletePasswordJob job(key);
 	startJob(job);
 
 	if (job.error())
 		std::cerr << "Failed to delete password from keyring: " << qPrintable(job.errorString()) << std::endl;
 }
 
-bool Keyring::hasPassword() {
-	QKeychain::ReadPasswordJob job(QString("EIFL"));
+bool Keyring::has(const QString &key) {
+	QKeychain::ReadPasswordJob job(key);
 	startJob(job);
 
 	return !job.error();
 }
 
-QString Keyring::getPassword() {
-	QKeychain::ReadPasswordJob job(QString("EIFL"));
+QString Keyring::get(const QString &key) {
+	QKeychain::ReadPasswordJob job(key);
 	startJob(job);
 
 	if (job.error())

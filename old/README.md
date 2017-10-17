@@ -12,3 +12,5 @@ For ArchLinux users:
 - `python-keyring`
 - `python-requests`
 
+You'll need to change 'user' value to your account in `projects.py`.
+

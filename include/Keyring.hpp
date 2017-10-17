@@ -18,11 +18,11 @@
 
 class Keyring {
 	public:
-		void storePassword(const QString &password);
-		void deletePassword();
+		void store(const QString &key, const QString &value);
+		void remove(const QString &key);
 
-		bool hasPassword();
-		QString getPassword();
+		bool has(const QString &key);
+		QString get(const QString &key);
 
 	private:
 		void startJob(QKeychain::Job &job);

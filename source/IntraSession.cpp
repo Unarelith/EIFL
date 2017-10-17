@@ -24,18 +24,21 @@ IntraSession::IntraSession() {
 }
 
 void IntraSession::login() {
-	if (!m_keyring.hasPassword())
+	if (!m_keyring.has("eifl_login"))
+		askLogin();
+
+	if (!m_keyring.has("eifl_password"))
 		askPassword();
 
-	// FIXME: LOGIN IS HARDCODED
 	auto r = cpr::Post(cpr::Url{baseUrl},
-	                   cpr::Payload{{"login",    "quentin.bazin@epitech.eu"},
-	                                {"password", m_keyring.getPassword().toStdString()},
+	                   cpr::Payload{{"login",    m_keyring.get("eifl_login").toStdString()},
+	                                {"password", m_keyring.get("eifl_password").toStdString()},
 	                                {"remind",   "on"}});
 	if (r.status_code == 200) {
 		m_cookies = r.cookies;
 	}
 	else if (r.status_code == 401) {
+		askLogin();
 		askPassword();
 		login();
 	}
@@ -53,10 +56,17 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 	return QJsonDocument::fromJson(QByteArray::fromStdString(r.text));
 }
 
+void IntraSession::askLogin() {
+	bool ok;
+	QString text = QInputDialog::getText(nullptr, "Epitech Intra", "Login:", QLineEdit::Normal, "", &ok);
+	if (ok)
+		m_keyring.store("eifl_login", text);
+}
+
 void IntraSession::askPassword() {
 	bool ok;
 	QString text = QInputDialog::getText(nullptr, "Epitech Intra", "Password:", QLineEdit::Password, "", &ok);
 	if (ok)
-		m_keyring.storePassword(text);
+		m_keyring.store("eifl_password", text);
 }
 

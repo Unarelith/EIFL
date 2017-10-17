@@ -42,6 +42,7 @@ class IntraSession {
 	private:
 		static const IntraSession *s_instance;
 
+		void askLogin();
 		void askPassword();
 
 		cpr::Cookies m_cookies;

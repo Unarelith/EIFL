@@ -14,8 +14,8 @@ TODO
 • TODO: Mettre à jour les infos de l’user quand l’onglet est ouvert
 
 • TODO: Régler tous les `FIXME`
+   ◦ DONE: Ajouter une vraie fenêtre de login et stocker le login entré
    ◦ TODO: Trouver un moyen de récupérer le semestre courant
-   ◦ TODO: Ajouter une vraie fenêtre de login et stocker le login entré
    ◦ TODO: Afficher la deadline des projets au lieu de la date de fin
    ◦ TODO: Mettre à jour les dates dans `IntraProject::update`
 
