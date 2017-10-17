@@ -14,11 +14,10 @@
 #ifndef MODULEINFOWIDGET_HPP_
 #define MODULEINFOWIDGET_HPP_
 
-#include <QDockWidget>
 #include <QLabel>
 #include <QTreeWidgetItem>
 
-class ModuleInfoWidget : public QDockWidget {
+class ModuleInfoWidget : public QWidget {
 	public:
 		ModuleInfoWidget(QWidget *parent = nullptr);
 

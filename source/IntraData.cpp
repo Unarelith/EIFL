@@ -32,10 +32,6 @@ void IntraData::updateModuleList() {
 	for (QJsonValue value : projectArray) {
 		m_moduleList.emplace_back(value.toObject());
 	}
-
-	// std::sort(m_projectList.begin(), m_projectList.end(), [&] (const IntraProject &p1, const IntraProject &p2) {
-	// 	return p1.isRegistered() && !p2.isRegistered();
-	// });
 }
 
 void IntraData::updateProjectList() {
@@ -46,10 +42,6 @@ void IntraData::updateProjectList() {
 	for (QJsonValue value : projectArray) {
 		m_projectList.emplace_back(value.toObject());
 	}
-
-	// std::sort(m_projectList.begin(), m_projectList.end(), [&] (const IntraProject &p1, const IntraProject &p2) {
-	// 	return p1.isRegistered() && !p2.isRegistered();
-	// });
 }
 
 std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::vector<unsigned int> &semesters) const {

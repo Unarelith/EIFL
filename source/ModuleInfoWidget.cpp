@@ -17,14 +17,11 @@
 #include "IntraSession.hpp"
 #include "ModuleInfoWidget.hpp"
 
-ModuleInfoWidget::ModuleInfoWidget(QWidget *parent) : QDockWidget("Module details", parent) {
-	QWidget *layoutWidget = new QWidget;
-	QFormLayout *layout = new QFormLayout(layoutWidget);
+ModuleInfoWidget::ModuleInfoWidget(QWidget *parent) : QWidget(parent) {
+	QFormLayout *layout = new QFormLayout(this);
 
 	layout->addRow("Name:", &m_name);
 	layout->addRow("Credits:", &m_creditCount);
-
-	setWidget(layoutWidget);
 }
 
 void ModuleInfoWidget::update(QTreeWidgetItem *item) {

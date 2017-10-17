@@ -53,8 +53,6 @@ void MainWindow::setupWidgets() {
 void MainWindow::setupDocks() {
 	addDockWidget(Qt::RightDockWidgetArea, &m_projectInfoWidget, Qt::Vertical);
 	addDockWidget(Qt::RightDockWidgetArea, &m_projectListWidget, Qt::Vertical);
-
-	addDockWidget(Qt::RightDockWidgetArea, &m_moduleInfoWidget, Qt::Vertical);
 	addDockWidget(Qt::RightDockWidgetArea, &m_moduleListWidget, Qt::Vertical);
 
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventListWidget, Qt::Horizontal);
@@ -63,7 +61,6 @@ void MainWindow::setupDocks() {
 	addDockWidget(Qt::LeftDockWidgetArea, &m_calendarSettingsWidget, Qt::Vertical);
 
 	tabifyDockWidget(&m_projectListWidget, &m_moduleListWidget);
-	tabifyDockWidget(&m_projectInfoWidget, &m_moduleInfoWidget);
 
 	m_projectListWidget.raise();
 	m_projectInfoWidget.raise();
@@ -73,6 +70,7 @@ void MainWindow::setupTabs() {
 	QTabWidget *tabWidget = new QTabWidget;
 	tabWidget->addTab(&m_calendarWidget, "Calendar");
 	tabWidget->addTab(&m_userInfoWidget, "User");
+	tabWidget->addTab(&m_moduleInfoWidget, "Module");
 
 	setCentralWidget(tabWidget);
 }
