@@ -17,7 +17,7 @@
 #include "IntraSession.hpp"
 #include "ProjectInfoWidget.hpp"
 
-ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QDockWidget("Project informations", parent) {
+ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QDockWidget("Project details", parent) {
 	QWidget *layoutWidget = new QWidget;
 	QFormLayout *layout = new QFormLayout(layoutWidget);
 

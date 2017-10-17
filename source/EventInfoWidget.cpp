@@ -16,7 +16,7 @@
 #include "IntraData.hpp"
 #include "EventInfoWidget.hpp"
 
-EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event informations", parent) {
+EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event details", parent) {
 	QWidget *layoutWidget = new QWidget;
 	QFormLayout *layout = new QFormLayout(layoutWidget);
 

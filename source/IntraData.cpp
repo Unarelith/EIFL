@@ -20,7 +20,22 @@
 IntraData *IntraData::s_instance = nullptr;
 
 void IntraData::update() {
+	updateModuleList();
 	updateProjectList();
+}
+
+void IntraData::updateModuleList() {
+	m_moduleList.clear();
+
+	QJsonDocument json = IntraSession::getInstance().get("/course/filter");
+	QJsonArray projectArray = json.array();
+	for (QJsonValue value : projectArray) {
+		m_moduleList.emplace_back(value.toObject());
+	}
+
+	// std::sort(m_projectList.begin(), m_projectList.end(), [&] (const IntraProject &p1, const IntraProject &p2) {
+	// 	return p1.isRegistered() && !p2.isRegistered();
+	// });
 }
 
 void IntraData::updateProjectList() {
@@ -32,9 +47,9 @@ void IntraData::updateProjectList() {
 		m_projectList.emplace_back(value.toObject());
 	}
 
-	std::sort(m_projectList.begin(), m_projectList.end(), [&] (const IntraProject &p1, const IntraProject &p2) {
-		return p1.isRegistered() && !p2.isRegistered();
-	});
+	// std::sort(m_projectList.begin(), m_projectList.end(), [&] (const IntraProject &p1, const IntraProject &p2) {
+	// 	return p1.isRegistered() && !p2.isRegistered();
+	// });
 }
 
 std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::vector<unsigned int> &semesters) const {

@@ -17,7 +17,7 @@
 #include "IntraData.hpp"
 #include "ProjectListWidget.hpp"
 
-ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Project list", parent) {
+ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Projects", parent) {
 	m_projectListWidget.setColumnCount(2);
 	m_projectListWidget.setHeaderLabels({"", "Name"});
 	m_projectListWidget.setRootIsDecorated(false);

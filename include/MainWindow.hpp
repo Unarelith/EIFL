@@ -22,6 +22,7 @@
 #include "EventListWidget.hpp"
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
+#include "ModuleListWidget.hpp"
 #include "ProjectInfoWidget.hpp"
 #include "ProjectListWidget.hpp"
 #include "UserInfoWidget.hpp"
@@ -46,6 +47,8 @@ class MainWindow : public QMainWindow {
 
 		ProjectInfoWidget m_projectInfoWidget;
 		ProjectListWidget m_projectListWidget;
+
+		ModuleListWidget m_moduleListWidget;
 
 		EventInfoWidget m_eventInfoWidget;
 		EventListWidget m_eventListWidget;

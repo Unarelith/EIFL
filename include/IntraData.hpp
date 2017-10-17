@@ -19,17 +19,20 @@
 #include <vector>
 
 #include "IntraEvent.hpp"
+#include "IntraModule.hpp"
 #include "IntraProject.hpp"
 #include "IntraUser.hpp"
 
 class IntraData {
 	public:
 		void update();
+		void updateModuleList();
 		void updateProjectList();
 
 		std::deque<IntraEvent> getEventList(const QDate &date, const std::vector<unsigned int> &semesters) const;
 		IntraUser getUserInfo(const QString &login);
 
+		const std::deque<IntraModule> &moduleList() const { return m_moduleList; }
 		const std::deque<IntraProject> &projectList() const { return m_projectList; }
 
 		static IntraData &getInstance() {
@@ -43,6 +46,7 @@ class IntraData {
 	private:
 		static IntraData *s_instance;
 
+		std::deque<IntraModule> m_moduleList;
 		std::deque<IntraProject> m_projectList;
 
 		std::map<QString, IntraUser> m_userInfoCache;

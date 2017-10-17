@@ -5,6 +5,7 @@ TODO
 ## General
 
 • TODO: Ajouter la liste des modules
+   → `https://intra.epitech.eu/course/filter?format=json`
 • TODO: Ajouter les notifications
 • TODO: Ajouter les alertes
 • TODO: Ajouter les notifications de rdv
@@ -33,7 +34,7 @@ TODO
 
 # Code improvements
 
-• TODO: Créer un enum pour les status des projets/events (`Registrable`, `Missed`, `TokenRequired`)
+• TODO: Créer un enum pour les status des projets/events/modules (`Registrable`, `Missed`, `TokenRequired`)
 
 # UI improvements
 
