@@ -24,6 +24,7 @@ ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Project lis
 	m_projectListWidget.setSortingEnabled(true);
 	m_projectListWidget.header()->setSectionResizeMode(QHeaderView::Fixed);
 	m_projectListWidget.setColumnWidth(0, 27);
+	m_projectListWidget.sortItems(0, Qt::AscendingOrder);
 
 	setWidget(&m_projectListWidget);
 }

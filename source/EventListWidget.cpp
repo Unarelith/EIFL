@@ -24,8 +24,9 @@ EventListWidget::EventListWidget(QWidget *parent) : QDockWidget("Event list", pa
 	m_eventListWidget.setRootIsDecorated(false);
 	m_eventListWidget.setSortingEnabled(true);
 	m_eventListWidget.header()->setSectionResizeMode(QHeaderView::Fixed);
-	m_eventListWidget.setColumnWidth(0, 27);
 	m_eventListWidget.sortItems(1, Qt::AscendingOrder);
+	m_eventListWidget.setColumnWidth(0, 27);
+	m_eventListWidget.setColumnWidth(5, 2 * m_eventListWidget.columnWidth(5));
 
 	setWidget(&m_eventListWidget);
 }
