@@ -55,8 +55,12 @@ void MainWindow::setupDocks() {
 }
 
 void MainWindow::setupMenus() {
+	QAction *exitAction = new QAction(tr("&Exit"), this);
+	exitAction->setShortcut(QKeySequence::Quit);
+	connect(exitAction, &QAction::triggered, this, &MainWindow::close);
+
 	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
-	fileMenu->addAction(new QAction(tr("&Exit"), this));
+	fileMenu->addAction(exitAction);
 }
 
 void MainWindow::connectObjects() {
