@@ -18,13 +18,13 @@
 #include "ProjectListWidget.hpp"
 
 ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Projects", parent) {
-	m_projectListWidget.setColumnCount(2);
-	m_projectListWidget.setHeaderLabels({"", "Name"});
+	m_projectListWidget.setHeaderLabels({"", "Name", "ID"});
 	m_projectListWidget.setRootIsDecorated(false);
 	m_projectListWidget.setSortingEnabled(true);
 	m_projectListWidget.header()->setSectionResizeMode(QHeaderView::Fixed);
 	m_projectListWidget.setColumnWidth(0, 27);
 	m_projectListWidget.sortItems(0, Qt::AscendingOrder);
+	m_projectListWidget.hideColumn(2);
 
 	setWidget(&m_projectListWidget);
 }
@@ -36,6 +36,7 @@ void ProjectListWidget::update() {
 	for (auto &project : projectList) {
 		auto *item = new QTreeWidgetItem(&m_projectListWidget);
 		item->setText(1, project.name());
+		item->setText(2, QString::number(project.id()));
 
 		if (project.isRegistered()) {
 			item->setIcon(0, QIcon(":/registered.svg"));

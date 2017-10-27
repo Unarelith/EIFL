@@ -18,7 +18,6 @@
 #include "ModuleListWidget.hpp"
 
 ModuleListWidget::ModuleListWidget(QWidget *parent) : QDockWidget("Modules", parent) {
-	m_moduleListWidget.setColumnCount(2);
 	m_moduleListWidget.setHeaderLabels({"", "Name"});
 	m_moduleListWidget.setRootIsDecorated(false);
 	m_moduleListWidget.setSortingEnabled(true);

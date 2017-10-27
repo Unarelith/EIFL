@@ -23,7 +23,7 @@ IntraProject::IntraProject(const QJsonObject &jsonObject) {
 	m_endDate = QDateTime::fromString(jsonObject.value("timeline_end").toString(), "dd/MM/yyyy, HH:mm");
 	m_registerDate = QDateTime::fromString(jsonObject.value("date_inscription").toString(), "dd/MM/yyyy, HH:mm");
 
-	m_id = jsonObject.value("id_activite").toInt();
+	m_id = jsonObject.value("id_activite").toString().toInt();
 
 	// FIXME: Update should process dates too
 	update();
