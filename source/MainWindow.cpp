@@ -85,8 +85,8 @@ void MainWindow::setupMenus() {
 }
 
 void MainWindow::connectObjects() {
-	connect(&m_projectListWidget.projectListWidget(), &QTreeWidget::itemClicked, &m_projectInfoWidget, &ProjectInfoWidget::update);
-	connect(&m_projectListWidget.projectListWidget(), &QTreeWidget::itemClicked, &m_calendarWidget, &CalendarWidget::displayProjectDates);
+	connect(&m_projectListWidget.projectListWidget(), &QTreeWidget::currentItemChanged, &m_projectInfoWidget, &ProjectInfoWidget::update);
+	connect(&m_projectListWidget.projectListWidget(), &QTreeWidget::currentItemChanged, &m_calendarWidget, &CalendarWidget::displayProjectDates);
 
 	connect(&m_calendarWidget, &CalendarWidget::dateHasChanged, &m_eventListWidget, &EventListWidget::setDate);
 	connect(&m_calendarWidget, &CalendarWidget::dateHasChanged, &m_eventInfoWidget, &EventInfoWidget::setDate);
@@ -100,8 +100,8 @@ void MainWindow::connectObjects() {
 	connect(&m_calendarSettingsWidget.clearHightlight(), &QPushButton::clicked, &m_calendarWidget, &CalendarWidget::clearAction);
 	connect(&m_calendarSettingsWidget.selectToday(), &QPushButton::clicked, &m_calendarWidget, &CalendarWidget::todayAction);
 
-	connect(&m_moduleListWidget.moduleListWidget(), &QTreeWidget::itemClicked, &m_moduleInfoWidget, &ModuleInfoWidget::update);
-	connect(&m_eventListWidget.eventListWidget(), &QTreeWidget::itemClicked, &m_eventInfoWidget, &EventInfoWidget::update);
+	connect(&m_moduleListWidget.moduleListWidget(), &QTreeWidget::currentItemChanged, &m_moduleInfoWidget, &ModuleInfoWidget::update);
+	connect(&m_eventListWidget.eventListWidget(), &QTreeWidget::currentItemChanged, &m_eventInfoWidget, &EventInfoWidget::update);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {

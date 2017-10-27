@@ -27,7 +27,7 @@ EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event details",
 	setWidget(layoutWidget);
 }
 
-void EventInfoWidget::update(QTreeWidgetItem *item, unsigned int) {
+void EventInfoWidget::update(QTreeWidgetItem *item) {
 	for (const IntraEvent &event : IntraData::getInstance().getEventList(m_date, m_semesters)) {
 		if (item->text(item->columnCount() - 1) == event.name()) {
 			m_name.setText(event.name());

@@ -18,6 +18,11 @@ TODO
 • TODO: Afficher le log netsoul d’un utilisateur
 • TODO: Afficher les binômes d’un utilisateur
 
+## Event
+
+• TODO: Afficher la durée
+• TODO: Afficher la date finale pour l’inscription
+
 ### Project
 
 • TODO: Onglet d’informations détaillées pour les projets
@@ -26,6 +31,7 @@ TODO
 
 ### Modules
 
+• TODO: Afficher le grade du module (`/user/<user>/notes`)
 • TODO: Afficher les activités sur l’onglet
    ◦ TODO: Créer `ActivityListWidget`
    ◦ TODO: Créer `IntraActivity` (qui ne sera contenue que par `IntraModule`)
@@ -64,6 +70,7 @@ TODO
 
 # Code improvements
 
+• TODO: Utiliser `QStandardItemModel` et `QTreeView` au lieu d’utiliser `QTreeWidget` si c’est plus pratique
 • TODO: `Module` → `Unit`
 • TODO: Organiser le code dans des sous-dossiers
 • TODO: Créer un enum pour les status des projets/events/modules (`Registrable`, `Missed`, `TokenRequired`)

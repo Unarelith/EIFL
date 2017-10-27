@@ -23,7 +23,7 @@ class EventInfoWidget : public QDockWidget {
 	public:
 		EventInfoWidget(QWidget *parent = nullptr);
 
-		void update(QTreeWidgetItem *item, unsigned int column);
+		void update(QTreeWidgetItem *item);
 
 		void setDate(const QDate &date) { m_date = date; }
 		void setSemesters(const std::vector<unsigned int> &semesters) { m_semesters = semesters; }
