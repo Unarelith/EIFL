@@ -25,11 +25,13 @@ ModuleInfoWidget::ModuleInfoWidget(QWidget *parent) : QWidget(parent) {
 }
 
 void ModuleInfoWidget::update(QTreeWidgetItem *item) {
-	for (const IntraModule &module : IntraData::getInstance().moduleList()) {
-		if (item->text(item->columnCount() - 1) == module.name()) {
-			m_name.setText(module.name());
+	if (item) {
+		for (const IntraModule &module : IntraData::getInstance().moduleList()) {
+			if (item->text(item->columnCount() - 1) == module.name()) {
+				m_name.setText(module.name());
 
-			m_creditCount.setNum((int)module.creditCount());
+				m_creditCount.setNum((int)module.creditCount());
+			}
 		}
 	}
 }

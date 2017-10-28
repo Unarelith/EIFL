@@ -34,14 +34,16 @@ ProjectInfoWidget::ProjectInfoWidget(QWidget *parent) : QDockWidget("Project det
 }
 
 void ProjectInfoWidget::update(QTreeWidgetItem *item) {
-	for (const IntraProject &project : IntraData::getInstance().projectList()) {
-		if (item->text(item->columnCount() - 1).toUInt() == project.id()) {
-			m_name.setText(project.name());
-			m_link.setText("<a href=\"" + QString(IntraSession::baseUrl) + project.link() + "project\">" + "Go to project" + "</a>");
+	if (item) {
+		for (const IntraProject &project : IntraData::getInstance().projectList()) {
+			if (item->text(item->columnCount() - 1).toUInt() == project.id()) {
+				m_name.setText(project.name());
+				m_link.setText("<a href=\"" + QString(IntraSession::baseUrl) + project.link() + "project\">" + "Go to project" + "</a>");
 
-			m_registerDate.setText(project.registerDate().toString(Qt::SystemLocaleShortDate));
-			m_beginDate.setText(project.beginDate().toString(Qt::SystemLocaleShortDate));
-			m_endDate.setText(project.endDate().toString(Qt::SystemLocaleShortDate));
+				m_registerDate.setText(project.registerDate().toString(Qt::SystemLocaleShortDate));
+				m_beginDate.setText(project.beginDate().toString(Qt::SystemLocaleShortDate));
+				m_endDate.setText(project.endDate().toString(Qt::SystemLocaleShortDate));
+			}
 		}
 	}
 }
