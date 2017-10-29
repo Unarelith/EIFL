@@ -28,7 +28,9 @@ IntraEvent::IntraEvent(const QJsonObject &jsonObject) {
 	m_appointmentDate = QDateTime::fromString(jsonObject.value("rdv_group_registered").toString().left(19), "yyyy-MM-dd HH:mm:ss");
 
 	m_isRegistrable = jsonObject.value("allow_register").toBool();
-	m_isRegistered = jsonObject.value("event_registered").toBool() || !m_appointmentDate.isNull();
+	m_isRegistered = jsonObject.value("event_registered").toBool() ||
+	                 jsonObject.value("event_registered").toString() == "registered" ||
+	                 !m_appointmentDate.isNull();
 	m_isMissed = jsonObject.value("event_registered").toString() == "absent";
 	m_isTokenWritable = jsonObject.value("allow_token").toBool();
 

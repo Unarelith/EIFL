@@ -8,14 +8,14 @@ TODO
 
 • DONE: Ajouter la liste des modules
 • DONE: Ajouter les notifications
-• TODO: Ajouter les alertes
-• TODO: Ajouter les notifications de rdv
+• TODO: /LOW/ Ajouter les alertes
+• TODO: /LOW/ Ajouter les notifications de rdv
 
 ### User
 
 • TODO: Afficher les notes d’un utilisateur
-• TODO: Afficher le log netsoul d’un utilisateur
-• TODO: Afficher les binômes d’un utilisateur
+• TODO: /LOW/ Afficher le log netsoul d’un utilisateur
+• TODO: /LOW/ Afficher les binômes d’un utilisateur
 • TODO: Permettre de voir le profil d’un autre user (si possible)
 
 ## Event
@@ -50,6 +50,25 @@ TODO
 
 # Client features
 
+• TODO: /Urgent/ Séparer la partie “Données” du reste correctement
+   ◦ TODO: Séparer la fenêtre principale du reste du programme
+      ◦ TODO: Faire un tray icon qui ferme/ouvre la fenêtre principale
+      ◦ TODO: Stocker les données en local dans une bdd
+      ◦ TODO: Ajouter une option de menu pour update les données
+      ◦ TODO: Afficher l’avancement de l’update dans la status bar de la MainWindow
+      ◦ TODO: Tant que le tray icon est actif, update les données toutes les X min
+         ▸ TODO: Vérifier que l’update fonctionne bien sans la fenêtre
+   ◦ TODO: Analyser les données et générer des notifications avec libnotify
+      ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire à l’event”
+      ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire au projet”
+      ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire au module”
+      ◦ TODO: Notification classique de l’intra
+      ◦ TODO: Alertes + notifs rdv
+      ◦ TODO: Ajouter une fenêtre de préférences (notamment pour les notifs)
+         ▸ TODO: La rendre persistente en stockant le contenu
+      ◦ TODO: Ajouter un service utilisateur systemd au paquet AUR
+         ▸ TODO: Afficher un petit message à l’installation
+
 • TODO: /Urgent/ Trouver une solution pour stocker activités et events
    → On peut récupérer la liste des modules
    → On peut récupérer la liste des activités sur la page d’un module
@@ -59,8 +78,6 @@ TODO
    → On peut générer une liste de modules/activités par module/events par activité/projets par module
    → Il faut lier les modules / activités / events / projets
 
-• TODO: Mettre à jour la liste des projets toutes les x minutes
-• TODO: Mettre à jour les infos de l’user quand l’utilisateur ouvre l’onglet
 • TODO: Afficher un changelog des fichiers de projet
 
 • TODO: Régler tous les `FIXME`
@@ -79,7 +96,9 @@ TODO
 # UI improvements
 
 • TODO: Faire une vraie fenêtre de login
-• TODO: Afficher les photos sur le profil des utilisateurs
+• TODO: Améliorer le profil utilisateur
+   ◦ TODO: Afficher la photo
+   ◦ TODO: Trouver une meilleure manière d’afficher les données
 • TODO: Ajouter la durée et le temps restant sur les projets
 • TODO: Ajouter la durée et le temps restant pour l’inscription sur les events
 
