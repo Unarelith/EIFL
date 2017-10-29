@@ -29,6 +29,8 @@ class IntraModule {
 			Mandatory = 128
 		};
 
+		unsigned int id() const { return m_id; }
+
 		const QString &name() const { return m_name; }
 
 		unsigned int semester() const { return m_semester; }
@@ -40,6 +42,8 @@ class IntraModule {
 		Flags flags() const { return m_flags; }
 
 	private:
+		unsigned int m_id;
+
 		QString m_name;
 
 		unsigned int m_semester;

@@ -14,6 +14,8 @@
 #include "IntraModule.hpp"
 
 IntraModule::IntraModule(const QJsonObject &jsonObject) {
+	m_id = jsonObject.value("id").toInt();
+
 	m_name = jsonObject.value("title").toString();
 
 	m_semester = jsonObject.value("semester").toInt();

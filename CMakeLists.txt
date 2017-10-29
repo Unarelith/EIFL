@@ -39,7 +39,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Sql Widgets REQUIRED)
 
 #------------------------------------------------------------------------------
 # - QtKeychain
@@ -73,7 +73,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
                       ${CURL_LIBRARIES}
                       ${QTKEYCHAIN_LIBRARIES})
 
-QT5_USE_MODULES(${CMAKE_PROJECT_NAME} Widgets)
+QT5_USE_MODULES(${CMAKE_PROJECT_NAME} Sql Widgets)
 
 #------------------------------------------------------------------------------
 # Install paths

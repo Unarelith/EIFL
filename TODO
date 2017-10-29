@@ -78,6 +78,17 @@ TODO
    → On peut générer une liste de modules/activités par module/events par activité/projets par module
    → Il faut lier les modules / activités / events / projets
 
+• Possibilité: SQL
+   ◦ Exemple pour un module:
+      ```sql create table units (id integer primary key,
+                          name varchar(100),
+                          semester integer,
+                          credit_count integer,
+                          is_registrable boolean,
+                          is_registered boolean,
+                          flags enum('Optional','Progressive','RoadblockCycle','MultipleRegistration','Mandatory'))
+      insert into units(*) values ('Nom de module', 6, 20, true, false, ('Optional'))```
+
 • TODO: Afficher un changelog des fichiers de projet
 
 • TODO: Régler tous les `FIXME`
