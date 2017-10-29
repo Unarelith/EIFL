@@ -12,7 +12,6 @@
  * =====================================================================================
  */
 #include <QJsonArray>
-#include <QJsonObject>
 
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
@@ -20,7 +19,10 @@
 IntraData *IntraData::s_instance = nullptr;
 
 void IntraData::update() {
+	m_overviewJson = IntraSession::getInstance().get("/");
+
 	updateModuleList();
+	updateNotificationList();
 	updateProjectList();
 }
 
@@ -34,11 +36,19 @@ void IntraData::updateModuleList() {
 	}
 }
 
+void IntraData::updateNotificationList() {
+	m_notificationList.clear();
+
+	QJsonArray notificationArray = m_overviewJson.object().value("history").toArray();
+	for (QJsonValue value : notificationArray) {
+		m_notificationList.emplace_back(value.toObject());
+	}
+}
+
 void IntraData::updateProjectList() {
 	m_projectList.clear();
 
-	QJsonDocument json = IntraSession::getInstance().get("/");
-	QJsonArray projectArray = json.object().value("board").toObject().value("projets").toArray();
+	QJsonArray projectArray = m_overviewJson.object().value("board").toObject().value("projets").toArray();
 	for (QJsonValue value : projectArray) {
 		m_projectList.emplace_back(value.toObject());
 	}

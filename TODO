@@ -7,16 +7,16 @@ TODO
 ### General
 
 • DONE: Ajouter la liste des modules
-• TODO: Ajouter les notifications
+• DONE: Ajouter les notifications
 • TODO: Ajouter les alertes
 • TODO: Ajouter les notifications de rdv
 
 ### User
 
-• TODO: Permettre de voir le profil d’un autre user
 • TODO: Afficher les notes d’un utilisateur
 • TODO: Afficher le log netsoul d’un utilisateur
 • TODO: Afficher les binômes d’un utilisateur
+• TODO: Permettre de voir le profil d’un autre user (si possible)
 
 ## Event
 
@@ -44,6 +44,7 @@ TODO
 • TODO: Inscription à un projet
 • TODO: Inscription à une session
 • TODO: Entrée du token
+• TODO: Invitations de groupe
 
                                      * * *
 

@@ -24,6 +24,7 @@
 #include "IntraSession.hpp"
 #include "ModuleInfoWidget.hpp"
 #include "ModuleListWidget.hpp"
+#include "NotificationListWidget.hpp"
 #include "ProjectInfoWidget.hpp"
 #include "ProjectListWidget.hpp"
 #include "UserInfoWidget.hpp"
@@ -59,6 +60,7 @@ class MainWindow : public QMainWindow {
 		CalendarWidget m_calendarWidget;
 		CalendarSettingsWidget m_calendarSettingsWidget;
 
+		NotificationListWidget m_notificationListWidget;
 		UserInfoWidget m_userInfoWidget;
 };
 

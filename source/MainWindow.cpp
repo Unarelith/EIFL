@@ -36,6 +36,7 @@ void MainWindow::setupWidgets() {
 	m_projectListWidget.update();
 	m_userInfoWidget.update();
 	m_moduleListWidget.update();
+	m_notificationListWidget.update();
 
 	m_eventInfoWidget.setDate(QDate::currentDate());
 	m_eventListWidget.setDate(QDate::currentDate());
@@ -71,6 +72,7 @@ void MainWindow::setupTabs() {
 	tabWidget->addTab(&m_calendarWidget, "Calendar");
 	tabWidget->addTab(&m_userInfoWidget, "User");
 	tabWidget->addTab(&m_moduleInfoWidget, "Module");
+	tabWidget->addTab(&m_notificationListWidget, "Notifications");
 
 	setCentralWidget(tabWidget);
 }
