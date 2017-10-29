@@ -28,12 +28,14 @@ EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event details",
 }
 
 void EventInfoWidget::update(QTreeWidgetItem *item) {
-	for (const IntraEvent &event : IntraData::getInstance().getEventList(m_date, m_semesters)) {
-		if (item->text(item->columnCount() - 1) == event.name()) {
-			m_name.setText(event.name());
-			m_moduleName.setText(event.moduleName());
+	if (item) {
+		for (const IntraEvent &event : IntraData::getInstance().getEventList(m_date, m_semesters)) {
+			if (item->text(item->columnCount() - 1) == event.name()) {
+				m_name.setText(event.name());
+				m_moduleName.setText(event.moduleName());
 
-			m_appointmentDate.setText(event.appointmentDate().toString(Qt::SystemLocaleShortDate));
+				m_appointmentDate.setText(event.appointmentDate().toString(Qt::SystemLocaleShortDate));
+			}
 		}
 	}
 }
