@@ -20,6 +20,7 @@
 
 #include <QJsonDocument>
 
+#include "Database.hpp"
 #include "IntraEvent.hpp"
 #include "IntraModule.hpp"
 #include "IntraNotification.hpp"
@@ -50,6 +51,8 @@ class IntraData {
 
 	private:
 		static IntraData *s_instance;
+
+		Database m_database;
 
 		QJsonDocument m_overviewJson;
 

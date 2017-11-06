@@ -32,7 +32,7 @@ IntraProject::IntraProject(const QJsonObject &jsonObject) {
 void IntraProject::update() {
 	QJsonDocument json = IntraSession::getInstance().get(m_link + "project/");
 
-	m_isRegistrable = !json.object().value("closed").toBool();
+	m_isRegistrable = !json.object().value("closed").toBool() && m_registerDate.isValid();
 	m_isRegistered = !json.object().value("user_project_title").isNull();
 }
 
