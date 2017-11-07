@@ -17,8 +17,8 @@
 #include "IntraData.hpp"
 #include "ProjectListWidget.hpp"
 
-ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget("Projects", parent) {
-	m_projectListWidget.setHeaderLabels({"", "Name", "ID"});
+ProjectListWidget::ProjectListWidget(QWidget *parent) : QDockWidget(tr("Projects"), parent) {
+	m_projectListWidget.setHeaderLabels({"", tr("Name"), tr("ID")});
 	m_projectListWidget.setRootIsDecorated(false);
 	m_projectListWidget.setSortingEnabled(true);
 	m_projectListWidget.header()->setSectionResizeMode(QHeaderView::Fixed);
@@ -53,5 +53,7 @@ void ProjectListWidget::update() {
 			}
 		}
 	}
+
+	setWindowTitle(tr("Projects") + " (" + QString::number(m_projectListWidget.topLevelItemCount()) + "/" + QString::number(projectList.size()) + ")");
 }
 

@@ -19,9 +19,9 @@
 #include "EventListWidget.hpp"
 #include "IntraData.hpp"
 
-EventListWidget::EventListWidget(QWidget *parent) : QDockWidget("Event list", parent) {
+EventListWidget::EventListWidget(QWidget *parent) : QDockWidget(tr("Events"), parent) {
 	m_eventListWidget.setColumnCount(7);
-	m_eventListWidget.setHeaderLabels({"", "Start", "End", "Room", "Type", "Module", "Name"});
+	m_eventListWidget.setHeaderLabels({"", tr("Start"), tr("End"), tr("Room"), tr("Type"), tr("Module"), tr("Name")});
 	m_eventListWidget.setRootIsDecorated(false);
 	m_eventListWidget.setSortingEnabled(true);
 	m_eventListWidget.header()->setSectionResizeMode(QHeaderView::Fixed);
@@ -69,6 +69,8 @@ void EventListWidget::update() {
 			}
 		}
 	}
+
+	setWindowTitle(tr("Events") + " (" + QString::number(m_eventListWidget.topLevelItemCount()) + "/" + QString::number(eventList.size()) + ")");
 }
 
 void EventListWidget::setFilters(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled, bool isRegisteredEventsEnabled) {

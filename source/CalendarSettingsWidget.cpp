@@ -38,6 +38,7 @@ QGroupBox *CalendarSettingsWidget::createFiltersBox() {
 	connect(&m_registeredModulesOnly, &QCheckBox::stateChanged, this, &CalendarSettingsWidget::filterBoxClicked);
 	connect(&m_registeredEventsOnly, &QCheckBox::stateChanged, this, &CalendarSettingsWidget::filterBoxClicked);
 
+	m_currentSemesterOnly.setCheckState(Qt::Checked);
 	m_registeredModulesOnly.setCheckState(Qt::Checked);
 
 	return filtersGroupBox;
@@ -69,8 +70,8 @@ void CalendarSettingsWidget::filterBoxClicked() {
 	if (m_registeredEventsOnly.checkState() == Qt::Checked)
 		m_registeredModulesOnly.setCheckState(Qt::Checked);
 
-	if (m_registeredModulesOnly.checkState() == Qt::Checked)
-		m_currentSemesterOnly.setCheckState(Qt::Checked);
+	// if (m_registeredModulesOnly.checkState() == Qt::Checked)
+	// 	m_currentSemesterOnly.setCheckState(Qt::Checked);
 
 	emit filterStateHasChanged(m_currentSemesterOnly.checkState()   == Qt::Checked,
 	                           m_registeredModulesOnly.checkState() == Qt::Checked,

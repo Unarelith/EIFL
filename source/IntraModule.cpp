@@ -30,7 +30,7 @@ IntraModule::IntraModule(const QJsonObject &jsonObject) {
 	m_link = "/module/" + QString::number(m_scholarYear) + "/" + m_code + "/" + m_codeInstance;
 
 	m_isRegistrable = jsonObject.value("open").toString().toInt();
-	m_isRegistered = jsonObject.value("status").toString() == "ongoing";
+	m_isRegistered = jsonObject.value("status").toString() != "notregistered";
 
 	m_flags = static_cast<Flags>(jsonObject.value("flags").toString().toInt());
 }

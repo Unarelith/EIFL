@@ -16,8 +16,8 @@
 #include "IntraData.hpp"
 #include "ModuleListWidget.hpp"
 
-ModuleListWidget::ModuleListWidget(QWidget *parent) : QDockWidget("Modules", parent) {
-	m_moduleListWidget.setHeaderLabels({"", "Name"});
+ModuleListWidget::ModuleListWidget(QWidget *parent) : QDockWidget(tr("Modules"), parent) {
+	m_moduleListWidget.setHeaderLabels({"", tr("Name")});
 	m_moduleListWidget.setRootIsDecorated(false);
 	m_moduleListWidget.setSortingEnabled(true);
 	m_moduleListWidget.header()->setSectionResizeMode(QHeaderView::Fixed);
@@ -34,7 +34,7 @@ void ModuleListWidget::update() {
 	for (auto &it : moduleList) {
 		if ((!m_isCurrentSemesterEnabled || (it.second.semester() == IntraData::getInstance().getUserInfo("").currentSemester() || it.second.semester() == 0))
 		 && (!m_isRegisteredModulesEnabled || it.second.isRegistered())
-		 && std::find(m_semesters.begin(), m_semesters.end(), it.second.semester()) != m_semesters.end()) {
+		 && m_semesters.contains(it.second.semester())) {
 			auto *item = new QTreeWidgetItem(&m_moduleListWidget);
 			item->setText(1, it.second.name());
 
@@ -52,6 +52,8 @@ void ModuleListWidget::update() {
 			}
 		}
 	}
+
+	setWindowTitle(tr("Modules") + " (" + QString::number(m_moduleListWidget.topLevelItemCount()) + "/" + QString::number(moduleList.size()) + ")");
 }
 
 void ModuleListWidget::setFilters(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled) {

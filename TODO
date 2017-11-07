@@ -25,6 +25,7 @@ TODO
 
 ### Project
 
+• TODO: Afficher la durée
 • TODO: Onglet d’informations détaillées pour les projets
    ◦ TODO: Ajouter fichiers et description
    ◦ TODO: Ajouter rdv liés
@@ -35,14 +36,16 @@ TODO
 • TODO: Afficher les activités sur l’onglet
    ◦ TODO: Créer `ActivityListWidget`
    ◦ DONE: Créer `IntraActivity`
+   ◦ TODO: Afficher les propriétés de l’activité sélectionnée et link au projet/event
    ◦ TODO: Trouver une solution pour faire matcher les éléments des listes autre que le nom (genre les id)
-• TODO: Afficher les propriétés de l’activité sélectionnée et link au projet/event
 
 ## Missing POST features
 
-• TODO: Inscription à un module
-• TODO: Inscription à un projet
-• TODO: Inscription à une session
+• TODO: Inscription
+   ◦ TODO: Module
+   ◦ TODO: Projet
+   ◦ TODO: Event
+   ◦ TODO: Appointment
 • TODO: Entrée du token
 • TODO: Invitations de groupe
 
@@ -56,29 +59,35 @@ TODO
       ◦ DONE: Ajouter une option de menu pour update les données
       ◦ DONE: Afficher l’avancement de l’update dans la status bar de la MainWindow
       ◦ DONE: Stocker la bdd dans le cache de l’user
-      ◦  WIP: Régler les états d’enregistrement
+      ◦ DONE: Régler les états d’enregistrement
          ▸ DONE: Events
          ▸ DONE: Projets
-         ▸ TODO: Modules
+         ▸ DONE: Modules
       ◦ DONE: Rajouter les projets manquants
       ◦ DONE: Rajouter les events manquants
-      ◦ TODO: Rajouter les modules manquants
+      ◦ DONE: Rajouter les modules manquants
       ◦ DONE: Après une update, mettre à jour la liste des events
       ◦ DONE: Fix le segfault de la status bar (causé par les lambda dans connect)
       ◦ DONE: Fix les rdv sur les events + isRegistered
          ▸ DONE: Fix les rdv solo
+      ◦ TODO: Quand l’intra est down, aucun moyen pour récupérer le semestre courant
+         ▸ TODO: Stocker l’user (et donc le semestre courant) dans la bdd
+         ▸ TODO: Load l’user depuis la bdd
+      ◦ TODO: Ajouter les notifications à la bdd
       ◦ TODO: Ajouter une option de menu pour reload totalement la bdd
-      ◦ TODO: Faire en sorte que l’update de la db soit plus rapide
-      ◦ TODO: Permettre une update partielle plus facile
-      ◦ TODO: Rendre la première update plus agréable
+      ◦ TODO: Rendre les updates plus agréables
+         ▸ TODO: Permettre une update partielle plus facile
          ▸ TODO: Remplir progressivement les listes
-         ▸ TODO: Utiliser une thread pool et un thread par activity
+         ▸ TODO: Faire en sorte que l’update soit plus rapide
+            ▹ TODO: Utiliser une thread pool et un thread par activity
+      ◦ TODO: Comparer avec l’ancienne version
       ◦ TODO: Virer les messages de debug
       ◦ TODO: Clean le code et refactoriser au possible
       ◦ TODO: Merge avec ‘master’ quand tout est prêt
-   ◦ TODO: Améliorer le mode “hors-ligne”
+   ◦ TODO: Ajouter un mode “hors-ligne”
       ◦ TODO: Faire en sorte que tout ce qui touche au réseau fonctionne dans un thread distinct
       ◦ TODO: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
+      ◦ TODO: Afficher un icône dans la status bar pour l’état de la connexion
    ◦ TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
       ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
       ◦ TODO: Séparer la fenêtre principale du reste du programme
@@ -101,13 +110,13 @@ TODO
 
 • TODO: Régler tous les `FIXME`
    ◦ TODO: Afficher la deadline des projets en plus de la date de fin
-   ◦ TODO: Mettre à jour les dates dans `IntraProject::update`
 
                                      * * *
 
 # Code improvements
 
-• TODO: Déplacer le code dans `main.cpp` vers un fichier adapté
+• TODO: Déplacer le code de `main.cpp` vers un fichier adapté
+• TODO: Créer une classe `Application`
 • TODO: Organiser le code dans des sous-dossiers
 • TODO: Utiliser un model et une view au lieu d’utiliser `QTreeWidget` si c’est plus pratique
 • TODO: `Module` → `Unit`
@@ -119,12 +128,12 @@ TODO
 • TODO: Améliorer le profil utilisateur
    ◦ TODO: Afficher la photo
    ◦ TODO: Trouver une meilleure manière d’afficher les données
-• TODO: Ajouter la durée et le temps restant sur les projets
-• TODO: Ajouter la durée et le temps restant pour l’inscription sur les events
 
 # UX improvements
 
-• TODO: Gérer le multilangues dans le programme et dans le JSON de l’intra
+•  WIP: Gérer le multilangues
+   ◦ DONE: Dans le JSON de l’intra
+   ◦ TODO: Dans le programme
 • TODO: Sauvegarder et charger le layout des dockwidgets
 • TODO: Trouver des couleurs qui rendent bien sans mon thème
 
