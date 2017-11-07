@@ -43,6 +43,8 @@ class MainWindow : public QMainWindow {
 
 		void updateWidgets();
 
+		void showStatusTip(const QString &statusString);
+
 		void keyPressEvent(QKeyEvent *event) override;
 
 		static const MainWindow &getInstance() {

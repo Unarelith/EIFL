@@ -20,10 +20,10 @@
 
 #include "Keyring.hpp"
 
-class IntraSession {
-	public:
-		IntraSession();
+class IntraSession : public QObject {
+	Q_OBJECT
 
+	public:
 		void login();
 
 		using ParameterList = std::map<QString, QString>;
@@ -38,6 +38,9 @@ class IntraSession {
 		}
 
 		static constexpr const char *baseUrl = "https://intra.epitech.eu";
+
+	signals:
+		void stateChanged(const QString &state, int timeout = 0) const;
 
 	private:
 		static const IntraSession *s_instance;

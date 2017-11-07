@@ -48,20 +48,20 @@ void EventListWidget::update() {
 			item->setText(5, event.activity().module().name());
 			item->setText(6, event.activity().name());
 
-			if (event.isRegistered()) {
+			if (event.isMissed()) {
+				item->setIcon(0, QIcon(":/missed.svg"));
+				item->setText(0, " 0");
+
+				for (int i = 0 ; i < item->columnCount() ; ++i)
+					item->setBackgroundColor(i, Qt::darkRed);
+			}
+			else if (event.isRegistered()) {
 				item->setIcon(0, QIcon(":/registered.svg"));
 				item->setText(0, " 1");
 			}
 			else if (event.isRegistrable() && event.isValid()) {
 				item->setIcon(0, QIcon(":/registrable.svg"));
 				item->setText(0, " 2");
-			}
-			else if (event.isMissed()) {
-				item->setIcon(0, QIcon(":/missed.svg"));
-				item->setText(0, " 0");
-
-				for (int i = 0 ; i < item->columnCount() ; ++i)
-					item->setBackgroundColor(i, Qt::darkRed);
 			}
 			else {
 				item->setIcon(0, QIcon(":/locked.svg"));

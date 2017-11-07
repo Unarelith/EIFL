@@ -40,6 +40,7 @@ class IntraActivity {
 
 		bool isCurrentlyActive() const { return m_beginDate <= QDateTime::currentDateTime() && m_endDate > QDateTime::currentDateTime(); }
 		bool isRegistrable() const { return m_isRegistrable; }
+		bool isAppointment() const { return m_isAppointment; }
 
 		bool isProject() const { return m_isProject; }
 		unsigned int projectId() const { return m_projectId; }
@@ -60,6 +61,7 @@ class IntraActivity {
 		QDateTime m_registerDate;
 
 		bool m_isRegistrable;
+		bool m_isAppointment;
 
 		bool m_isProject;
 		unsigned int m_projectId;

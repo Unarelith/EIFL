@@ -35,8 +35,8 @@ class ModuleListWidget : public QDockWidget {
 
 		QList<unsigned int> m_semesters;
 
-		bool m_isCurrentSemesterEnabled;
-		bool m_isRegisteredModulesEnabled;
+		bool m_isCurrentSemesterEnabled = true;
+		bool m_isRegisteredModulesEnabled = true;
 };
 
 #endif // MODULELISTWIDGET_HPP_

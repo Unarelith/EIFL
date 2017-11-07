@@ -11,21 +11,15 @@
  *
  * =====================================================================================
  */
+#include <QJsonArray>
 #include <QSqlRecord>
 #include <QVariant>
 
 #include "IntraEvent.hpp"
 #include "IntraSession.hpp"
 
-#include <QDebug>
-
 IntraEvent::IntraEvent(const IntraActivity &activity, const QJsonObject &jsonObject) : m_activity(activity) {
 	m_id = jsonObject.value("code").toString().mid(6).toUInt();
-
-	// FIXME: Find a way to get appointment infos (rdv_status pour isAppointment mais rien pour la date...)
-	// Hint: acti-xxxx/rdv
-
-	// 	QJsonDocument json = IntraSession::getInstance().get(m_activity.module().link() + "acti-" + QString::number(m_activity.id()) + "/" + m_id + "/");
 
 	// FIXME: Find a better way to get this information
 	m_isRegistrable = m_activity.isRegistrable();
@@ -41,6 +35,31 @@ IntraEvent::IntraEvent(const IntraActivity &activity, const QJsonObject &jsonObj
 
 	m_beginDate = QDateTime::fromString(jsonObject.value("begin").toString(), "yyyy-MM-dd HH:mm:ss");
 	m_endDate = QDateTime::fromString(jsonObject.value("end").toString(), "yyyy-MM-dd HH:mm:ss");
+
+	if (activity.isAppointment() && activity.module().isRegistered()) {
+		QJsonDocument json = IntraSession::getInstance().get(m_activity.module().link() + "/acti-" + QString::number(m_activity.id()) + "/rdv");
+
+		// FIXME: Find a better way to get this information
+		m_isRegistered = json.object().value("student_registered").toBool()
+		              && json.object().value("with_project").toBool();
+
+		// FIXME: Sometimes userId may be used instead of teamId, how to get current user id?
+		if (m_isRegistered) {
+			unsigned int teamId = json.object().value("group").toObject().value("id").toInt();
+			QJsonArray eventArray = json.object().value("slots").toArray();
+			for (QJsonValue eventValue : eventArray) {
+				if (eventValue.toObject().value("codeevent").toString() == "event-" + QString::number(m_id)) {
+					QJsonArray slotArray = eventValue.toObject().value("slots").toArray();
+					for (QJsonValue slotValue : slotArray) {
+						if (slotValue.toObject().value("id_team").toString().toInt() == teamId) {
+							m_isRegistered = true;
+							m_appointmentDate = QDateTime::fromString(slotValue.toObject().value("date").toString(), "yyyy-MM-dd HH:mm:ss");
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 IntraEvent::IntraEvent(const IntraActivity &activity, const QSqlQuery &sqlQuery) : m_activity(activity) {
@@ -51,9 +70,11 @@ IntraEvent::IntraEvent(const IntraActivity &activity, const QSqlQuery &sqlQuery)
 
 	m_beginDate = sqlQuery.value(sqlQuery.record().indexOf("begin_date")).toDateTime();
 	m_endDate = sqlQuery.value(sqlQuery.record().indexOf("end_date")).toDateTime();
+	m_appointmentDate = sqlQuery.value(sqlQuery.record().indexOf("appointment_date")).toDateTime();
 
 	m_isRegistrable = sqlQuery.value(sqlQuery.record().indexOf("is_registrable")).toBool();
 	m_isRegistered = sqlQuery.value(sqlQuery.record().indexOf("is_registered")).toBool();
+	m_isMissed = sqlQuery.value(sqlQuery.record().indexOf("is_missed")).toBool();
 }
 
 // IntraEvent::IntraEvent(const QJsonObject &jsonObject) {

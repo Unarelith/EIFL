@@ -34,6 +34,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	IntraData::setInstance(m_intraData);
 	IntraSession::setInstance(m_intraSession);
 
+	m_intraSession.login();
+
 	connectObjects();
 
 	QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
@@ -66,11 +68,7 @@ void MainWindow::setupWidgets() {
 
 	unsigned int currentSemester = IntraData::getInstance().getUserInfo("").currentSemester();
 	m_eventListWidget.setSemesters({0, currentSemester});
-	m_eventListWidget.setFilters(true, true, false);
-
 	m_moduleListWidget.setSemesters({0, currentSemester});
-	m_moduleListWidget.setFilters(true, true);
-
 	m_calendarSettingsWidget.setSemesters({0, currentSemester});
 }
 
@@ -128,11 +126,14 @@ void MainWindow::setupStatusBar() {
 	statusBar->addPermanentWidget(dbUpdateBar);
 	statusBar->addPermanentWidget(unitUpdateBar);
 
-	connect(&m_intraData.database(), &IntraDatabase::updateStarted, [statusBar] { statusBar->showMessage("Loading units..."); });
-	connect(&m_intraData.database(), &IntraDatabase::updateProgressed, [statusBar] { statusBar->showMessage("Loading units..."); });
 	connect(&m_intraData.database(), &IntraDatabase::updateProgressed, dbUpdateBar, &QProgressBar::setValue);
 	connect(&m_intraData.database(), &IntraDatabase::unitUpdateProgressed, unitUpdateBar, &QProgressBar::setValue);
-	// connect(&m_intraData.database(), &IntraDatabase::updateFinished, [statusBar] { statusBar->showMessage("Done."); });
+	connect(&m_intraSession, &IntraSession::stateChanged, statusBar, &QStatusBar::showMessage);
+}
+
+void MainWindow::showStatusTip(const QString &statusString) {
+	statusBar()->clearMessage();
+	statusBar()->showMessage(statusString, 5000);
 }
 
 void MainWindow::connectObjects() {
@@ -162,6 +163,7 @@ void MainWindow::updateWidgets() {
 	m_userInfoWidget.update();
 	m_moduleListWidget.update();
 	m_notificationListWidget.update();
+	m_eventListWidget.update();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {

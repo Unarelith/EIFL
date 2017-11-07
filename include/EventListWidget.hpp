@@ -38,9 +38,9 @@ class EventListWidget : public QDockWidget {
 		QDate m_date;
 		QList<unsigned int> m_semesters;
 
-		bool m_isCurrentSemesterEnabled;
-		bool m_isRegisteredModulesEnabled;
-		bool m_isRegisteredEventsEnabled;
+		bool m_isCurrentSemesterEnabled = true;
+		bool m_isRegisteredModulesEnabled = true;
+		bool m_isRegisteredEventsEnabled = false;
 };
 
 #endif // EVENTLISTWIDGET_HPP_

@@ -51,27 +51,30 @@ void IntraDatabase::createTables() {
 		{"end_date",       "DATETIME"},
 		{"register_date",  "DATETIME"},
 		{"is_registrable", "INTEGER"},
+		{"is_appointment", "INTEGER"},
 		{"is_project",     "INTEGER"},
 		{"project_id",     "INTEGER"},
-		{"project_name",   "INTEGER"}
+		{"project_name",   "INTEGER"},
 	};
 
 	m_eventFields = {
-		{"activity_id",    "INTEGER"},
-		{"name",           "TEXT"},
-		{"building_name",  "TEXT"},
-		{"room_name",      "TEXT"},
-		{"begin_date",     "DATETIME"},
-		{"end_date",       "DATETIME"},
-		{"is_registrable", "INTEGER"},
-		{"is_registered",  "INTEGER"}
+		{"activity_id",      "INTEGER"},
+		{"name",             "TEXT"},
+		{"building_name",    "TEXT"},
+		{"room_name",        "TEXT"},
+		{"begin_date",       "DATETIME"},
+		{"end_date",         "DATETIME"},
+		{"appointment_date", "DATETIME"},
+		{"is_registrable",   "INTEGER"},
+		{"is_registered",    "INTEGER"},
+		{"is_missed",        "INTEGER"},
 	};
 
 	m_projectFields = {
 		{"activity_id",    "INTEGER"},
 		{"name",           "TEXT"},
 		{"is_registrable", "INTEGER"},
-		{"is_registered",  "INTEGER"}
+		{"is_registered",  "INTEGER"},
 	};
 
 	m_unitFields = {
@@ -178,6 +181,7 @@ void IntraDatabase::updateActivities(const IntraModule &unit) {
 		                            activity.endDate(),
 		                            activity.registerDate(),
 		                            activity.isRegistrable(),
+		                            activity.isAppointment(),
 		                            activity.isProject(),
 		                            activity.projectId(),
 		                            activity.projectName());
@@ -203,8 +207,10 @@ void IntraDatabase::updateEvents(const IntraActivity &activity, const QJsonObjec
 		                        event.roomName(),
 		                        event.beginDate(),
 		                        event.endDate(),
+		                        event.appointmentDate(),
 		                        event.isRegistrable(),
-		                        event.isRegistered());
+		                        event.isRegistered(),
+		                        event.isMissed());
 
 		if (QThread::currentThread()->isInterruptionRequested())
 			return;

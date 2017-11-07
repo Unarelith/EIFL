@@ -28,9 +28,6 @@ class IntraEvent {
 
 		unsigned int id() const { return m_id; }
 
-		bool isAppointment() const { return m_isAppointment; }
-		const QDateTime &appointmentDate() const { return m_appointmentDate; }
-
 		// FIXME: Some sessions require only 1 hour, not 1 day
 		bool isValid() const { return QDateTime::currentDateTime().addDays(1) < m_beginDate; }
 		bool isRegistrable() const { return isValid() && m_isRegistrable; }
@@ -43,14 +40,12 @@ class IntraEvent {
 
 		const QDateTime &beginDate() const { return m_beginDate; }
 		const QDateTime &endDate() const { return m_endDate; }
+		const QDateTime &appointmentDate() const { return m_appointmentDate; }
 
 	private:
 		const IntraActivity &m_activity;
 
 		unsigned int m_id;
-
-		bool m_isAppointment;
-		QDateTime m_appointmentDate;
 
 		bool m_isRegistered;
 		bool m_isRegistrable;
@@ -62,6 +57,7 @@ class IntraEvent {
 
 		QDateTime m_beginDate;
 		QDateTime m_endDate;
+		QDateTime m_appointmentDate;
 };
 
 #endif // INTRAEVENT_HPP_

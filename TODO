@@ -63,14 +63,22 @@ TODO
       ◦ DONE: Rajouter les projets manquants
       ◦ DONE: Rajouter les events manquants
       ◦ TODO: Rajouter les modules manquants
+      ◦ DONE: Après une update, mettre à jour la liste des events
+      ◦ DONE: Fix le segfault de la status bar (causé par les lambda dans connect)
+      ◦ DONE: Fix les rdv sur les events + isRegistered
+         ▸ DONE: Fix les rdv solo
       ◦ TODO: Ajouter une option de menu pour reload totalement la bdd
-      ◦ TODO: Fix les rdv sur les events + isRegistered
-      ◦ TODO: Faire en sorte que l’update basique soit plus rapide
-         ▸ TODO: Permettre une update partielle plus facile
-         ▸ TODO: Ne pas charger les pages des projets ayant déjà un nom
+      ◦ TODO: Faire en sorte que l’update de la db soit plus rapide
+      ◦ TODO: Permettre une update partielle plus facile
+      ◦ TODO: Rendre la première update plus agréable
+         ▸ TODO: Remplir progressivement les listes
+         ▸ TODO: Utiliser une thread pool et un thread par activity
       ◦ TODO: Virer les messages de debug
       ◦ TODO: Clean le code et refactoriser au possible
       ◦ TODO: Merge avec ‘master’ quand tout est prêt
+   ◦ TODO: Améliorer le mode “hors-ligne”
+      ◦ TODO: Faire en sorte que tout ce qui touche au réseau fonctionne dans un thread distinct
+      ◦ TODO: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
    ◦ TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
       ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
       ◦ TODO: Séparer la fenêtre principale du reste du programme
@@ -99,9 +107,10 @@ TODO
 
 # Code improvements
 
-• TODO: Utiliser `QStandardItemModel` et `QTreeView` au lieu d’utiliser `QTreeWidget` si c’est plus pratique
-• TODO: `Module` → `Unit`
+• TODO: Déplacer le code dans `main.cpp` vers un fichier adapté
 • TODO: Organiser le code dans des sous-dossiers
+• TODO: Utiliser un model et une view au lieu d’utiliser `QTreeWidget` si c’est plus pratique
+• TODO: `Module` → `Unit`
 • TODO: Créer un enum pour les status des projets/events/modules (`Registrable`, `Missed`, `TokenRequired`)
 
 # UI improvements
