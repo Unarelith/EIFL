@@ -18,9 +18,15 @@
 
 IntraProject::IntraProject(const IntraActivity &activity, const QJsonObject &jsonObject) : m_activity(activity) {
 	m_name = jsonObject.value("title").toString();
+
+	m_isRegistrable = !jsonObject.value("closed").toBool() && m_activity.registerDate().isValid();
+	m_isRegistered = !jsonObject.value("user_project_title").isNull();
 }
 
 IntraProject::IntraProject(const IntraActivity &activity, const QSqlQuery &sqlQuery) : m_activity(activity) {
 	m_name = sqlQuery.value(sqlQuery.record().indexOf("name")).toString();
+
+	m_isRegistrable = sqlQuery.value(sqlQuery.record().indexOf("is_registrable")).toBool();
+	m_isRegistered = sqlQuery.value(sqlQuery.record().indexOf("is_registered")).toBool();
 }
 

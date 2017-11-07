@@ -39,11 +39,11 @@ void ProjectListWidget::update() {
 			item->setText(1, it.second.name());
 			item->setText(2, QString::number(it.second.id()));
 
-			if (it.second.activity().isRegistered()) {
+			if (it.second.isRegistered()) {
 				item->setIcon(0, QIcon(":/registered.svg"));
 				item->setText(0, " 0");
 			}
-			else if (it.second.activity().isRegistrable()) {
+			else if (it.second.isRegistrable()) {
 				item->setIcon(0, QIcon(":/registrable.svg"));
 				item->setText(0, " 2");
 			}

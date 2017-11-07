@@ -38,7 +38,7 @@ class IntraActivity {
 		const QDateTime &endDate() const { return m_endDate; }
 		const QDateTime &registerDate() const { return m_registerDate; }
 
-		bool isCurrentlyActive() const { return m_beginDate <= QDateTime::currentDateTime() && m_registerDate > QDateTime::currentDateTime(); }
+		bool isCurrentlyActive() const { return m_beginDate <= QDateTime::currentDateTime() && m_endDate > QDateTime::currentDateTime(); }
 		bool isRegistrable() const { return m_isRegistrable; }
 		bool isRegistered() const { return m_isRegistered; }
 

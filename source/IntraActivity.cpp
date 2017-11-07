@@ -29,8 +29,8 @@ IntraActivity::IntraActivity(const IntraModule &module, const QJsonObject &jsonO
 	m_endDate = QDateTime::fromString(jsonObject.value("end").toString(), "yyyy-MM-dd HH:mm:ss");
 	m_registerDate = QDateTime::fromString(jsonObject.value("end_register").toString(), "yyyy-MM-dd HH:mm:ss");
 
-	m_isRegistrable = isCurrentlyActive();
-	m_isRegistered = m_isRegistrable && jsonObject.value("register").toString().toUInt() == 0 && m_module.isRegistered();
+	m_isRegistrable = isCurrentlyActive() && m_module.isRegistered();
+	m_isRegistered = m_isRegistrable && jsonObject.value("register").toString().toUInt() == 0;
 
 	m_isProject = jsonObject.value("is_projet").toBool();
 	m_projectId = jsonObject.value("id_projet").toString().toUInt();
@@ -41,6 +41,9 @@ IntraActivity::IntraActivity(const IntraModule &module, const QSqlQuery &sqlQuer
 	m_id = sqlQuery.value(sqlQuery.record().indexOf("id")).toUInt();
 
 	m_name = sqlQuery.value(sqlQuery.record().indexOf("name")).toString();
+
+	m_typeCode = sqlQuery.value(sqlQuery.record().indexOf("type_code")).toString();
+	m_typeTitle = sqlQuery.value(sqlQuery.record().indexOf("type_title")).toString();
 
 	m_beginDate = sqlQuery.value(sqlQuery.record().indexOf("begin_date")).toDateTime();
 	m_endDate = sqlQuery.value(sqlQuery.record().indexOf("end_date")).toDateTime();

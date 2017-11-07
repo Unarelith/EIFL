@@ -42,6 +42,8 @@ void IntraDatabase::createTables() {
 	m_activityFields = {
 		{"module_id",      "INTEGER"},
 		{"name",           "TEXT"},
+		{"type_code",      "TEXT"},
+		{"type_title",     "TEXT"},
 		{"begin_date",     "DATETIME"},
 		{"end_date",       "DATETIME"},
 		{"register_date",  "DATETIME"},
@@ -55,6 +57,8 @@ void IntraDatabase::createTables() {
 	m_eventFields = {
 		{"activity_id",    "INTEGER"},
 		{"name",           "TEXT"},
+		{"building_name",  "TEXT"},
+		{"room_name",      "TEXT"},
 		{"begin_date",     "DATETIME"},
 		{"end_date",       "DATETIME"},
 		{"is_registrable", "INTEGER"},
@@ -119,6 +123,8 @@ void IntraDatabase::updateUnits() {
 
 	emit updateStarted();
 
+	m_database.exec("begin;");
+
 	size_t i = 0;
 	for (QJsonValue value : unitArray) {
 		IntraModule module(value.toObject());
@@ -140,6 +146,8 @@ void IntraDatabase::updateUnits() {
 			return;
 	}
 
+	m_database.exec("commit;");
+
 	emit updateProgressed(i++ * 100 / unitArray.size());
 	emit updateFinished();
 }
@@ -149,8 +157,6 @@ void IntraDatabase::updateActivities(const IntraModule &unit) {
 	QJsonArray activityArray = json.object().value("activites").toArray();
 	if (activityArray.isEmpty())
 		return;
-
-	m_database.exec("begin;");
 
 	size_t i = 0;
 	for (QJsonValue value : activityArray) {
@@ -164,6 +170,8 @@ void IntraDatabase::updateActivities(const IntraModule &unit) {
 		addTableEntry("activities", activity.id(),
 		                            activity.module().id(),
 		                            activity.name(),
+		                            activity.typeCode(),
+		                            activity.typeTitle(),
 		                            activity.beginDate(),
 		                            activity.endDate(),
 		                            activity.registerDate(),
@@ -179,8 +187,6 @@ void IntraDatabase::updateActivities(const IntraModule &unit) {
 			return;
 	}
 
-	m_database.exec("commit;");
-
 	emit unitUpdateProgressed(i++ * 100 / activityArray.size());
 }
 
@@ -192,6 +198,8 @@ void IntraDatabase::updateEvents(const IntraActivity &activity, const QJsonObjec
 		addTableEntry("events", event.id(),
 		                        event.activity().id(),
 		                        event.activity().name(),
+		                        event.buildingName(),
+		                        event.roomName(),
 		                        event.beginDate(),
 		                        event.endDate(),
 		                        event.isRegistrable(),
@@ -209,7 +217,7 @@ void IntraDatabase::updateProjects(const IntraActivity &activity) {
 	addTableEntry("projects", project.id(),
 	                          project.activity().id(),
 	                          project.name(),
-	                          project.activity().isRegistrable(),
-	                          project.activity().isRegistered());
+	                          project.isRegistrable(),
+	                          project.isRegistered());
 }
 

@@ -41,6 +41,9 @@ IntraEvent::IntraEvent(const IntraActivity &activity, const QJsonObject &jsonObj
 IntraEvent::IntraEvent(const IntraActivity &activity, const QSqlQuery &sqlQuery) : m_activity(activity) {
 	m_id = sqlQuery.value(sqlQuery.record().indexOf("id")).toUInt();
 
+	m_buildingName = sqlQuery.value(sqlQuery.record().indexOf("building_name")).toString();
+	m_roomName = sqlQuery.value(sqlQuery.record().indexOf("room_name")).toString();
+
 	m_beginDate = sqlQuery.value(sqlQuery.record().indexOf("begin_date")).toDateTime();
 	m_endDate = sqlQuery.value(sqlQuery.record().indexOf("end_date")).toDateTime();
 

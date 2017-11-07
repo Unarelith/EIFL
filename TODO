@@ -56,9 +56,13 @@ TODO
       ◦ DONE: Ajouter une option de menu pour update les données
       ◦ DONE: Afficher l’avancement de l’update dans la status bar de la MainWindow
       ◦ TODO: Ajouter une option de menu pour reload totalement la bdd
-      ◦ TODO: Rajouter les projets manquants
+      ◦ DONE: Rajouter les projets manquants
       ◦ TODO: Rajouter les modules manquants
-      ◦ TODO: Régler les états d’enregistrement des events/projets/modules
+      ◦ TODO: Fix les rdv sur les events
+      ◦  WIP: Régler les états d’enregistrement
+         ▸ TODO: Events
+         ▸ DONE: Projets
+         ▸ TODO: Modules
       ◦ TODO: Vérifier que tous les events sont bien présents
       ◦ TODO: Faire en sorte que l’update basique soit plus rapide
          ▸ TODO: Permettre une update partielle plus facile

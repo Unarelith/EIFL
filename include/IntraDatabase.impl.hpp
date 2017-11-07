@@ -31,7 +31,7 @@ void addBindValue(QSqlQuery &query, T value, Args &&...args) {
 
 template<typename... Args>
 void IntraDatabase::addTableEntry(const std::string &table, unsigned int id, Args &&...args) const {
-	std::string insertQueryString = "insert into " + table + "(id,";
+	std::string insertQueryString = "insert or replace into " + table + "(id,";
 	for (auto field = m_tables.at(table)->begin(); field != m_tables.at(table)->end(); ++field)
 		insertQueryString += field->first + (std::next(field) == m_tables.at(table)->end() ? ")" : ",");
 	insertQueryString += " values(?,";
