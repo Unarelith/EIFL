@@ -67,6 +67,9 @@ void MainWindow::setupWidgets() {
 	m_eventListWidget.setDate(QDate::currentDate());
 
 	unsigned int currentSemester = IntraData::getInstance().getUserInfo("").currentSemester();
+	if (currentSemester == 0)
+		qDebug() << "Failed to get current semester!";
+
 	m_eventListWidget.setSemesters({0, currentSemester});
 	m_moduleListWidget.setSemesters({0, currentSemester});
 	m_calendarSettingsWidget.setSemesters({0, currentSemester});
@@ -85,15 +88,14 @@ void MainWindow::setupDocks() {
 	tabifyDockWidget(&m_projectListWidget, &m_moduleListWidget);
 
 	m_projectListWidget.raise();
-	m_projectInfoWidget.raise();
 }
 
 void MainWindow::setupTabs() {
 	QTabWidget *tabWidget = new QTabWidget;
-	tabWidget->addTab(&m_calendarWidget, "Calendar");
-	tabWidget->addTab(&m_userInfoWidget, "User");
-	tabWidget->addTab(&m_moduleInfoWidget, "Module");
-	tabWidget->addTab(&m_notificationListWidget, "Notifications");
+	tabWidget->addTab(&m_calendarWidget, tr("Calendar"));
+	tabWidget->addTab(&m_userInfoWidget, tr("User"));
+	tabWidget->addTab(&m_moduleInfoWidget, tr("Module"));
+	tabWidget->addTab(&m_notificationListWidget, tr("Notifications"));
 
 	setCentralWidget(tabWidget);
 }

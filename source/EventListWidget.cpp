@@ -41,7 +41,7 @@ void EventListWidget::update() {
 		 && (!m_isRegisteredModulesEnabled || event.activity().module().isRegistered())
 		 && (!m_isRegisteredEventsEnabled || event.isRegistered())) {
 			auto *item = new QTreeWidgetItem(&m_eventListWidget);
-			item->setText(1, event.beginDate().toString("HH:mm"));
+			item->setText(1, event.beginDate().toString("HH:mm") + event.appointmentDate().toString(" (HH:mm)"));
 			item->setText(2, event.endDate().toString("HH:mm"));
 			item->setText(3, event.roomName());
 			item->setText(4, event.activity().typeTitle());

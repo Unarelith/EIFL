@@ -78,9 +78,12 @@ TODO
          ▸ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
       ◦ TODO: Rendre les updates plus agréables
          ▸ TODO: Permettre une update partielle plus facile
+            ▹ TODO: Update les items en background quand on cherche leurs infos
+            ▹ TODO: Update la window si des infos ont été modifiées
          ▸ TODO: Remplir progressivement les listes
          ▸ TODO: Faire en sorte que l’update soit plus rapide
             ▹ TODO: Utiliser une thread pool et un thread par activity
+      ◦ TODO: Si le chargement de la db fail, proposer de la reload
       ◦ TODO: Comparer avec l’ancienne version
       ◦ TODO: Virer les messages de debug
       ◦ TODO: Clean le code et refactoriser au possible
