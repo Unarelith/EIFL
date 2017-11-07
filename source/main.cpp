@@ -15,6 +15,10 @@
 
 #include "MainWindow.hpp"
 
+std::ostream &operator<<(std::ostream &stream, const QString &str) {
+	return stream << str.toStdString();
+}
+
 int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
 

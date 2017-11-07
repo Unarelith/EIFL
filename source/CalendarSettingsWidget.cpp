@@ -78,7 +78,7 @@ void CalendarSettingsWidget::filterBoxClicked() {
 }
 
 void CalendarSettingsWidget::semesterBoxClicked() {
-	std::vector<unsigned int> semestersEnabled;
+	QList<unsigned int> semestersEnabled;
 	for (unsigned int i = 0 ; i < m_semesters.size() ; ++i) {
 		if (m_semesters[i].checkState() == Qt::Checked)
 			semestersEnabled.push_back(i);

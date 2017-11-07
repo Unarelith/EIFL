@@ -11,7 +11,6 @@
  *
  * =====================================================================================
  */
-#include <QHBoxLayout>
 #include <QHeaderView>
 
 #include "IntraData.hpp"
@@ -32,18 +31,18 @@ void ModuleListWidget::update() {
 	m_moduleListWidget.clear();
 
 	auto &moduleList = IntraData::getInstance().moduleList();
-	for (auto &module : moduleList) {
-		if ((!m_isCurrentSemesterEnabled || (module.semester() == IntraData::getInstance().getUserInfo("").currentSemester() || module.semester() == 0))
-		 && (!m_isRegisteredModulesEnabled || module.isRegistered())
-		 && std::find(m_semesters.begin(), m_semesters.end(), module.semester()) != m_semesters.end()) {
+	for (auto &it : moduleList) {
+		if ((!m_isCurrentSemesterEnabled || (it.second.semester() == IntraData::getInstance().getUserInfo("").currentSemester() || it.second.semester() == 0))
+		 && (!m_isRegisteredModulesEnabled || it.second.isRegistered())
+		 && std::find(m_semesters.begin(), m_semesters.end(), it.second.semester()) != m_semesters.end()) {
 			auto *item = new QTreeWidgetItem(&m_moduleListWidget);
-			item->setText(1, module.name());
+			item->setText(1, it.second.name());
 
-			if (module.isRegistered()) {
+			if (it.second.isRegistered()) {
 				item->setIcon(0, QIcon(":/registered.svg"));
 				item->setText(0, " 0");
 			}
-			else if (module.isRegistrable()) {
+			else if (it.second.isRegistrable()) {
 				item->setIcon(0, QIcon(":/registrable.svg"));
 				item->setText(0, " 2");
 			}

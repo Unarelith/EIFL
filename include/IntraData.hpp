@@ -16,30 +16,57 @@
 
 #include <deque>
 #include <map>
+#include <memory>
 #include <vector>
 
 #include <QJsonDocument>
 
-#include "Database.hpp"
+#include "IntraDatabase.hpp"
 #include "IntraEvent.hpp"
 #include "IntraModule.hpp"
 #include "IntraNotification.hpp"
 #include "IntraProject.hpp"
 #include "IntraUser.hpp"
 
-class IntraData {
+#include <iostream>
+
+class IntraDatabaseThread : public QThread {
 	public:
+		IntraDatabaseThread(QObject *parent, std::shared_ptr<IntraDatabase> database) : QThread(parent), m_database(database) {}
+		~IntraDatabaseThread() override {
+			requestInterruption();
+			wait();
+		}
+
+		void run() override { m_database->update(); }
+
+	private:
+		std::shared_ptr<IntraDatabase> m_database;
+};
+
+class IntraData : public QObject {
+	Q_OBJECT
+
+	public:
+		void openDatabase();
+		void updateDatabase();
+
 		void update();
-		void updateModuleList();
 		void updateNotificationList();
+		void updateModuleList();
+		void updateActivityList();
+		void updateEventList();
 		void updateProjectList();
 
-		std::deque<IntraEvent> getEventList(const QDate &date, const std::vector<unsigned int> &semesters) const;
+		std::deque<IntraEvent> getEventList(const QDate &date, const QList<unsigned int> &semesters) const;
 		IntraUser getUserInfo(const QString &login);
 
-		const std::deque<IntraModule> &moduleList() const { return m_moduleList; }
+		const IntraDatabase &database() const { return *m_database; }
+
+		const std::map<unsigned int, IntraModule> &moduleList() const { return m_moduleList; }
+		const std::map<unsigned int, IntraProject> &projectList() const { return m_projectList; }
+
 		const std::deque<IntraNotification> &notificationList() const { return m_notificationList; }
-		const std::deque<IntraProject> &projectList() const { return m_projectList; }
 
 		static IntraData &getInstance() {
 			return *s_instance;
@@ -49,16 +76,22 @@ class IntraData {
 			s_instance = &instance;
 		}
 
+	signals:
+		void databaseUpdateFinished();
+
 	private:
 		static IntraData *s_instance;
 
-		Database m_database;
+		std::shared_ptr<IntraDatabase> m_database{std::make_shared<IntraDatabase>()};
 
 		QJsonDocument m_overviewJson;
 
-		std::deque<IntraModule> m_moduleList;
 		std::deque<IntraNotification> m_notificationList;
-		std::deque<IntraProject> m_projectList;
+
+		std::map<unsigned int, IntraModule> m_moduleList;
+		std::map<unsigned int, IntraActivity> m_activityList;
+		std::map<unsigned int, IntraEvent> m_eventList;
+		std::map<unsigned int, IntraProject> m_projectList;
 
 		std::map<QString, IntraUser> m_userInfoCache;
 };

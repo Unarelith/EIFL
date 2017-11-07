@@ -17,19 +17,16 @@
 #include <QDateTime>
 #include <QJsonObject>
 
+#include "IntraActivity.hpp"
+
 class IntraEvent {
 	public:
-		IntraEvent(const QJsonObject &jsonObject);
+		IntraEvent(const IntraActivity &activity, const QJsonObject &jsonObject);
+		IntraEvent(const IntraActivity &activity, const QSqlQuery &sqlQuery);
 
-		const QString &name() const { return m_name; }
+		const IntraActivity &activity() const { return m_activity; }
 
-		const QString &typeCode() const { return m_typeCode; }
-		const QString &typeTitle() const { return m_typeTitle; }
-
-		unsigned int semester() const { return m_semester; }
-
-		const QString &moduleName() const { return m_moduleName; };
-		bool isModuleRegistered() const { return m_isModuleRegistered; }
+		unsigned int id() const { return m_id; }
 
 		bool isAppointment() const { return m_isAppointment; }
 		const QDateTime &appointmentDate() const { return m_appointmentDate; }
@@ -46,15 +43,9 @@ class IntraEvent {
 		const QDateTime &endDate() const { return m_endDate; }
 
 	private:
-		QString m_name;
+		const IntraActivity &m_activity;
 
-		QString m_typeCode;
-		QString m_typeTitle;
-
-		unsigned int m_semester;
-
-		QString m_moduleName;
-		bool m_isModuleRegistered;
+		unsigned int m_id;
 
 		bool m_isAppointment;
 		QDateTime m_appointmentDate;

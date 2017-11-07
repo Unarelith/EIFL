@@ -41,7 +41,7 @@ class CalendarSettingsWidget : public QDockWidget {
 
 	signals:
 		void filterStateHasChanged(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled, bool isRegisteredEventsEnabled);
-		void semesterStateHasChanged(const std::vector<unsigned int> &semesterState);
+		void semesterStateHasChanged(const QList<unsigned int> &semesterState);
 
 	private:
 		QCheckBox m_currentSemesterOnly{"Current semester only"};

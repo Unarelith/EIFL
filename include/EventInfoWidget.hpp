@@ -26,7 +26,7 @@ class EventInfoWidget : public QDockWidget {
 		void update(QTreeWidgetItem *item);
 
 		void setDate(const QDate &date) { m_date = date; }
-		void setSemesters(const std::vector<unsigned int> &semesters) { m_semesters = semesters; }
+		void setSemesters(const QList<unsigned int> &semesters) { m_semesters = semesters; }
 
 	private:
 		QLabel m_name;
@@ -35,7 +35,7 @@ class EventInfoWidget : public QDockWidget {
 		QLabel m_appointmentDate;
 
 		QDate m_date;
-		std::vector<unsigned int> m_semesters;
+		QList<unsigned int> m_semesters;
 };
 
 #endif // EVENTINFOWIDGET_HPP_

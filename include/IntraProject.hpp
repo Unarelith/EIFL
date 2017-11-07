@@ -14,41 +14,23 @@
 #ifndef INTRAPROJECT_HPP_
 #define INTRAPROJECT_HPP_
 
-#include <string>
-
-#include <QDateTime>
-#include <QJsonObject>
+#include "IntraActivity.hpp"
 
 class IntraProject {
 	public:
-		IntraProject(const QJsonObject &jsonObject);
+		IntraProject(const IntraActivity &activity, const QJsonObject &jsonObject);
+		IntraProject(const IntraActivity &activity, const QSqlQuery &sqlQuery);
 
-		void update();
+		const IntraActivity &activity() const { return m_activity; }
+
+		unsigned int id() const { return m_activity.projectId(); }
 
 		const QString &name() const { return m_name; }
-		const QString &link() const { return m_link; }
-
-		const QDateTime &beginDate() const { return m_beginDate; }
-		const QDateTime &endDate() const { return m_endDate; }
-		const QDateTime &registerDate() const { return m_registerDate; }
-
-		unsigned int id() const { return m_id; }
-
-		bool isRegistrable() const { return m_isRegistrable; }
-		bool isRegistered() const { return m_isRegistered; }
 
 	private:
+		const IntraActivity &m_activity;
+
 		QString m_name;
-		QString m_link;
-
-		QDateTime m_beginDate;
-		QDateTime m_endDate;
-		QDateTime m_registerDate;
-
-		unsigned int m_id;
-
-		bool m_isRegistrable;
-		bool m_isRegistered;
 };
 
 #endif // INTRAPROJECT_HPP_

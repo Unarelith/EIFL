@@ -37,16 +37,16 @@ void EventListWidget::update() {
 
 	auto eventList = IntraData::getInstance().getEventList(m_date, m_semesters);
 	for (const IntraEvent &event : eventList) {
-		if ((!m_isCurrentSemesterEnabled || (event.semester() == IntraData::getInstance().getUserInfo("").currentSemester() || event.semester() == 0))
-		 && (!m_isRegisteredModulesEnabled || event.isModuleRegistered())
+		if ((!m_isCurrentSemesterEnabled || (event.activity().module().semester() == IntraData::getInstance().getUserInfo("").currentSemester() || event.activity().module().semester() == 0))
+		 && (!m_isRegisteredModulesEnabled || event.activity().module().isRegistered())
 		 && (!m_isRegisteredEventsEnabled || event.isRegistered())) {
 			auto *item = new QTreeWidgetItem(&m_eventListWidget);
 			item->setText(1, event.beginDate().toString("HH:mm"));
 			item->setText(2, event.endDate().toString("HH:mm"));
 			item->setText(3, event.roomName());
-			item->setText(4, event.typeTitle());
-			item->setText(5, event.moduleName());
-			item->setText(6, event.name());
+			item->setText(4, event.activity().typeTitle());
+			item->setText(5, event.activity().module().name());
+			item->setText(6, event.activity().name());
 
 			if (event.isRegistered()) {
 				item->setIcon(0, QIcon(":/registered.svg"));

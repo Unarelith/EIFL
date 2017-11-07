@@ -11,37 +11,51 @@
  *
  * =====================================================================================
  */
+#include <QApplication>
+#include <QFileInfo>
 #include <QKeyEvent>
 #include <QMenuBar>
+#include <QProgressBar>
+#include <QStatusBar>
+#include <QThreadPool>
 
 #include "MainWindow.hpp"
+
+const MainWindow *MainWindow::s_instance = nullptr;
 
 MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	setWindowTitle("Epitech Intra");
 	setFocusPolicy(Qt::ClickFocus);
 	resize(width, height);
 
+	MainWindow::setInstance(*this);
 	IntraData::setInstance(m_intraData);
 	IntraSession::setInstance(m_intraSession);
+
+	connectObjects();
+
+	QFileInfo databaseInfo("intra.sqlite");
+	if (databaseInfo.exists() && databaseInfo.isFile()) {
+		m_intraData.openDatabase();
+		m_intraData.update();
+	}
+	else {
+		m_intraData.openDatabase();
+		m_intraData.updateDatabase();
+	}
 
 	setupWidgets();
 	setupDocks();
 	setupTabs();
 	setupMenus();
-	connectObjects();
+	setupStatusBar();
 }
 
 void MainWindow::setupWidgets() {
-	m_intraData.update();
-	m_projectListWidget.update();
-	m_userInfoWidget.update();
-	m_moduleListWidget.update();
-	m_notificationListWidget.update();
-
 	m_eventInfoWidget.setDate(QDate::currentDate());
 	m_eventListWidget.setDate(QDate::currentDate());
 
-	unsigned int currentSemester = m_intraData.getUserInfo("").currentSemester();
+	unsigned int currentSemester = IntraData::getInstance().getUserInfo("").currentSemester();
 	m_eventListWidget.setSemesters({0, currentSemester});
 	m_eventListWidget.setFilters(true, true, false);
 
@@ -78,12 +92,38 @@ void MainWindow::setupTabs() {
 }
 
 void MainWindow::setupMenus() {
+	QAction *updateAction = new QAction(tr("&Update database"), this);
+	updateAction->setShortcut(QKeySequence::Refresh);
+	updateAction->setStatusTip("Update local database with online data");
+	connect(updateAction, &QAction::triggered, &m_intraData, &IntraData::updateDatabase);
+
 	QAction *exitAction = new QAction(tr("&Exit"), this);
 	exitAction->setShortcut(QKeySequence::Quit);
+	exitAction->setStatusTip("Exit the program");
 	connect(exitAction, &QAction::triggered, this, &MainWindow::close);
 
 	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+	fileMenu->addAction(updateAction);
+	fileMenu->addSeparator();
 	fileMenu->addAction(exitAction);
+}
+
+void MainWindow::setupStatusBar() {
+	QProgressBar *dbUpdateBar = new QProgressBar;
+	dbUpdateBar->setRange(0, 100);
+
+	QProgressBar *unitUpdateBar = new QProgressBar;
+	unitUpdateBar->setRange(0, 100);
+
+	QStatusBar *statusBar = QMainWindow::statusBar();
+	statusBar->addPermanentWidget(dbUpdateBar);
+	statusBar->addPermanentWidget(unitUpdateBar);
+
+	connect(&m_intraData.database(), &IntraDatabase::updateStarted, [statusBar] { statusBar->showMessage("Loading units..."); });
+	connect(&m_intraData.database(), &IntraDatabase::updateProgressed, [statusBar] { statusBar->showMessage("Loading units..."); });
+	connect(&m_intraData.database(), &IntraDatabase::updateProgressed, dbUpdateBar, &QProgressBar::setValue);
+	connect(&m_intraData.database(), &IntraDatabase::unitUpdateProgressed, unitUpdateBar, &QProgressBar::setValue);
+	// connect(&m_intraData.database(), &IntraDatabase::updateFinished, [statusBar] { statusBar->showMessage("Done."); });
 }
 
 void MainWindow::connectObjects() {
@@ -104,6 +144,15 @@ void MainWindow::connectObjects() {
 
 	connect(&m_moduleListWidget.moduleListWidget(), &QTreeWidget::currentItemChanged, &m_moduleInfoWidget, &ModuleInfoWidget::update);
 	connect(&m_eventListWidget.eventListWidget(), &QTreeWidget::currentItemChanged, &m_eventInfoWidget, &EventInfoWidget::update);
+
+	connect(&m_intraData, &IntraData::databaseUpdateFinished, this, &MainWindow::updateWidgets);
+}
+
+void MainWindow::updateWidgets() {
+	m_projectListWidget.update();
+	m_userInfoWidget.update();
+	m_moduleListWidget.update();
+	m_notificationListWidget.update();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {

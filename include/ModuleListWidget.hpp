@@ -27,13 +27,13 @@ class ModuleListWidget : public QDockWidget {
 
 		const QTreeWidget &moduleListWidget() const { return m_moduleListWidget; }
 
-		void setSemesters(const std::vector<unsigned int> &semesters) { m_semesters = semesters; update(); }
+		void setSemesters(const QList<unsigned int> &semesters) { m_semesters = semesters; update(); }
 		void setFilters(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled);
 
 	private:
 		QTreeWidget m_moduleListWidget;
 
-		std::vector<unsigned int> m_semesters;
+		QList<unsigned int> m_semesters;
 
 		bool m_isCurrentSemesterEnabled;
 		bool m_isRegisteredModulesEnabled;

@@ -33,22 +33,24 @@ void ProjectListWidget::update() {
 	m_projectListWidget.clear();
 
 	auto &projectList = IntraData::getInstance().projectList();
-	for (auto &project : projectList) {
-		auto *item = new QTreeWidgetItem(&m_projectListWidget);
-		item->setText(1, project.name());
-		item->setText(2, QString::number(project.id()));
+	for (auto &it : projectList) {
+		if (it.second.activity().module().isRegistered() && it.second.activity().isCurrentlyActive()) {
+			auto *item = new QTreeWidgetItem(&m_projectListWidget);
+			item->setText(1, it.second.name());
+			item->setText(2, QString::number(it.second.id()));
 
-		if (project.isRegistered()) {
-			item->setIcon(0, QIcon(":/registered.svg"));
-			item->setText(0, " 0");
-		}
-		else if (project.isRegistrable()) {
-			item->setIcon(0, QIcon(":/registrable.svg"));
-			item->setText(0, " 2");
-		}
-		else {
-			item->setIcon(0, QIcon(":/locked.svg"));
-			item->setText(0, " 1");
+			if (it.second.activity().isRegistered()) {
+				item->setIcon(0, QIcon(":/registered.svg"));
+				item->setText(0, " 0");
+			}
+			else if (it.second.activity().isRegistrable()) {
+				item->setIcon(0, QIcon(":/registrable.svg"));
+				item->setText(0, " 2");
+			}
+			else {
+				item->setIcon(0, QIcon(":/locked.svg"));
+				item->setText(0, " 1");
+			}
 		}
 	}
 }

@@ -30,9 +30,9 @@ EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event details",
 void EventInfoWidget::update(QTreeWidgetItem *item) {
 	if (item) {
 		for (const IntraEvent &event : IntraData::getInstance().getEventList(m_date, m_semesters)) {
-			if (item->text(item->columnCount() - 1) == event.name()) {
-				m_name.setText(event.name());
-				m_moduleName.setText(event.moduleName());
+			if (item->text(item->columnCount() - 1) == event.activity().name()) {
+				m_name.setText(event.activity().name());
+				m_moduleName.setText(event.activity().module().name());
 
 				m_appointmentDate.setText(event.appointmentDate().toString(Qt::SystemLocaleShortDate));
 			}

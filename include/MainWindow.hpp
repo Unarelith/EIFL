@@ -37,14 +37,28 @@ class MainWindow : public QMainWindow {
 		void setupDocks();
 		void setupTabs();
 		void setupMenus();
+		void setupStatusBar();
+
 		void connectObjects();
 
+		void updateWidgets();
+
 		void keyPressEvent(QKeyEvent *event) override;
+
+		static const MainWindow &getInstance() {
+			return *s_instance;
+		}
+
+		static void setInstance(const MainWindow &instance) {
+			s_instance = &instance;
+		}
 
 		static const unsigned int width = 1280;
 		static const unsigned int height = 720;
 
 	private:
+		static const MainWindow *s_instance;
+
 		IntraData m_intraData;
 		IntraSession m_intraSession;
 

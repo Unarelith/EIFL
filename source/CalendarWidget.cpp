@@ -44,19 +44,19 @@ void CalendarWidget::loadFormats() {
 
 void CalendarWidget::displayProjectDates(QTreeWidgetItem *item) {
 	if (item) {
-		for (const IntraProject &project : IntraData::getInstance().projectList()) {
-			if (item->text(item->columnCount() - 1).toUInt() == project.id()) {
+		for (auto &it : IntraData::getInstance().projectList()) {
+			if (item->text(item->columnCount() - 1).toUInt() == it.second.id()) {
 				m_calendarWidget.setDateTextFormat(QDate(), QTextCharFormat());
 
-				for (QDateTime i = project.beginDate() ; i < project.endDate() ; i = i.addDays(1)) {
+				for (QDateTime i = it.second.activity().beginDate() ; i < it.second.activity().endDate() ; i = i.addDays(1)) {
 					m_calendarWidget.setDateTextFormat(i.date(), m_currentProjectFormat);
 				}
 
-				m_calendarWidget.setDateTextFormat(project.beginDate().date(), m_beginDateFormat);
-				m_calendarWidget.setDateTextFormat(project.endDate().date(), m_endDateFormat);
+				m_calendarWidget.setDateTextFormat(it.second.activity().beginDate().date(), m_beginDateFormat);
+				m_calendarWidget.setDateTextFormat(it.second.activity().endDate().date(), m_endDateFormat);
 
-				if (!project.registerDate().isNull())
-					m_calendarWidget.setDateTextFormat(project.registerDate().date(), m_registerDateFormat);
+				if (!it.second.activity().registerDate().isNull())
+					m_calendarWidget.setDateTextFormat(it.second.activity().registerDate().date(), m_registerDateFormat);
 			}
 		}
 	}

@@ -11,31 +11,37 @@
  *
  * =====================================================================================
  */
+#include <QApplication>
 #include <QJsonArray>
+#include <QProgressDialog>
+#include <QSqlRecord>
 
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
 
 IntraData *IntraData::s_instance = nullptr;
 
-void IntraData::update() {
-	m_overviewJson = IntraSession::getInstance().get("/");
-
-	updateModuleList();
-	updateNotificationList();
-	updateProjectList();
+void IntraData::openDatabase() {
+	m_database->open();
 }
 
-void IntraData::updateModuleList() {
-	m_moduleList.clear();
+void IntraData::updateDatabase() {
+	IntraDatabaseThread *thread = new IntraDatabaseThread(this, m_database);
+	connect(m_database.get(), &IntraDatabase::updateFinished, this, &IntraData::update);
+	connect(thread, &QThread::finished, thread, &QObject::deleteLater);
+	thread->start();
+}
 
-	m_database.updateUnits();
+void IntraData::update() {
+	m_overviewJson = IntraSession::getInstance().get("/");
+	updateNotificationList();
 
-	QJsonDocument json = IntraSession::getInstance().get("/course/filter");
-	QJsonArray projectArray = json.array();
-	for (QJsonValue value : projectArray) {
-		m_moduleList.emplace_back(value.toObject());
-	}
+	updateModuleList();
+	updateActivityList();
+	updateEventList();
+	updateProjectList();
+
+	emit databaseUpdateFinished();
 }
 
 void IntraData::updateNotificationList() {
@@ -47,32 +53,86 @@ void IntraData::updateNotificationList() {
 	}
 }
 
-void IntraData::updateProjectList() {
-	m_projectList.clear();
+void IntraData::updateModuleList() {
+	m_moduleList.clear();
 
-	QJsonArray projectArray = m_overviewJson.object().value("board").toObject().value("projets").toArray();
-	for (QJsonValue value : projectArray) {
-		m_projectList.emplace_back(value.toObject());
+	QSqlQuery query("SELECT * FROM units");
+	while (query.next()) {
+		IntraModule module{query};
+		m_moduleList.emplace(module.id(), std::move(module));
 	}
 }
 
-std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const std::vector<unsigned int> &semesters) const {
-	QString semesterString;
-	for (int n : semesters)
-		semesterString += QString::number(n) + ",";
-	semesterString.chop(1);
+void IntraData::updateActivityList() {
+	m_activityList.clear();
 
-	QString dateString = date.toString("yyyy-MM-dd");
-	QJsonDocument json = IntraSession::getInstance().get("/planning/load", {
-		std::make_pair("start", dateString),
-		std::make_pair("end", dateString),
-		std::make_pair("semester", semesterString)
-	});
+	QSqlQuery query("SELECT * FROM activities");
+	while (query.next()) {
+		unsigned int moduleId = query.value(query.record().indexOf("module_id")).toUInt();
+		auto it = m_moduleList.find(moduleId);
+		if (it == m_moduleList.end()) {
+			throw std::runtime_error("Error: Unable to find module with id " + std::to_string(moduleId));
+		}
+
+		IntraActivity activity{it->second, query};
+		m_activityList.emplace(activity.id(), std::move(activity));
+	}
+}
+
+void IntraData::updateEventList() {
+	m_eventList.clear();
+
+	QSqlQuery query("SELECT * FROM events");
+	while (query.next()) {
+		unsigned int activityId = query.value(query.record().indexOf("activity_id")).toUInt();
+		auto it = m_activityList.find(activityId);
+		if (it == m_activityList.end()) {
+			throw std::runtime_error("Error: Unable to find activity with id " + std::to_string(activityId));
+		}
+
+		IntraEvent event{it->second, query};
+		m_eventList.emplace(event.id(), std::move(event));
+	}
+}
+
+void IntraData::updateProjectList() {
+	m_projectList.clear();
+
+	QSqlQuery query("SELECT * FROM projects");
+	while (query.next()) {
+		unsigned int activityId = query.value(query.record().indexOf("activity_id")).toUInt();
+		auto it = m_activityList.find(activityId);
+		if (it == m_activityList.end()) {
+			throw std::runtime_error("Error: Unable to find activity with id " + std::to_string(activityId));
+		}
+
+		IntraProject project{it->second, query};
+		m_projectList.emplace(project.id(), std::move(project));
+	}
+}
+
+std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const QList<unsigned int> &semesters) const {
+	// QString semesterString;
+	// for (int n : semesters)
+	// 	semesterString += QString::number(n) + ",";
+	// semesterString.chop(1);
+	//
+	// QString dateString = date.toString("yyyy-MM-dd");
+	// QJsonDocument json = IntraSession::getInstance().get("/planning/load", {
+	// 	std::make_pair("start", dateString),
+	// 	std::make_pair("end", dateString),
+	// 	std::make_pair("semester", semesterString)
+	// });
 
 	std::deque<IntraEvent> eventList;
-	for (QJsonValue value : json.array()) {
-		eventList.emplace_back(value.toObject());
+	for (auto it : m_eventList) {
+		if (semesters.contains(it.second.activity().module().semester()) && (it.second.beginDate().date() == date || it.second.endDate().date() == date)) {
+			eventList.emplace_back(it.second);
+		}
 	}
+	// for (QJsonValue value : json.array()) {
+	// 	eventList.emplace_back(value.toObject());
+	// }
 
 	return eventList;
 }

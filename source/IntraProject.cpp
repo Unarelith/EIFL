@@ -11,28 +11,16 @@
  *
  * =====================================================================================
  */
+#include <QSqlRecord>
+#include <QVariant>
+
 #include "IntraProject.hpp"
-#include "IntraSession.hpp"
 
-IntraProject::IntraProject(const QJsonObject &jsonObject) {
+IntraProject::IntraProject(const IntraActivity &activity, const QJsonObject &jsonObject) : m_activity(activity) {
 	m_name = jsonObject.value("title").toString();
-	m_link = jsonObject.value("title_link").toString();
-
-	// FIXME: project.deadline should be used instead of timeline_end
-	m_beginDate = QDateTime::fromString(jsonObject.value("timeline_start").toString(), "dd/MM/yyyy, HH:mm");
-	m_endDate = QDateTime::fromString(jsonObject.value("timeline_end").toString(), "dd/MM/yyyy, HH:mm");
-	m_registerDate = QDateTime::fromString(jsonObject.value("date_inscription").toString(), "dd/MM/yyyy, HH:mm");
-
-	m_id = jsonObject.value("id_activite").toString().toInt();
-
-	// FIXME: Update should process dates too
-	update();
 }
 
-void IntraProject::update() {
-	QJsonDocument json = IntraSession::getInstance().get(m_link + "project/");
-
-	m_isRegistrable = !json.object().value("closed").toBool() && m_registerDate.isValid();
-	m_isRegistered = !json.object().value("user_project_title").isNull();
+IntraProject::IntraProject(const IntraActivity &activity, const QSqlQuery &sqlQuery) : m_activity(activity) {
+	m_name = sqlQuery.value(sqlQuery.record().indexOf("name")).toString();
 }
 

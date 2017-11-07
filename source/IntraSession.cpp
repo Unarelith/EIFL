@@ -36,6 +36,7 @@ void IntraSession::login() {
 	                                {"remind",   "on"}});
 	if (r.status_code == 200) {
 		m_cookies = r.cookies;
+		m_cookies["language"] = "fr";
 	}
 	else if (r.status_code == 401) {
 		askLogin();
@@ -43,7 +44,7 @@ void IntraSession::login() {
 		login();
 	}
 	else {
-		std::cerr << "Failed to login. Code: " << r.status_code << std::endl;
+		std::cerr << "Error: Failed to login. Code: " << r.status_code << std::endl;
 	}
 }
 
@@ -52,7 +53,13 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 	for (auto &parameter : parameters)
 		url += "&" + parameter.first + "=" + parameter.second;
 
+	std::cout << "GET " << apiEndpoint.toStdString() << std::endl;
+
 	auto r = cpr::Get(cpr::Url{url.toStdString()}, m_cookies);
+	if (r.status_code != 200) {
+		std::cerr << "Error: Http request failed. Code: " << r.status_code << std::endl;
+	}
+
 	return QJsonDocument::fromJson(QByteArray::fromStdString(r.text));
 }
 

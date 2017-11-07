@@ -6,6 +6,8 @@ cmake_minimum_required(VERSION 2.8.8)
 
 project(eifl)
 
+set(CMAKE_CXX_COMPILER clang++)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
