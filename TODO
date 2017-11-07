@@ -119,6 +119,7 @@ TODO
 
 # Code improvements
 
+• TODO: Faire une classe mère pour les widgets de liste
 • TODO: Déplacer le code de `main.cpp` vers un fichier adapté
 • TODO: Créer une classe `Application`
 • TODO: Organiser le code dans des sous-dossiers

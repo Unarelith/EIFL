@@ -59,6 +59,8 @@ class MainWindow : public QMainWindow {
 		static const unsigned int height = 720;
 
 	private:
+		void openAboutWindow();
+
 		static const MainWindow *s_instance;
 
 		IntraData m_intraData;

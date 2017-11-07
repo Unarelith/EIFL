@@ -16,6 +16,7 @@
 #include <QFileInfo>
 #include <QKeyEvent>
 #include <QMenuBar>
+#include <QMessageBox>
 #include <QProgressBar>
 #include <QStandardPaths>
 #include <QStatusBar>
@@ -122,6 +123,19 @@ void MainWindow::setupMenus() {
 	QMenu *databaseMenu = menuBar()->addMenu(tr("&Database"));
 	databaseMenu->addAction(updateAction);
 	databaseMenu->addAction(reloadAction);
+
+	QAction *aboutAction = new QAction(tr("&About"), this);
+	aboutAction->setShortcut(QKeySequence::HelpContents);
+	aboutAction->setStatusTip("About this program");
+	connect(aboutAction, &QAction::triggered, this, &MainWindow::openAboutWindow);
+
+	QAction *aboutQtAction = new QAction(tr("&About Qt"), this);
+	aboutQtAction->setStatusTip("About Qt");
+	connect(aboutQtAction, &QAction::triggered, qApp, &QApplication::aboutQt);
+
+	QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
+	helpMenu->addAction(aboutAction);
+	helpMenu->addAction(aboutQtAction);
 }
 
 void MainWindow::setupStatusBar() {
@@ -178,5 +192,17 @@ void MainWindow::updateWidgets() {
 void MainWindow::keyPressEvent(QKeyEvent *event) {
 	if (event->key() == Qt::Key_Escape)
 		close();
+}
+
+void MainWindow::openAboutWindow() {
+	QMessageBox aboutBox(this);
+	aboutBox.setWindowTitle("About EIFL");
+	aboutBox.setTextFormat(Qt::RichText);
+	aboutBox.setText("<h3>Epitech Intra For Linux (EIFL)</h3>"
+	                 "Made by Quentin Bazin<br/><br/>"
+	                 "Thanks for using this project!<br/><br/>"
+	                 "Feel free to create a ticket <a href='https://github.com/Quent42340/EIFL/issues'>here</a> if you find some bugs.");
+	aboutBox.setStandardButtons(QMessageBox::Ok);
+	aboutBox.exec();
 }
 
