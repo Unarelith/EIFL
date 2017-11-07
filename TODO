@@ -110,12 +110,20 @@ TODO
       ◦ TODO: Ajouter un service utilisateur systemd au paquet AUR
          ▸ TODO: Afficher un petit message à l’installation
 
-• TODO: Afficher un changelog des fichiers de projet
-
 • TODO: Régler tous les `FIXME`
    ◦ TODO: Afficher la deadline des projets en plus de la date de fin
 
                                      * * *
+
+# Crazy ideas
+
+• TODO: Ajouter une section “Documents”
+   ◦ TODO: Documentation de blih
+   ◦ TODO: Coding style en C
+   ◦ TODO: Coding style en C++
+   ◦ TODO: Bonnes pratiques en C++11
+   ◦ TODO: Tuto basique sur git
+• TODO: Afficher un changelog des fichiers de projet
 
 # Code improvements
 

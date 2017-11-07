@@ -11,7 +11,8 @@ This project aims to provide a Linux interface to Epitech intranet.
 
 For ArchLinux users:
 
-- `eifl-git` (AUR)
+- `eifl-git` (AUR) (Installs the branch `master`)
+- `eifl-dev-git` (AUR) (Installs the current development branch)
 
 ## Build requirements
 
