@@ -12,10 +12,12 @@
  * =====================================================================================
  */
 #include <QApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QKeyEvent>
 #include <QMenuBar>
 #include <QProgressBar>
+#include <QStandardPaths>
 #include <QStatusBar>
 #include <QThreadPool>
 
@@ -34,13 +36,20 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 
 	connectObjects();
 
-	QFileInfo databaseInfo("intra.sqlite");
+	QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+	QString path = dirPath + "/intra.sqlite";
+	QFileInfo databaseInfo(path);
 	if (databaseInfo.exists() && databaseInfo.isFile()) {
-		m_intraData.openDatabase();
+		m_intraData.openDatabase(path);
 		m_intraData.update();
+		m_intraData.updateDatabase();
 	}
 	else {
-		m_intraData.openDatabase();
+		QDir dir(dirPath);
+		if (!dir.mkpath(dirPath))
+			qWarning() << "Error: Failed to create directory: " + dirPath;
+
+		m_intraData.openDatabase(path);
 		m_intraData.updateDatabase();
 	}
 

@@ -26,7 +26,7 @@ class IntraDatabase : public QObject {
 	Q_OBJECT
 
 	public:
-		void open();
+		void open(const QString &path);
 		void update();
 
 		template<typename... Args>

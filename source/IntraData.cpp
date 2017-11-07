@@ -21,8 +21,8 @@
 
 IntraData *IntraData::s_instance = nullptr;
 
-void IntraData::openDatabase() {
-	m_database->open();
+void IntraData::openDatabase(const QString &path) {
+	m_database->open(path);
 }
 
 void IntraData::updateDatabase() {

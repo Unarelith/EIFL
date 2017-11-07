@@ -55,6 +55,7 @@ TODO
       ◦ DONE: Stocker les données en local dans une bdd
       ◦ DONE: Ajouter une option de menu pour update les données
       ◦ DONE: Afficher l’avancement de l’update dans la status bar de la MainWindow
+      ◦ DONE: Stocker la bdd dans le cache de l’user
       ◦  WIP: Régler les états d’enregistrement
          ▸ DONE: Events
          ▸ DONE: Projets
@@ -63,13 +64,12 @@ TODO
       ◦ DONE: Rajouter les events manquants
       ◦ TODO: Rajouter les modules manquants
       ◦ TODO: Ajouter une option de menu pour reload totalement la bdd
-      ◦ TODO: Fix les rdv sur les events
+      ◦ TODO: Fix les rdv sur les events + isRegistered
       ◦ TODO: Faire en sorte que l’update basique soit plus rapide
          ▸ TODO: Permettre une update partielle plus facile
          ▸ TODO: Ne pas charger les pages des projets ayant déjà un nom
-      ◦ TODO: Rajouter une popup à la con qui stocke le path de la bdd dans le keyring
-         → Ou encore pire, je le fous dans le dossier de l’user direct pour l’instant
-      ◦ TODO: Refactoriser au possible
+      ◦ TODO: Virer les messages de debug
+      ◦ TODO: Clean le code et refactoriser au possible
       ◦ TODO: Merge avec ‘master’ quand tout est prêt
    ◦ TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
       ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
