@@ -34,7 +34,7 @@ TODO
 • TODO: Afficher le grade du module (`/user/<user>/notes`)
 • TODO: Afficher les activités sur l’onglet
    ◦ TODO: Créer `ActivityListWidget`
-   ◦ TODO: Créer `IntraActivity` (qui ne sera contenue que par `IntraModule`)
+   ◦ DONE: Créer `IntraActivity`
    ◦ TODO: Trouver une solution pour faire matcher les éléments des listes autre que le nom (genre les id)
 • TODO: Afficher les propriétés de l’activité sélectionnée et link au projet/event
 
@@ -50,15 +50,31 @@ TODO
 
 # Client features
 
-• TODO: /Urgent/ Séparer la partie “Données” du reste correctement
-   ◦ TODO: Séparer la fenêtre principale du reste du programme
-      ◦ TODO: Faire un tray icon qui ferme/ouvre la fenêtre principale
-      ◦ TODO: Stocker les données en local dans une bdd
-      ◦ TODO: Ajouter une option de menu pour update les données
-      ◦ TODO: Afficher l’avancement de l’update dans la status bar de la MainWindow
+• WIP: /Urgent/ Séparer la partie “Données” du reste correctement
+   ◦ WIP: Trouver une solution pour stocker activités et events
+      ◦ DONE: Stocker les données en local dans une bdd
+      ◦ DONE: Ajouter une option de menu pour update les données
+      ◦ DONE: Afficher l’avancement de l’update dans la status bar de la MainWindow
+      ◦ TODO: Ajouter une option de menu pour reload totalement la bdd
+      ◦ TODO: Rajouter les projets manquants
+      ◦ TODO: Rajouter les modules manquants
+      ◦ TODO: Régler les états d’enregistrement des events/projets/modules
+      ◦ TODO: Vérifier que tous les events sont bien présents
+      ◦ TODO: Faire en sorte que l’update basique soit plus rapide
+         ▸ TODO: Permettre une update partielle plus facile
+         ▸ TODO: Ne pas charger les pages des projets ayant déjà un nom
+      ◦ TODO: Rajouter une popup à la con qui stocke le path de la bdd dans le keyring
+         → Ou encore pire, je le fous dans le dossier de l’user direct pour l’instant
+      ◦ TODO: Refactoriser au possible
+      ◦ TODO: Merge avec ‘master’ quand tout est prêt
+   ◦ TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
+      ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
+      ◦ TODO: Séparer la fenêtre principale du reste du programme
+    ◦ TODO: Faire un tray icon qui ferme/ouvre la fenêtre principale
       ◦ TODO: Tant que le tray icon est actif, update les données toutes les X min
          ▸ TODO: Vérifier que l’update fonctionne bien sans la fenêtre
    ◦ TODO: Analyser les données et générer des notifications avec libnotify
+      ◦ TODO: Faire un vrai système de notification dans le programme
       ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire à l’event”
       ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire au projet”
       ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire au module”
@@ -68,26 +84,6 @@ TODO
          ▸ TODO: La rendre persistente en stockant le contenu
       ◦ TODO: Ajouter un service utilisateur systemd au paquet AUR
          ▸ TODO: Afficher un petit message à l’installation
-
-• TODO: /Urgent/ Trouver une solution pour stocker activités et events
-   → On peut récupérer la liste des modules
-   → On peut récupérer la liste des activités sur la page d’un module
-   → On peut récupérer la liste des events dans les activités sur la page d’un module
-   → On peut récupérer la liste des projets dans les activités sur la page d’un module
-   Donc
-   → On peut générer une liste de modules/activités par module/events par activité/projets par module
-   → Il faut lier les modules / activités / events / projets
-
-• Possibilité: SQL
-   ◦ Exemple pour un module:
-      ```sql create table units (id integer primary key,
-                          name varchar(100),
-                          semester integer,
-                          credit_count integer,
-                          is_registrable boolean,
-                          is_registered boolean,
-                          flags enum('Optional','Progressive','RoadblockCycle','MultipleRegistration','Mandatory'))
-      insert into units(*) values ('Nom de module', 6, 20, true, false, ('Optional'))```
 
 • TODO: Afficher un changelog des fichiers de projet
 
