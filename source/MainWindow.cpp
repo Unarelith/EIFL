@@ -99,20 +99,27 @@ void MainWindow::setupTabs() {
 }
 
 void MainWindow::setupMenus() {
-	QAction *updateAction = new QAction(tr("&Update database"), this);
-	updateAction->setShortcut(QKeySequence::Refresh);
-	updateAction->setStatusTip("Update local database with online data");
-	connect(updateAction, &QAction::triggered, &m_intraData, &IntraData::updateDatabase);
-
 	QAction *exitAction = new QAction(tr("&Exit"), this);
 	exitAction->setShortcut(QKeySequence::Quit);
 	exitAction->setStatusTip("Exit the program");
 	connect(exitAction, &QAction::triggered, this, &MainWindow::close);
 
 	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
-	fileMenu->addAction(updateAction);
-	fileMenu->addSeparator();
 	fileMenu->addAction(exitAction);
+
+	QAction *updateAction = new QAction(tr("&Update"), this);
+	updateAction->setShortcut(QKeySequence::Refresh);
+	updateAction->setStatusTip("Update local database with online data");
+	connect(updateAction, &QAction::triggered, &m_intraData, &IntraData::updateDatabase);
+
+	QAction *reloadAction = new QAction(tr("&Reload"), this);
+	reloadAction->setShortcut(QKeySequence::fromString("Shift+F5"));
+	reloadAction->setStatusTip("Performs a full reload of the database");
+	connect(reloadAction, &QAction::triggered, &m_intraData, &IntraData::reloadDatabase);
+
+	QMenu *databaseMenu = menuBar()->addMenu(tr("&Database"));
+	databaseMenu->addAction(updateAction);
+	databaseMenu->addAction(reloadAction);
 }
 
 void MainWindow::setupStatusBar() {

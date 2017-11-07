@@ -74,7 +74,8 @@ TODO
          ▸ TODO: Stocker l’user (et donc le semestre courant) dans la bdd
          ▸ TODO: Load l’user depuis la bdd
       ◦ TODO: Ajouter les notifications à la bdd
-      ◦ TODO: Ajouter une option de menu pour reload totalement la bdd
+      ◦  WIP: Ajouter une option de menu pour reload totalement la bdd
+         ▸ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
       ◦ TODO: Rendre les updates plus agréables
          ▸ TODO: Permettre une update partielle plus facile
          ▸ TODO: Remplir progressivement les listes

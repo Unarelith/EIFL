@@ -24,24 +24,7 @@
 #include "IntraProject.hpp"
 #include "IntraSession.hpp"
 
-void IntraDatabase::open(const QString &path) {
-	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
-		throw std::runtime_error("SQLite required!");
-
-	m_database = QSqlDatabase::addDatabase("QSQLITE");
-	m_database.setDatabaseName(path);
-	if (!m_database.open()) {
-		qWarning() << "Error: " << m_database.lastError();
-		throw std::runtime_error("Error: Failed to load database: " + path.toStdString());
-	}
-}
-
-void IntraDatabase::update() {
-	createTables();
-	updateUnits();
-}
-
-void IntraDatabase::createTables() {
+IntraDatabase::IntraDatabase() {
 	m_activityFields = {
 		{"module_id",      "INTEGER"},
 		{"name",           "TEXT"},
@@ -93,31 +76,29 @@ void IntraDatabase::createTables() {
 		{"projects",   &m_projectFields},
 		{"units",      &m_unitFields}
 	};
+}
 
-	for (auto &it : m_tables) {
-		if (m_database.tables().contains(it.first.c_str())) {
-			// FIXME: Change record instead of dropping the entire table
-			if (m_database.record(it.first.c_str()).count() != it.second->size() + 1) {
-				qDebug() << "Removing deprecated table '" << it.first.c_str() << "'...";
+void IntraDatabase::open(const QString &path) {
+	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
+		throw std::runtime_error("SQLite required!");
 
-				QSqlQuery query(QString("drop table ") + it.first.c_str());
-				if (!query.isActive())
-					qWarning() << "Error: Failed to remove deprecated table '" << it.first.c_str() << "' from database:" << query.lastError().text();
-			}
-		}
-
-		if (!m_database.tables().contains(it.first.c_str())) {
-			std::string queryString = "create table " + it.first + "(id INTEGER unique primary key,";
-			for (auto field = it.second->begin() ; field != it.second->end() ; ++field) {
-				queryString += field->first + " " + field->second;
-				queryString += (std::next(field) == it.second->end()) ? ")" : ",";
-			}
-
-			QSqlQuery query(queryString.c_str());
-			if (!query.isActive())
-				qWarning() << "Error: Failed to create database table '" << it.first.c_str() << "':" << query.lastError().text();
-		}
+	m_database = QSqlDatabase::addDatabase("QSQLITE");
+	m_database.setDatabaseName(path);
+	if (!m_database.open()) {
+		qWarning() << "Error: " << m_database.lastError();
+		throw std::runtime_error("Error: Failed to load database: " + path.toStdString());
 	}
+}
+
+void IntraDatabase::clear() {
+	for (auto it : m_tables) {
+		removeTable(it.first.c_str());
+	}
+}
+
+void IntraDatabase::update() {
+	createTables();
+	updateUnits();
 }
 
 void IntraDatabase::updateUnits() {
@@ -226,5 +207,37 @@ void IntraDatabase::updateProjects(const IntraActivity &activity) {
 	                          project.name(),
 	                          project.isRegistrable(),
 	                          project.isRegistered());
+}
+
+void IntraDatabase::removeTable(const QString &name) {
+	if (!m_database.tables().contains(name))
+		return;
+
+	QSqlQuery query(QString("drop table ") + name);
+	if (!query.isActive())
+		qWarning() << "Error: Failed to remove table '" << name << "' from database:" << query.lastError().text();
+}
+
+void IntraDatabase::createTables() {
+	for (auto &it : m_tables) {
+		if (m_database.tables().contains(it.first.c_str())) {
+			// FIXME: Change record instead of dropping the entire table
+			if (m_database.record(it.first.c_str()).count() != it.second->size() + 1) {
+				removeTable(it.first.c_str());
+			}
+		}
+
+		if (!m_database.tables().contains(it.first.c_str())) {
+			std::string queryString = "create table " + it.first + "(id INTEGER unique primary key,";
+			for (auto field = it.second->begin() ; field != it.second->end() ; ++field) {
+				queryString += field->first + " " + field->second;
+				queryString += (std::next(field) == it.second->end()) ? ")" : ",";
+			}
+
+			QSqlQuery query(queryString.c_str());
+			if (!query.isActive())
+				qWarning() << "Error: Failed to create database table '" << it.first.c_str() << "':" << query.lastError().text();
+		}
+	}
 }
 

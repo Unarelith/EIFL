@@ -26,7 +26,10 @@ class IntraDatabase : public QObject {
 	Q_OBJECT
 
 	public:
+		IntraDatabase();
+
 		void open(const QString &path);
+		void clear();
 		void update();
 
 		template<typename... Args>
@@ -40,12 +43,13 @@ class IntraDatabase : public QObject {
 		void unitUpdateProgressed(int value) const;
 
 	private:
-		void createTables();
-
 		void updateUnits();
 		void updateActivities(const IntraModule &unit);
 		void updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject);
 		void updateProjects(const IntraActivity &activity);
+
+		void removeTable(const QString &name);
+		void createTables();
 
 		QSqlDatabase m_database;
 

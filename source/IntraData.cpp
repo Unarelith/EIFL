@@ -32,6 +32,11 @@ void IntraData::updateDatabase() {
 	thread->start();
 }
 
+void IntraData::reloadDatabase() {
+	m_database->clear();
+	updateDatabase();
+}
+
 void IntraData::update() {
 	m_overviewJson = IntraSession::getInstance().get("/");
 	updateNotificationList();

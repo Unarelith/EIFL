@@ -50,6 +50,7 @@ class IntraData : public QObject {
 	public:
 		void openDatabase(const QString &path);
 		void updateDatabase();
+		void reloadDatabase();
 
 		void update();
 		void updateNotificationList();
