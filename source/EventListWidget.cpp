@@ -52,7 +52,7 @@ void EventListWidget::update() {
 				item->setIcon(0, QIcon(":/registered.svg"));
 				item->setText(0, " 1");
 			}
-			else if (event.isRegistrable()) {
+			else if (event.isRegistrable() && event.isValid()) {
 				item->setIcon(0, QIcon(":/registrable.svg"));
 				item->setText(0, " 2");
 			}

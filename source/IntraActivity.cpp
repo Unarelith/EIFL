@@ -16,6 +16,8 @@
 
 #include "IntraActivity.hpp"
 
+#include <QDebug>
+
 IntraActivity::IntraActivity(const IntraModule &module, const QJsonObject &jsonObject) : m_module(module) {
 	m_id = jsonObject.value("codeacti").toString().mid(5).toUInt();
 
@@ -29,8 +31,7 @@ IntraActivity::IntraActivity(const IntraModule &module, const QJsonObject &jsonO
 	m_endDate = QDateTime::fromString(jsonObject.value("end").toString(), "yyyy-MM-dd HH:mm:ss");
 	m_registerDate = QDateTime::fromString(jsonObject.value("end_register").toString(), "yyyy-MM-dd HH:mm:ss");
 
-	m_isRegistrable = isCurrentlyActive() && m_module.isRegistered();
-	m_isRegistered = m_isRegistrable && jsonObject.value("register").toString().toUInt() == 0;
+	m_isRegistrable = m_module.isRegistered() && jsonObject.value("register").toString().toUInt();
 
 	m_isProject = jsonObject.value("is_projet").toBool();
 	m_projectId = jsonObject.value("id_projet").toString().toUInt();
@@ -50,7 +51,6 @@ IntraActivity::IntraActivity(const IntraModule &module, const QSqlQuery &sqlQuer
 	m_registerDate = sqlQuery.value(sqlQuery.record().indexOf("register_date")).toDateTime();
 
 	m_isRegistrable = sqlQuery.value(sqlQuery.record().indexOf("is_registrable")).toBool();
-	m_isRegistered = sqlQuery.value(sqlQuery.record().indexOf("is_registered")).toBool();
 
 	m_projectName = sqlQuery.value(sqlQuery.record().indexOf("project_name")).toString();
 	m_projectId = sqlQuery.value(sqlQuery.record().indexOf("project_id")).toUInt();

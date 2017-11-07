@@ -17,13 +17,18 @@
 #include "IntraEvent.hpp"
 #include "IntraSession.hpp"
 
+#include <QDebug>
+
 IntraEvent::IntraEvent(const IntraActivity &activity, const QJsonObject &jsonObject) : m_activity(activity) {
 	m_id = jsonObject.value("code").toString().mid(6).toUInt();
 
 	// FIXME: Find a way to get appointment infos (rdv_status pour isAppointment mais rien pour la date...)
+	// Hint: acti-xxxx/rdv
 
-	// FIXME: Find a way to get this information
-	// m_isRegistrable = json.object().value("allow_register").toBool();
+	// 	QJsonDocument json = IntraSession::getInstance().get(m_activity.module().link() + "acti-" + QString::number(m_activity.id()) + "/" + m_id + "/");
+
+	// FIXME: Find a better way to get this information
+	m_isRegistrable = m_activity.isRegistrable();
 	m_isRegistered = !jsonObject.value("already_register").isNull();
 	m_isMissed = jsonObject.value("user_status").toString() == "absent";
 	m_isTokenWritable = jsonObject.value("allow_token").toString().toInt();

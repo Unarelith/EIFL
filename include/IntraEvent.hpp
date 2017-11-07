@@ -31,7 +31,9 @@ class IntraEvent {
 		bool isAppointment() const { return m_isAppointment; }
 		const QDateTime &appointmentDate() const { return m_appointmentDate; }
 
-		bool isRegistrable() const { return m_isRegistrable; }
+		// FIXME: Some sessions require only 1 hour, not 1 day
+		bool isValid() const { return QDateTime::currentDateTime().addDays(1) < m_beginDate; }
+		bool isRegistrable() const { return isValid() && m_isRegistrable; }
 		bool isRegistered() const { return m_isRegistered; }
 		bool isMissed() const { return m_isMissed; }
 		bool isTokenWritable() const { return m_isTokenWritable; }

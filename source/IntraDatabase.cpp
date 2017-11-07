@@ -48,7 +48,6 @@ void IntraDatabase::createTables() {
 		{"end_date",       "DATETIME"},
 		{"register_date",  "DATETIME"},
 		{"is_registrable", "INTEGER"},
-		{"is_registered",  "INTEGER"},
 		{"is_project",     "INTEGER"},
 		{"project_id",     "INTEGER"},
 		{"project_name",   "INTEGER"}
@@ -176,7 +175,6 @@ void IntraDatabase::updateActivities(const IntraModule &unit) {
 		                            activity.endDate(),
 		                            activity.registerDate(),
 		                            activity.isRegistrable(),
-		                            activity.isRegistered(),
 		                            activity.isProject(),
 		                            activity.projectId(),
 		                            activity.projectName());
