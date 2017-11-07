@@ -70,13 +70,13 @@ TODO
       ◦ DONE: Fix le segfault de la status bar (causé par les lambda dans connect)
       ◦ DONE: Fix les rdv sur les events + isRegistered
          ▸ DONE: Fix les rdv solo
+      ◦ DONE: Ajouter une option de menu pour reload totalement la bdd
       ◦ TODO: Quand l’intra est down, aucun moyen pour récupérer le semestre courant
          ▸ TODO: Stocker l’user (et donc le semestre courant) dans la bdd
          ▸ TODO: Load l’user depuis la bdd
       ◦ TODO: Ajouter les notifications à la bdd
-      ◦  WIP: Ajouter une option de menu pour reload totalement la bdd
-         ▸ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
-      ◦ TODO: Rendre les updates plus agréables
+      ◦ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
+      ◦ TODO: Améliorer les updates
          ▸ TODO: Permettre une update partielle plus facile
             ▹ TODO: Update les items en background quand on cherche leurs infos
             ▹ TODO: Update la window si des infos ont été modifiées

@@ -38,7 +38,6 @@ QGroupBox *CalendarSettingsWidget::createFiltersBox() {
 	connect(&m_registeredModulesOnly, &QCheckBox::stateChanged, this, &CalendarSettingsWidget::filterBoxClicked);
 	connect(&m_registeredEventsOnly, &QCheckBox::stateChanged, this, &CalendarSettingsWidget::filterBoxClicked);
 
-	m_currentSemesterOnly.setCheckState(Qt::Checked);
 	m_registeredModulesOnly.setCheckState(Qt::Checked);
 
 	return filtersGroupBox;
