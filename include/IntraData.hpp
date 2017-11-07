@@ -53,21 +53,22 @@ class IntraData : public QObject {
 		void reloadDatabase();
 
 		void update();
-		void updateNotificationList();
 		void updateModuleList();
 		void updateActivityList();
 		void updateEventList();
 		void updateProjectList();
+		void updateUserList();
+		void updateNotificationList();
 
 		std::deque<IntraEvent> getEventList(const QDate &date, const QList<unsigned int> &semesters) const;
-		IntraUser getUserInfo(const QString &login);
 
 		const IntraDatabase &database() const { return *m_database; }
 
 		const std::map<unsigned int, IntraModule> &moduleList() const { return m_moduleList; }
 		const std::map<unsigned int, IntraProject> &projectList() const { return m_projectList; }
+		const std::map<unsigned int, IntraNotification> &notificationList() const { return m_notificationList; }
 
-		const std::deque<IntraNotification> &notificationList() const { return m_notificationList; }
+		const IntraUser &userInfo() const { return m_userInfo; }
 
 		static IntraData &getInstance() {
 			return *s_instance;
@@ -87,12 +88,12 @@ class IntraData : public QObject {
 
 		QJsonDocument m_overviewJson;
 
-		std::deque<IntraNotification> m_notificationList;
-
 		std::map<unsigned int, IntraModule> m_moduleList;
 		std::map<unsigned int, IntraActivity> m_activityList;
 		std::map<unsigned int, IntraEvent> m_eventList;
 		std::map<unsigned int, IntraProject> m_projectList;
+		std::map<unsigned int, IntraNotification> m_notificationList;
+		IntraUser m_userInfo{{}};
 
 		std::map<QString, IntraUser> m_userInfoCache;
 };

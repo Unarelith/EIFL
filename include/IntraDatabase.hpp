@@ -43,6 +43,8 @@ class IntraDatabase : public QObject {
 		void unitUpdateProgressed(int value) const;
 
 	private:
+		void updateUser();
+		void updateNotifications();
 		void updateUnits();
 		void updateActivities(const IntraModule &unit);
 		void updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject);
@@ -57,6 +59,8 @@ class IntraDatabase : public QObject {
 		std::vector<std::pair<std::string, std::string>> m_eventFields;
 		std::vector<std::pair<std::string, std::string>> m_projectFields;
 		std::vector<std::pair<std::string, std::string>> m_unitFields;
+		std::vector<std::pair<std::string, std::string>> m_userFields;
+		std::vector<std::pair<std::string, std::string>> m_notificationFields;
 		std::map<std::string, std::vector<std::pair<std::string, std::string>> *> m_tables;
 
 		std::map<std::string, QSqlQuery> m_insertQueryMap;

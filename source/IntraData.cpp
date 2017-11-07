@@ -45,17 +45,9 @@ void IntraData::update() {
 	updateActivityList();
 	updateEventList();
 	updateProjectList();
+	updateUserList();
 
 	emit databaseUpdateFinished();
-}
-
-void IntraData::updateNotificationList() {
-	m_notificationList.clear();
-
-	QJsonArray notificationArray = m_overviewJson.object().value("history").toArray();
-	for (QJsonValue value : notificationArray) {
-		m_notificationList.emplace_back(value.toObject());
-	}
 }
 
 void IntraData::updateModuleList() {
@@ -116,6 +108,24 @@ void IntraData::updateProjectList() {
 	}
 }
 
+void IntraData::updateUserList() {
+	// FIXME: Doesn't currently handle muliple users
+	QSqlQuery query("SELECT * FROM users");
+	if (query.next()) {
+		m_userInfo = IntraUser{query};
+	}
+}
+
+void IntraData::updateNotificationList() {
+	m_notificationList.clear();
+
+	QSqlQuery query("SELECT * FROM notifications");
+	while (query.next()) {
+		IntraNotification notification{query};
+		m_notificationList.emplace(notification.id(), std::move(notification));
+	}
+}
+
 std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const QList<unsigned int> &semesters) const {
 	// QString semesterString;
 	// for (int n : semesters)
@@ -140,16 +150,5 @@ std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const QList<un
 	// }
 
 	return eventList;
-}
-
-IntraUser IntraData::getUserInfo(const QString &login) {
-	auto it = m_userInfoCache.find(login);
-	if (it == m_userInfoCache.end()) {
-		QJsonDocument json = IntraSession::getInstance().get("/user/" + login);
-		auto r = m_userInfoCache.emplace(login, json.object());
-		return r.first->second;
-	}
-
-	return it->second;
 }
 

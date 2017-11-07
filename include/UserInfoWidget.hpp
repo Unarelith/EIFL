@@ -20,7 +20,7 @@ class UserInfoWidget : public QWidget {
 	public:
 		UserInfoWidget(QWidget *parent = nullptr);
 
-		void update(const QString &login = "");
+		void update();
 
 	private:
 		QLabel m_login;

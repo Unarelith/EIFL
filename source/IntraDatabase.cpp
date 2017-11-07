@@ -21,8 +21,10 @@
 
 #include "IntraDatabase.hpp"
 #include "IntraEvent.hpp"
+#include "IntraNotification.hpp"
 #include "IntraProject.hpp"
 #include "IntraSession.hpp"
+#include "IntraUser.hpp"
 
 IntraDatabase::IntraDatabase() {
 	m_activityFields = {
@@ -33,9 +35,9 @@ IntraDatabase::IntraDatabase() {
 		{"begin_date",     "DATETIME"},
 		{"end_date",       "DATETIME"},
 		{"register_date",  "DATETIME"},
-		{"is_registrable", "INTEGER"},
-		{"is_appointment", "INTEGER"},
-		{"is_project",     "INTEGER"},
+		{"is_registrable", "BOOLEAN"},
+		{"is_appointment", "BOOLEAN"},
+		{"is_project",     "BOOLEAN"},
 		{"project_id",     "INTEGER"},
 		{"project_name",   "INTEGER"},
 	};
@@ -48,16 +50,16 @@ IntraDatabase::IntraDatabase() {
 		{"begin_date",       "DATETIME"},
 		{"end_date",         "DATETIME"},
 		{"appointment_date", "DATETIME"},
-		{"is_registrable",   "INTEGER"},
-		{"is_registered",    "INTEGER"},
-		{"is_missed",        "INTEGER"},
+		{"is_registrable",   "BOOLEAN"},
+		{"is_registered",    "BOOLEAN"},
+		{"is_missed",        "BOOLEAN"},
 	};
 
 	m_projectFields = {
 		{"activity_id",    "INTEGER"},
 		{"name",           "TEXT"},
-		{"is_registrable", "INTEGER"},
-		{"is_registered",  "INTEGER"},
+		{"is_registrable", "BOOLEAN"},
+		{"is_registered",  "BOOLEAN"},
 	};
 
 	m_unitFields = {
@@ -65,16 +67,35 @@ IntraDatabase::IntraDatabase() {
 		{"link",           "TEXT"},
 		{"semester",       "INTEGER"},
 		{"credit_count",   "INTEGER"},
-		{"is_registrable", "INTEGER"},
-		{"is_registered",  "INTEGER"},
+		{"is_registrable", "BOOLEAN"},
+		{"is_registered",  "BOOLEAN"},
 		{"flags",          "INTEGER"},
 	};
 
+	m_userFields = {
+		{"login",            "TEXT"},
+		{"last_name",        "TEXT"},
+		{"first_name",       "TEXT"},
+		{"birthday",         "DATE"},
+		{"current_semester", "INTEGER"},
+		{"credit_count",     "INTEGER"},
+		{"spice_count",      "INTEGER"},
+		{"gpa",              "REAL"},
+	};
+
+	m_notificationFields = {
+		{"title",   "TEXT"},
+		{"content", "TEXT"},
+		{"date",    "DATETIME"},
+	};
+
 	m_tables = {
-		{"activities", &m_activityFields},
-		{"events",     &m_eventFields},
-		{"projects",   &m_projectFields},
-		{"units",      &m_unitFields}
+		{"activities",    &m_activityFields},
+		{"events",        &m_eventFields},
+		{"projects",      &m_projectFields},
+		{"units",         &m_unitFields},
+		{"users",         &m_userFields},
+		{"notifications", &m_notificationFields},
 	};
 }
 
@@ -98,7 +119,44 @@ void IntraDatabase::clear() {
 
 void IntraDatabase::update() {
 	createTables();
+	updateUser();
+	updateNotifications();
 	updateUnits();
+}
+
+void IntraDatabase::updateUser() {
+	QJsonDocument json = IntraSession::getInstance().get("/user");
+	IntraUser user(json.object());
+
+	addTableEntry("users", user.id(),
+	                       user.login(),
+	                       user.lastName(),
+	                       user.firstName(),
+	                       user.birthday(),
+	                       user.currentSemester(),
+	                       user.creditCount(),
+	                       user.spiceCount(),
+	                       user.gpa());
+}
+
+void IntraDatabase::updateNotifications() {
+	QJsonDocument json = IntraSession::getInstance().get("/");
+	QJsonArray notificationArray = json.object().value("history").toArray();
+	if (notificationArray.isEmpty())
+		return;
+
+	m_database.exec("begin;");
+
+	for (QJsonValue value : notificationArray) {
+		IntraNotification notification(value.toObject());
+
+		addTableEntry("notifications", notification.id(),
+		                               notification.title(),
+		                               notification.content(),
+		                               notification.date());
+	}
+
+	m_database.exec("commit;");
 }
 
 void IntraDatabase::updateUnits() {

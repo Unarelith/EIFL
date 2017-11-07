@@ -27,8 +27,8 @@ UserInfoWidget::UserInfoWidget(QWidget *parent) : QWidget(parent) {
 	layout->addRow("GPA:", &m_gpa);
 }
 
-void UserInfoWidget::update(const QString &login) {
-	IntraUser userInfo = IntraData::getInstance().getUserInfo(login);
+void UserInfoWidget::update() {
+	IntraUser userInfo = IntraData::getInstance().userInfo();
 
 	m_login.setText(userInfo.login());
 	m_name.setText(userInfo.firstName() + " " + userInfo.lastName());

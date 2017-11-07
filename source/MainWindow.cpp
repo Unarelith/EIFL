@@ -67,7 +67,7 @@ void MainWindow::setupWidgets() {
 	m_eventInfoWidget.setDate(QDate::currentDate());
 	m_eventListWidget.setDate(QDate::currentDate());
 
-	unsigned int currentSemester = IntraData::getInstance().getUserInfo("").currentSemester();
+	unsigned int currentSemester = IntraData::getInstance().userInfo().currentSemester();
 	if (currentSemester == 0)
 		qDebug() << "Failed to get current semester!";
 

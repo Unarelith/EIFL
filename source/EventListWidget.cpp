@@ -37,7 +37,7 @@ void EventListWidget::update() {
 
 	auto eventList = IntraData::getInstance().getEventList(m_date, m_semesters);
 	for (const IntraEvent &event : eventList) {
-		if ((!m_isCurrentSemesterEnabled || (event.activity().module().semester() == IntraData::getInstance().getUserInfo("").currentSemester() || event.activity().module().semester() == 0))
+		if ((!m_isCurrentSemesterEnabled || (event.activity().module().semester() == IntraData::getInstance().userInfo().currentSemester() || event.activity().module().semester() == 0))
 		 && (!m_isRegisteredModulesEnabled || event.activity().module().isRegistered())
 		 && (!m_isRegisteredEventsEnabled || event.isRegistered())) {
 			auto *item = new QTreeWidgetItem(&m_eventListWidget);

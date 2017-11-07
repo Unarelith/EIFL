@@ -16,11 +16,15 @@
 
 #include <QDate>
 #include <QJsonObject>
+#include <QSqlQuery>
 #include <QUrl>
 
 class IntraUser {
 	public:
 		IntraUser(const QJsonObject &jsonObject);
+		IntraUser(const QSqlQuery &sqlQuery);
+
+		unsigned int id() const { return m_id; }
 
 		const QString &login() const { return m_login; }
 		const QString &lastName() const { return m_lastName; }
@@ -38,6 +42,8 @@ class IntraUser {
 		float gpa() const { return m_gpa; }
 
 	private:
+		unsigned int m_id = 0;
+
 		QString m_login;
 		QString m_lastName;
 		QString m_firstName;
@@ -46,12 +52,12 @@ class IntraUser {
 
 		QUrl m_pictureLink;
 
-		unsigned int m_currentSemester;
-		unsigned int m_currentYear;
+		unsigned int m_currentSemester = 0;
+		unsigned int m_currentYear = 0;
 
-		unsigned int m_creditCount;
-		unsigned int m_spiceCount;
-		float m_gpa;
+		unsigned int m_creditCount = 0;
+		unsigned int m_spiceCount = 0;
+		float m_gpa = 0;
 };
 
 #endif // INTRAUSER_HPP_

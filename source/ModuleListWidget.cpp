@@ -32,7 +32,7 @@ void ModuleListWidget::update() {
 
 	auto &moduleList = IntraData::getInstance().moduleList();
 	for (auto &it : moduleList) {
-		if ((!m_isCurrentSemesterEnabled || (it.second.semester() == IntraData::getInstance().getUserInfo("").currentSemester() || it.second.semester() == 0))
+		if ((!m_isCurrentSemesterEnabled || (it.second.semester() == IntraData::getInstance().userInfo().currentSemester() || it.second.semester() == 0))
 		 && (!m_isRegisteredModulesEnabled || it.second.isRegistered())
 		 && m_semesters.contains(it.second.semester())) {
 			auto *item = new QTreeWidgetItem(&m_moduleListWidget);

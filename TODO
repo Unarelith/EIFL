@@ -71,27 +71,27 @@ TODO
       ◦ DONE: Fix les rdv sur les events + isRegistered
          ▸ DONE: Fix les rdv solo
       ◦ DONE: Ajouter une option de menu pour reload totalement la bdd
-      ◦ TODO: Quand l’intra est down, aucun moyen pour récupérer le semestre courant
-         ▸ TODO: Stocker l’user (et donc le semestre courant) dans la bdd
-         ▸ TODO: Load l’user depuis la bdd
-      ◦ TODO: Ajouter les notifications à la bdd
-      ◦ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
+      ◦ DONE: Quand l’intra est down, aucun moyen pour récupérer le semestre courant
+         ▸ DONE: Stocker l’user (et donc le semestre courant) dans la bdd
+         ▸ DONE: Load l’user depuis la bdd
+      ◦ DONE: Ajouter les notifications à la bdd
       ◦ TODO: Améliorer les updates
-         ▸ TODO: Permettre une update partielle plus facile
-            ▹ TODO: Update les items en background quand on cherche leurs infos
-            ▹ TODO: Update la window si des infos ont été modifiées
-         ▸ TODO: Remplir progressivement les listes
-         ▸ TODO: Faire en sorte que l’update soit plus rapide
+         ▸ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
+         ▸ TODO: Repenser l’architecture du chargement
             ▹ TODO: Utiliser une thread pool et un thread par activity
+            ▹ TODO: Permettre une update partielle plus facile
+               ▪ TODO: Update les items en background quand on cherche leurs infos
+               ▪ TODO: Update la window si des infos ont été modifiées
+         ▸ TODO: Remplir progressivement les listes
       ◦ TODO: Si le chargement de la db fail, proposer de la reload
+      ◦ TODO: Ajouter un mode “hors-ligne”
+         ◦ TODO: Faire en sorte que tout ce qui touche au réseau fonctionne dans un thread distinct
+         ◦ TODO: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
+         ◦ TODO: Afficher un icône dans la status bar pour l’état de la connexion
       ◦ TODO: Comparer avec l’ancienne version
       ◦ TODO: Virer les messages de debug
       ◦ TODO: Clean le code et refactoriser au possible
       ◦ TODO: Merge avec ‘master’ quand tout est prêt
-   ◦ TODO: Ajouter un mode “hors-ligne”
-      ◦ TODO: Faire en sorte que tout ce qui touche au réseau fonctionne dans un thread distinct
-      ◦ TODO: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
-      ◦ TODO: Afficher un icône dans la status bar pour l’état de la connexion
    ◦ TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
       ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
       ◦ TODO: Séparer la fenêtre principale du reste du programme
@@ -124,6 +124,7 @@ TODO
    ◦ TODO: Bonnes pratiques en C++11
    ◦ TODO: Tuto basique sur git
 • TODO: Afficher un changelog des fichiers de projet
+• TODO: Faire en sorte que les utilisateurs partagent la base de données en P2P si l’intra est down
 
 # Code improvements
 
@@ -134,6 +135,10 @@ TODO
 • TODO: Utiliser un model et une view au lieu d’utiliser `QTreeWidget` si c’est plus pratique
 • TODO: `Module` → `Unit`
 • TODO: Créer un enum pour les status des projets/events/modules (`Registrable`, `Missed`, `TokenRequired`)
+
+# Debug improvements
+
+• TODO: Ajouter un onglet pour les logs du programme
 
 # UI improvements
 
