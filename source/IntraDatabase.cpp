@@ -72,30 +72,11 @@ IntraDatabase::IntraDatabase() {
 		{"flags",          "INTEGER"},
 	};
 
-	// m_userFields = {
-	// 	{"login",            "TEXT"},
-	// 	{"last_name",        "TEXT"},
-	// 	{"first_name",       "TEXT"},
-	// 	{"birthday",         "DATE"},
-	// 	{"current_semester", "INTEGER"},
-	// 	{"credit_count",     "INTEGER"},
-	// 	{"spice_count",      "INTEGER"},
-	// 	{"gpa",              "REAL"},
-	// };
-
-	m_notificationFields = {
-		{"title",   "TEXT"},
-		{"content", "TEXT"},
-		{"date",    "DATETIME"},
-	};
-
 	m_tables = {
 		{"activities",    &m_activityFields},
 		{"events",        &m_eventFields},
 		{"projects",      &m_projectFields},
 		{"units",         &m_unitFields},
-		// {"users",         &m_userFields},
-		{"notifications", &m_notificationFields},
 	};
 }
 
@@ -119,9 +100,8 @@ void IntraDatabase::clear() {
 
 void IntraDatabase::update() {
 	// Thread *thread = new Thread(this, [this] {
-		updateUser();
-
 		createTables();
+		updateUser();
 		updateNotifications();
 		updateUnits();
 	// });
@@ -132,18 +112,8 @@ void IntraDatabase::update() {
 void IntraDatabase::updateUser() {
 	QJsonDocument json = IntraSession::getInstance().get("/user");
 	IntraUser user(json.object());
-	user.createDatabaseTable();
+	user.updateDatabaseTable();
 	user.writeToDatabase();
-
-	// addTableEntry("users", user.id(),
-	//                        user.login(),
-	//                        user.lastName(),
-	//                        user.firstName(),
-	//                        user.birthday(),
-	//                        user.currentSemester(),
-	//                        user.creditCount(),
-	//                        user.spiceCount(),
-	//                        user.gpa());
 }
 
 void IntraDatabase::updateNotifications() {
@@ -156,11 +126,8 @@ void IntraDatabase::updateNotifications() {
 
 	for (QJsonValue value : notificationArray) {
 		IntraNotification notification(value.toObject());
-
-		addTableEntry("notifications", notification.id(),
-		                               notification.title(),
-		                               notification.content(),
-		                               notification.date());
+		notification.updateDatabaseTable();
+		notification.writeToDatabase();
 	}
 
 	m_database.exec("commit;");

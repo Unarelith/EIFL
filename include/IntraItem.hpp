@@ -26,7 +26,7 @@ class IntraItem {
 		IntraItem(const QString &sqlTable, const QSqlQuery &sqlQuery, IntraItem *parent = nullptr);
 
 		void removeDatabaseTable() const;
-		void createDatabaseTable() const;
+		void updateDatabaseTable() const;
 		void writeToDatabase() const;
 
 		void set(const QString &fieldName, const QVariant &value);

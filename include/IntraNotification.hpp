@@ -16,27 +16,18 @@
 
 #include <QDateTime>
 #include <QJsonObject>
-#include <QSqlQuery>
 
-class IntraNotification {
+#include "IntraItem.hpp"
+
+class IntraNotification : public IntraItem {
 	public:
 		IntraNotification(const QJsonObject &jsonObject);
-		IntraNotification(const QSqlQuery &sqlQuery);
+		IntraNotification(const QSqlQuery &sqlQuery) : IntraItem("notifications", sqlQuery) {}
 
-		unsigned int id() const { return m_id; }
+		QString title() const { return get("title").toString(); }
+		QString content() const { return get("content").toString(); }
 
-		const QString &title() const { return m_title; }
-		const QString &content() const { return m_content; }
-
-		const QDateTime &date() const { return m_date; }
-
-	private:
-		unsigned int m_id;
-
-		QString m_title;
-		QString m_content;
-
-		QDateTime m_date;
+		QDateTime date() const { return get("date").toDateTime(); }
 };
 
 #endif // INTRANOTIFICATION_HPP_

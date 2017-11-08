@@ -39,11 +39,11 @@ void IntraItem::removeDatabaseTable() const {
 		qWarning() << "Error: Failed to remove table '" << m_sqlTable << "' from database:" << query.lastError().text();
 }
 
-void IntraItem::createDatabaseTable() const {
+void IntraItem::updateDatabaseTable() const {
 	QSqlDatabase database = QSqlDatabase::database();
 	if (database.tables().contains(m_sqlTable)) {
 		// FIXME: Change record instead of dropping the entire table
-		if (database.record(m_sqlTable).count() != m_data.size()) {
+		if (database.record(m_sqlTable).count() != m_data.size() + 1) {
 			removeDatabaseTable();
 		}
 	}
