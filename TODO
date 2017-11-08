@@ -75,40 +75,46 @@ TODO
          ▸ DONE: Stocker l’user (et donc le semestre courant) dans la bdd
          ▸ DONE: Load l’user depuis la bdd
       ◦ DONE: Ajouter les notifications à la bdd
-      ◦ TODO: Améliorer les updates
-         ▸ TODO: Repenser l’architecture du chargement
+      ◦  WIP: Améliorer les updates
+         ▸ DONE: Remplir progressivement les listes
+         ▸  WIP: Repenser l’architecture du chargement
+            ▹ DONE: Améliorer la manière dont les données sont stockées/chargées (`IntraItem`)
             ▹ TODO: Utiliser une thread pool et un thread par activity
             ▹ TODO: Permettre une update partielle plus facile
                ▪ TODO: Update les items en background quand on cherche leurs infos
                ▪ TODO: Update la window si des infos ont été modifiées
          ▸ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
-         ▸ TODO: Remplir progressivement les listes
-      ◦ TODO: Si le chargement de la db fail, proposer de la reload
-      ◦ TODO: Ajouter un mode “hors-ligne”
-         ◦ TODO: Faire en sorte que tout ce qui touche au réseau fonctionne dans un thread distinct
-         ◦ TODO: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
-         ◦ TODO: Afficher un icône dans la status bar pour l’état de la connexion
-      ◦ TODO: Comparer avec l’ancienne version
-      ◦ TODO: Virer les messages de debug
-      ◦ TODO: Clean le code et refactoriser au possible
-      ◦ TODO: Merge avec ‘master’ quand tout est prêt
+      ◦ TODO: Finalisation
+         ▸ TODO: Comparer avec l’ancienne version
+         ▸ TODO: Virer les messages de debug
+         ▸ TODO: Clean le code et refactoriser au possible
+         ▸ TODO: Merge avec ‘master’ quand tout est prêt
+         ▸ TODO: Supprimer la branche ‘sql’ et créer une branche ‘dev’
+         ▸ TODO: Modifier /contrib/eifl-dev-git.aur/PKGBUILD pour utiliser la branche ‘dev’
+         ▸ TODO: Copier le /PKGBUILD vers le dépôt AUR et push
+   ◦ TODO: Si le chargement de la db fail, proposer de la reload
+   ◦ TODO: Ajouter un mode “hors-ligne”
+      ◦ TODO: Déplacer `IntraSession::login` dans un autre thread
+      ◦ TODO: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
+      ◦ TODO: Afficher un icône dans la status bar pour l’état de la connexion
    ◦ TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
       ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
       ◦ TODO: Séparer la fenêtre principale du reste du programme
-    ◦ TODO: Faire un tray icon qui ferme/ouvre la fenêtre principale
+   ◦ TODO: Faire un tray icon qui ferme/ouvre la fenêtre principale
       ◦ TODO: Tant que le tray icon est actif, update les données toutes les X min
          ▸ TODO: Vérifier que l’update fonctionne bien sans la fenêtre
-   ◦ TODO: Analyser les données et générer des notifications avec libnotify
-      ◦ TODO: Faire un vrai système de notification dans le programme
-      ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire à l’event”
-      ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire au projet”
-      ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire au module”
-      ◦ TODO: Notification classique de l’intra
-      ◦ TODO: Alertes + notifs rdv
-      ◦ TODO: Ajouter une fenêtre de préférences (notamment pour les notifs)
-         ▸ TODO: La rendre persistente en stockant le contenu
-      ◦ TODO: Ajouter un service utilisateur systemd au paquet AUR
-         ▸ TODO: Afficher un petit message à l’installation
+
+• TODO: Analyser les données et générer des notifications avec libnotify
+   ◦ TODO: Faire un vrai système de notification dans le programme
+   ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire à l’event”
+   ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire au projet”
+   ◦ TODO: Warning “Il ne vous reste plus que X heures pour vous inscrire au module”
+   ◦ TODO: Notification classique de l’intra
+   ◦ TODO: Alertes + notifs rdv
+   ◦ TODO: Ajouter une fenêtre de préférences (notamment pour les notifs)
+      ◦ TODO: La rendre persistente en stockant le contenu
+   ◦ TODO: Ajouter un service utilisateur systemd au paquet AUR
+      ◦ TODO: Afficher un petit message à l’installation
 
 • TODO: Régler tous les `FIXME`
    ◦ TODO: Afficher la deadline des projets en plus de la date de fin

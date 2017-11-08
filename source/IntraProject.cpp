@@ -11,22 +11,18 @@
  *
  * =====================================================================================
  */
-#include <QSqlRecord>
-#include <QVariant>
+#include <QJsonObject>
 
 #include "IntraProject.hpp"
 
-IntraProject::IntraProject(const IntraActivity &activity, const QJsonObject &jsonObject) : m_activity(activity) {
-	m_name = jsonObject.value("title").toString();
+IntraProject::IntraProject(const IntraActivity &activity, const QJsonObject &jsonObject) : IntraItem("projects"), m_activity(activity) {
+	m_id = activity.id();
 
-	m_isRegistrable = !jsonObject.value("closed").toBool() && m_activity.registerDate().isValid();
-	m_isRegistered = !jsonObject.value("user_project_title").isNull();
-}
+	set("activity_id", m_activity.id());
 
-IntraProject::IntraProject(const IntraActivity &activity, const QSqlQuery &sqlQuery) : m_activity(activity) {
-	m_name = sqlQuery.value(sqlQuery.record().indexOf("name")).toString();
+	set("name", jsonObject.value("title").toString());
 
-	m_isRegistrable = sqlQuery.value(sqlQuery.record().indexOf("is_registrable")).toBool();
-	m_isRegistered = sqlQuery.value(sqlQuery.record().indexOf("is_registered")).toBool();
+	set("is_registrable", !jsonObject.value("closed").toBool() && m_activity.registerDate().isValid());
+	set("is_registered", !jsonObject.value("user_project_title").isNull());
 }
 

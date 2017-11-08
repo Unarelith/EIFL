@@ -12,6 +12,7 @@
  * =====================================================================================
  */
 #include <QApplication>
+#include <QDebug>
 #include <QJsonArray>
 #include <QProgressDialog>
 #include <QSqlRecord>
@@ -23,6 +24,9 @@ IntraData *IntraData::s_instance = nullptr;
 
 IntraData::IntraData() {
 	connect(m_database.get(), &IntraDatabase::updateFinished, this, &IntraData::update);
+	connect(m_database.get(), &IntraDatabase::userUpdateFinished, this, &IntraData::updateUserList);
+	connect(m_database.get(), &IntraDatabase::notificationUpdateFinished, this, &IntraData::updateNotificationList);
+	connect(m_database.get(), &IntraDatabase::unitUpdateFinished, this, &IntraData::update);
 }
 
 void IntraData::openDatabase(const QString &path) {
@@ -43,14 +47,12 @@ void IntraData::reloadDatabase() {
 }
 
 void IntraData::update() {
-	m_overviewJson = IntraSession::getInstance().get("/");
+	updateUserList();
 	updateNotificationList();
-
 	updateModuleList();
 	updateActivityList();
 	updateEventList();
 	updateProjectList();
-	updateUserList();
 
 	emit databaseUpdateFinished();
 }
@@ -60,8 +62,7 @@ void IntraData::updateModuleList() {
 
 	QSqlQuery query("SELECT * FROM units");
 	while (query.next()) {
-		IntraModule module{query};
-		m_moduleList.emplace(module.id(), std::move(module));
+		m_moduleList.emplace(query.value(0).toUInt(), query);
 	}
 }
 
@@ -73,11 +74,11 @@ void IntraData::updateActivityList() {
 		unsigned int moduleId = query.value(query.record().indexOf("module_id")).toUInt();
 		auto it = m_moduleList.find(moduleId);
 		if (it == m_moduleList.end()) {
-			throw std::runtime_error("Error: Unable to find module with id " + std::to_string(moduleId));
+			qWarning() << "Error: Unable to find module with id" << moduleId << "for activity with id" << query.value(0).toUInt();
+			continue;
 		}
 
-		IntraActivity activity{it->second, query};
-		m_activityList.emplace(activity.id(), std::move(activity));
+		m_activityList.emplace(query.value(0).toUInt(), IntraActivity{it->second, query});
 	}
 }
 
@@ -89,11 +90,11 @@ void IntraData::updateEventList() {
 		unsigned int activityId = query.value(query.record().indexOf("activity_id")).toUInt();
 		auto it = m_activityList.find(activityId);
 		if (it == m_activityList.end()) {
-			throw std::runtime_error("Error: Unable to find activity with id " + std::to_string(activityId));
+			qWarning() << "Error: Unable to find activity with id" << activityId << "for event with id" << query.value(0).toUInt();
+			continue;
 		}
 
-		IntraEvent event{it->second, query};
-		m_eventList.emplace(event.id(), std::move(event));
+		m_eventList.emplace(query.value(0).toUInt(), IntraEvent{it->second, query});
 	}
 }
 
@@ -105,11 +106,11 @@ void IntraData::updateProjectList() {
 		unsigned int activityId = query.value(query.record().indexOf("activity_id")).toUInt();
 		auto it = m_activityList.find(activityId);
 		if (it == m_activityList.end()) {
-			throw std::runtime_error("Error: Unable to find activity with id " + std::to_string(activityId));
+			qWarning() << "Error: Unable to find activity with id" << activityId << "for event with id" << query.value(0).toUInt();
+			continue;
 		}
 
-		IntraProject project{it->second, query};
-		m_projectList.emplace(project.id(), std::move(project));
+		m_projectList.emplace(query.value(0).toUInt(), IntraProject{it->second, query});
 	}
 }
 
@@ -129,31 +130,5 @@ void IntraData::updateNotificationList() {
 		IntraNotification notification{query};
 		m_notificationList.emplace(notification.id(), std::move(notification));
 	}
-}
-
-std::deque<IntraEvent> IntraData::getEventList(const QDate &date, const QList<unsigned int> &semesters) const {
-	// QString semesterString;
-	// for (int n : semesters)
-	// 	semesterString += QString::number(n) + ",";
-	// semesterString.chop(1);
-	//
-	// QString dateString = date.toString("yyyy-MM-dd");
-	// QJsonDocument json = IntraSession::getInstance().get("/planning/load", {
-	// 	std::make_pair("start", dateString),
-	// 	std::make_pair("end", dateString),
-	// 	std::make_pair("semester", semesterString)
-	// });
-
-	std::deque<IntraEvent> eventList;
-	for (auto it : m_eventList) {
-		if (semesters.contains(it.second.activity().module().semester()) && (it.second.beginDate().date() == date || it.second.endDate().date() == date)) {
-			eventList.emplace_back(it.second);
-		}
-	}
-	// for (QJsonValue value : json.array()) {
-	// 	eventList.emplace_back(value.toObject());
-	// }
-
-	return eventList;
 }
 

@@ -35,42 +35,48 @@ EventListWidget::EventListWidget(QWidget *parent) : QDockWidget(tr("Events"), pa
 void EventListWidget::update() {
 	m_eventListWidget.clear();
 
-	auto eventList = IntraData::getInstance().getEventList(m_date, m_semesters);
-	for (const IntraEvent &event : eventList) {
-		if ((!m_isCurrentSemesterEnabled || (event.activity().module().semester() == IntraData::getInstance().userInfo().currentSemester() || event.activity().module().semester() == 0))
-		 && (!m_isRegisteredModulesEnabled || event.activity().module().isRegistered())
-		 && (!m_isRegisteredEventsEnabled || event.isRegistered())) {
-			auto *item = new QTreeWidgetItem(&m_eventListWidget);
-			item->setText(1, event.beginDate().toString("HH:mm") + event.appointmentDate().toString(" (HH:mm)"));
-			item->setText(2, event.endDate().toString("HH:mm"));
-			item->setText(3, event.roomName());
-			item->setText(4, event.activity().typeTitle());
-			item->setText(5, event.activity().module().name());
-			item->setText(6, event.activity().name());
+	unsigned int eventCount = 0;
+	auto eventList = IntraData::getInstance().eventList();
+	for (auto it : eventList) {
+		if (m_semesters.contains(it.second.activity().module().semester())
+		 && (it.second.beginDate().date() == m_date || it.second.endDate().date() == m_date)) {
+			if ((!m_isCurrentSemesterEnabled || (it.second.activity().module().semester() == IntraData::getInstance().userInfo().currentSemester() || it.second.activity().module().semester() == 0))
+		     && (!m_isRegisteredModulesEnabled || it.second.activity().module().isRegistered())
+		     && (!m_isRegisteredEventsEnabled || it.second.isRegistered())) {
+				auto *item = new QTreeWidgetItem(&m_eventListWidget);
+				item->setText(1, it.second.beginDate().toString("HH:mm") + it.second.activity().appointmentDate().toString(" (HH:mm)"));
+				item->setText(2, it.second.endDate().toString("HH:mm"));
+				item->setText(3, it.second.roomName());
+				item->setText(4, it.second.activity().typeTitle());
+				item->setText(5, it.second.activity().module().name());
+				item->setText(6, it.second.activity().name());
 
-			if (event.isMissed()) {
-				item->setIcon(0, QIcon(":/missed.svg"));
-				item->setText(0, " 0");
+				if (it.second.isMissed()) {
+					item->setIcon(0, QIcon(":/missed.svg"));
+					item->setText(0, " 0");
 
-				for (int i = 0 ; i < item->columnCount() ; ++i)
-					item->setBackgroundColor(i, Qt::darkRed);
+					for (int i = 0 ; i < item->columnCount() ; ++i)
+						item->setBackgroundColor(i, Qt::darkRed);
+				}
+				else if (it.second.isRegistered()) {
+					item->setIcon(0, QIcon(":/registered.svg"));
+					item->setText(0, " 1");
+				}
+				else if (it.second.isRegistrable() && it.second.isValid()) {
+					item->setIcon(0, QIcon(":/registrable.svg"));
+					item->setText(0, " 2");
+				}
+				else {
+					item->setIcon(0, QIcon(":/locked.svg"));
+					item->setText(0, " 3");
+				}
 			}
-			else if (event.isRegistered()) {
-				item->setIcon(0, QIcon(":/registered.svg"));
-				item->setText(0, " 1");
-			}
-			else if (event.isRegistrable() && event.isValid()) {
-				item->setIcon(0, QIcon(":/registrable.svg"));
-				item->setText(0, " 2");
-			}
-			else {
-				item->setIcon(0, QIcon(":/locked.svg"));
-				item->setText(0, " 3");
-			}
+
+			++eventCount;
 		}
 	}
 
-	setWindowTitle(tr("Events") + " (" + QString::number(m_eventListWidget.topLevelItemCount()) + "/" + QString::number(eventList.size()) + ")");
+	setWindowTitle(tr("Events") + " (" + QString::number(m_eventListWidget.topLevelItemCount()) + "/" + QString::number(eventCount) + ")");
 }
 
 void EventListWidget::setFilters(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled, bool isRegisteredEventsEnabled) {

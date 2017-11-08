@@ -11,8 +11,7 @@
  *
  * =====================================================================================
  */
-#include <QSqlRecord>
-#include <QVariant>
+#include <QJsonObject>
 
 #include "IntraNotification.hpp"
 

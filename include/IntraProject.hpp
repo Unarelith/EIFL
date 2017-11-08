@@ -16,27 +16,21 @@
 
 #include "IntraActivity.hpp"
 
-class IntraProject {
+class IntraProject : public IntraItem {
 	public:
 		IntraProject(const IntraActivity &activity, const QJsonObject &jsonObject);
-		IntraProject(const IntraActivity &activity, const QSqlQuery &sqlQuery);
+		IntraProject(const IntraActivity &activity, const QSqlQuery &sqlQuery)
+			: IntraItem("projects", sqlQuery), m_activity(activity) {}
 
 		const IntraActivity &activity() const { return m_activity; }
 
-		unsigned int id() const { return m_activity.id(); }
+		QString name() const { return get("name").toString(); }
 
-		const QString &name() const { return m_name; }
-
-		bool isRegistrable() const { return m_isRegistrable; }
-		bool isRegistered() const { return m_isRegistered; }
+		bool isRegistrable() const { return get("is_registrable").toBool(); }
+		bool isRegistered() const { return get("is_registered").toBool(); }
 
 	private:
 		const IntraActivity &m_activity;
-
-		QString m_name;
-
-		bool m_isRegistrable;
-		bool m_isRegistered;
 };
 
 #endif // INTRAPROJECT_HPP_

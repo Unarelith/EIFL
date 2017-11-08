@@ -12,6 +12,7 @@
  * =====================================================================================
  */
 #include <QApplication>
+#include <QDebug>
 #include <QDir>
 #include <QFileInfo>
 #include <QKeyEvent>
@@ -66,14 +67,6 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 void MainWindow::setupWidgets() {
 	m_eventInfoWidget.setDate(QDate::currentDate());
 	m_eventListWidget.setDate(QDate::currentDate());
-
-	unsigned int currentSemester = IntraData::getInstance().userInfo().currentSemester();
-	if (currentSemester == 0)
-		qDebug() << "Failed to get current semester!";
-
-	m_eventListWidget.setSemesters({0, currentSemester});
-	m_moduleListWidget.setSemesters({0, currentSemester});
-	m_calendarSettingsWidget.setSemesters({0, currentSemester});
 }
 
 void MainWindow::setupDocks() {
@@ -179,14 +172,23 @@ void MainWindow::connectObjects() {
 	connect(&m_eventListWidget.eventListWidget(), &QTreeWidget::currentItemChanged, &m_eventInfoWidget, &EventInfoWidget::update);
 
 	connect(&m_intraData, &IntraData::databaseUpdateFinished, this, &MainWindow::updateWidgets);
+
+	connect(&m_intraData.database(), &IntraDatabase::userUpdateFinished, &m_userInfoWidget, &UserInfoWidget::update);
+	connect(&m_intraData.database(), &IntraDatabase::notificationUpdateFinished, &m_notificationListWidget, &NotificationListWidget::update);
 }
 
 void MainWindow::updateWidgets() {
 	m_projectListWidget.update();
 	m_userInfoWidget.update();
-	m_moduleListWidget.update();
 	m_notificationListWidget.update();
-	m_eventListWidget.update();
+
+	unsigned int currentSemester = IntraData::getInstance().userInfo().currentSemester();
+	if (currentSemester == 0)
+		qDebug() << "Failed to get current semester!";
+
+	m_eventListWidget.setSemesters({0, currentSemester});
+	m_moduleListWidget.setSemesters({0, currentSemester});
+	m_calendarSettingsWidget.setSemesters({0, currentSemester});
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {

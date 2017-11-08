@@ -11,42 +11,26 @@
  *
  * =====================================================================================
  */
-#include <QSqlRecord>
-#include <QVariant>
+#include <QJsonObject>
 
 #include "IntraModule.hpp"
 
-IntraModule::IntraModule(const QJsonObject &jsonObject) {
+IntraModule::IntraModule(const QJsonObject &jsonObject) : IntraItem("units") {
 	m_id = jsonObject.value("id").toInt();
 
-	m_code = jsonObject.value("code").toString();
-	m_codeInstance = jsonObject.value("codeinstance").toString();
+	set("code", jsonObject.value("code").toString());
+	set("code_instance", jsonObject.value("codeinstance").toString());
 
-	m_scholarYear = jsonObject.value("scolaryear").toInt();
-	m_semester = jsonObject.value("semester").toInt();
-	m_creditCount = jsonObject.value("credits").toString().toInt();
+	set("scholar_year", jsonObject.value("scolaryear").toInt());
+	set("semester", jsonObject.value("semester").toInt());
+	set("credit_count", jsonObject.value("credits").toString().toInt());
 
-	m_name = jsonObject.value("title").toString();
-	m_link = "/module/" + QString::number(m_scholarYear) + "/" + m_code + "/" + m_codeInstance;
+	set("name", jsonObject.value("title").toString());
+	set("link", "/module/" + QString::number(scholarYear()) + "/" + code() + "/" + codeInstance());
 
-	m_isRegistrable = jsonObject.value("open").toString().toInt();
-	m_isRegistered = jsonObject.value("status").toString() != "notregistered";
+	set("is_registrable", jsonObject.value("open").toString().toInt());
+	set("is_registered", jsonObject.value("status").toString() != "notregistered");
 
-	m_flags = static_cast<Flags>(jsonObject.value("flags").toString().toInt());
-}
-
-IntraModule::IntraModule(const QSqlQuery &sqlQuery) {
-	m_id = sqlQuery.value(sqlQuery.record().indexOf("id")).toUInt();
-
-	m_name = sqlQuery.value(sqlQuery.record().indexOf("name")).toString();
-	m_link = sqlQuery.value(sqlQuery.record().indexOf("link")).toString();
-
-	m_semester = sqlQuery.value(sqlQuery.record().indexOf("semester")).toUInt();
-	m_creditCount = sqlQuery.value(sqlQuery.record().indexOf("credit_count")).toUInt();
-
-	m_isRegistrable = sqlQuery.value(sqlQuery.record().indexOf("is_registrable")).toBool();
-	m_isRegistered = sqlQuery.value(sqlQuery.record().indexOf("is_registered")).toBool();
-
-	m_flags = (Flags)sqlQuery.value(sqlQuery.record().indexOf("flags")).toUInt();
+	set("flags", static_cast<Flags>(jsonObject.value("flags").toString().toInt()));
 }
 

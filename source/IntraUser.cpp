@@ -12,12 +12,9 @@
  * =====================================================================================
  */
 #include <QJsonArray>
-#include <QSqlRecord>
-#include <QVariant>
+#include <QJsonObject>
 
 #include "IntraUser.hpp"
-
-#include <iostream>
 
 IntraUser::IntraUser(const QJsonObject &jsonObject) : IntraItem("users") {
 	m_id = jsonObject.value("uid").toInt();

@@ -26,8 +26,6 @@ class EventListWidget : public QDockWidget {
 
 		const QTreeWidget &eventListWidget() const { return m_eventListWidget; }
 
-		bool hasSemester(unsigned int semester) { for (unsigned int s : m_semesters) if (s == semester) return true; return false; }
-
 		void setDate(const QDate &date) { m_date = date; update(); }
 		void setSemesters(const QList<unsigned int> &semesters) { m_semesters = semesters; update(); }
 		void setFilters(bool isCurrentSemesterEnabled, bool isRegisteredModulesEnabled, bool isRegisteredEventsEnabled);

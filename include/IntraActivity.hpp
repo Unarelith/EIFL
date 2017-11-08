@@ -15,57 +15,40 @@
 #define INTRAACTIVITY_HPP_
 
 #include <QDateTime>
-#include <QJsonObject>
 
 #include "IntraModule.hpp"
 
-class IntraActivity {
+class IntraActivity : public IntraItem {
 	public:
 		IntraActivity(const IntraModule &module, const QJsonObject &jsonObject);
-		IntraActivity(const IntraModule &module, const QSqlQuery &sqlQuery);
+		IntraActivity(const IntraModule &module, const QSqlQuery &sqlQuery)
+			: IntraItem("activities", sqlQuery), m_module(module) {}
 
 		const IntraModule &module() const { return m_module; }
 
-		unsigned int id() const { return m_id; }
+		QString name() const { return get("name").toString(); }
+		QString link() const { return m_module.link() + "/acti-" + QString::number(id()); }
 
-		const QString &name() const { return m_name; }
-		const QString link() const { return m_module.link() + "/acti-" + QString::number(m_id); }
+		QString typeCode() const { return get("type_code").toString(); }
+		QString typeTitle() const { return get("type_title").toString(); }
 
-		const QString &typeCode() const { return m_typeCode; }
-		const QString &typeTitle() const { return m_typeTitle; }
+		QDateTime beginDate() const { return get("begin_date").toDateTime(); }
+		QDateTime endDate() const { return get("end_date").toDateTime(); }
+		QDateTime registerDate() const { return get("register_date").toDateTime(); }
+		QDateTime appointmentDate() const { return get("appointment_date").toDateTime(); }
 
-		const QDateTime &beginDate() const { return m_beginDate; }
-		const QDateTime &endDate() const { return m_endDate; }
-		const QDateTime &registerDate() const { return m_registerDate; }
+		bool isCurrentlyActive() const { return beginDate() <= QDateTime::currentDateTime() && endDate() > QDateTime::currentDateTime(); }
+		bool isRegistrable() const { return get("is_registrable").toBool(); }
+		bool isAppointment() const { return get("is_appointment").toBool(); }
+		bool isAppointmentRegistered() const { return get("is_appointment_registered").toBool(); }
 
-		bool isCurrentlyActive() const { return m_beginDate <= QDateTime::currentDateTime() && m_endDate > QDateTime::currentDateTime(); }
-		bool isRegistrable() const { return m_isRegistrable; }
-		bool isAppointment() const { return m_isAppointment; }
-
-		bool isProject() const { return m_isProject; }
-		unsigned int projectId() const { return m_projectId; }
-		const QString &projectName() const { return m_projectName; }
+		bool isProject() const { return get("is_project").toBool(); }
+		unsigned int projectId() const { return get("project_id").toUInt(); }
+		QString projectName() const { return get("project_name").toString(); }
 
 	private:
 		const IntraModule &m_module;
 
-		unsigned int m_id;
-
-		QString m_name;
-
-		QString m_typeCode;
-		QString m_typeTitle;
-
-		QDateTime m_beginDate;
-		QDateTime m_endDate;
-		QDateTime m_registerDate;
-
-		bool m_isRegistrable;
-		bool m_isAppointment;
-
-		bool m_isProject;
-		unsigned int m_projectId;
-		QString m_projectName;
 };
 
 #endif // INTRAACTIVITY_HPP_

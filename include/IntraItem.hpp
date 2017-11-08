@@ -14,20 +14,16 @@
 #ifndef INTRAITEM_HPP_
 #define INTRAITEM_HPP_
 
-#include <QDebug>
-#include <QSqlError>
 #include <QSqlQuery>
-#include <QSqlRecord>
 #include <QVariant>
 
 class IntraItem {
 	public:
-		IntraItem(const QString &sqlTable, IntraItem *parent = nullptr);
-		IntraItem(const QString &sqlTable, const QSqlQuery &sqlQuery, IntraItem *parent = nullptr);
+		IntraItem(const QString &sqlTable);
+		IntraItem(const QString &sqlTable, const QSqlQuery &sqlQuery);
 
-		void removeDatabaseTable() const;
 		void updateDatabaseTable() const;
-		void writeToDatabase() const;
+		void writeToDatabase();
 
 		void set(const QString &fieldName, const QVariant &value);
 		QVariant get(const QString &fieldName) const;
@@ -38,7 +34,7 @@ class IntraItem {
 		unsigned int m_id;
 
 	private:
-		IntraItem *m_parent = nullptr;
+		void prepareQuery();
 
 		QString m_sqlTable;
 

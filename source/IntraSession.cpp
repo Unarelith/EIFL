@@ -51,12 +51,14 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 	for (auto &parameter : parameters)
 		url += "&" + parameter.first + "=" + parameter.second;
 
-	emit stateChanged("Downloading intra data...");
+	// std::cout << "GET " << apiEndpoint.toStdString() << std::endl;
+
+	emit stateChanged("Downloading intra data, this may take a while...");
 
 	auto r = cpr::Get(cpr::Url{url.toStdString()}, m_cookies);
 	if (r.status_code != 200) {
 		std::cerr << "Error: Http request failed. Code: " << r.status_code << std::endl;
-		emit stateChanged("Downloading intra data... Failed. (" + QString::number(r.status_code) + ")");
+		emit stateChanged("Request failed. (" + QString::number(r.status_code) + ")");
 	}
 	// else {
 	// 	emit stateChanged("Downloading intra data... Done. (" + QString::number(r.status_code) + ")");

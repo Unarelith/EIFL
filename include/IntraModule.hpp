@@ -15,12 +15,13 @@
 #define INTRAMODULE_HPP_
 
 #include <QJsonObject>
-#include <QSqlQuery>
 
-class IntraModule {
+#include "IntraItem.hpp"
+
+class IntraModule : public IntraItem {
 	public:
 		IntraModule(const QJsonObject &jsonObject);
-		IntraModule(const QSqlQuery &sqlQuery);
+		IntraModule(const QSqlQuery &sqlQuery) : IntraItem("units", sqlQuery) {}
 
 		enum Flags {
 			Optional = 1,
@@ -31,40 +32,20 @@ class IntraModule {
 			Mandatory = 128
 		};
 
-		unsigned int id() const { return m_id; }
+		QString code() const { return get("code").toString(); }
+		QString codeInstance() const { return get("code_instance").toString(); }
 
-		const QString &code() const { return m_code; }
-		const QString &codeInstance() const { return m_codeInstance; }
+		unsigned int scholarYear() const { return get("scholar_year").toUInt(); }
+		unsigned int semester() const { return get("semester").toUInt(); }
+		unsigned int creditCount() const { return get("credit_count").toUInt(); }
 
-		unsigned int scholarYear() const { return m_scholarYear; }
-		unsigned int semester() const { return m_semester; }
-		unsigned int creditCount() const { return m_creditCount; }
+		QString name() const { return get("name").toString(); }
+		QString link() const { return get("link").toString(); }
 
-		const QString &name() const { return m_name; }
-		const QString &link() const { return m_link; }
+		bool isRegistrable() const { return get("is_registrable").toBool(); }
+		bool isRegistered() const { return get("is_registered").toBool(); }
 
-		bool isRegistrable() const { return m_isRegistrable; }
-		bool isRegistered() const { return m_isRegistered; }
-
-		Flags flags() const { return m_flags; }
-
-	private:
-		unsigned int m_id;
-
-		QString m_code;
-		QString m_codeInstance;
-
-		unsigned int m_scholarYear;
-		unsigned int m_semester;
-		unsigned int m_creditCount;
-
-		QString m_name;
-		QString m_link;
-
-		bool m_isRegistrable;
-		bool m_isRegistered;
-
-		Flags m_flags;
+		Flags flags() const { return static_cast<Flags>(get("flags").toInt()); }
 };
 
 #endif // INTRAMODULE_HPP_

@@ -13,6 +13,7 @@
  */
 #include <deque>
 
+#include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QSqlRecord>
@@ -26,60 +27,6 @@
 #include "IntraSession.hpp"
 #include "IntraUser.hpp"
 
-IntraDatabase::IntraDatabase() {
-	m_activityFields = {
-		{"module_id",      "INTEGER"},
-		{"name",           "TEXT"},
-		{"type_code",      "TEXT"},
-		{"type_title",     "TEXT"},
-		{"begin_date",     "DATETIME"},
-		{"end_date",       "DATETIME"},
-		{"register_date",  "DATETIME"},
-		{"is_registrable", "BOOLEAN"},
-		{"is_appointment", "BOOLEAN"},
-		{"is_project",     "BOOLEAN"},
-		{"project_id",     "INTEGER"},
-		{"project_name",   "INTEGER"},
-	};
-
-	m_eventFields = {
-		{"activity_id",      "INTEGER"},
-		{"name",             "TEXT"},
-		{"building_name",    "TEXT"},
-		{"room_name",        "TEXT"},
-		{"begin_date",       "DATETIME"},
-		{"end_date",         "DATETIME"},
-		{"appointment_date", "DATETIME"},
-		{"is_registrable",   "BOOLEAN"},
-		{"is_registered",    "BOOLEAN"},
-		{"is_missed",        "BOOLEAN"},
-	};
-
-	m_projectFields = {
-		{"activity_id",    "INTEGER"},
-		{"name",           "TEXT"},
-		{"is_registrable", "BOOLEAN"},
-		{"is_registered",  "BOOLEAN"},
-	};
-
-	m_unitFields = {
-		{"name",           "TEXT"},
-		{"link",           "TEXT"},
-		{"semester",       "INTEGER"},
-		{"credit_count",   "INTEGER"},
-		{"is_registrable", "BOOLEAN"},
-		{"is_registered",  "BOOLEAN"},
-		{"flags",          "INTEGER"},
-	};
-
-	m_tables = {
-		{"activities",    &m_activityFields},
-		{"events",        &m_eventFields},
-		{"projects",      &m_projectFields},
-		{"units",         &m_unitFields},
-	};
-}
-
 void IntraDatabase::open(const QString &path) {
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
 		throw std::runtime_error("SQLite required!");
@@ -92,15 +39,14 @@ void IntraDatabase::open(const QString &path) {
 	}
 }
 
-void IntraDatabase::clear() {
-	for (auto it : m_tables) {
-		removeTable(it.first.c_str());
+void IntraDatabase::clear() const {
+	for (QString table : m_database.tables()) {
+		removeTable(table);
 	}
 }
 
-void IntraDatabase::update() {
+void IntraDatabase::update() const {
 	// Thread *thread = new Thread(this, [this] {
-		createTables();
 		updateUser();
 		updateNotifications();
 		updateUnits();
@@ -109,14 +55,50 @@ void IntraDatabase::update() {
 	// thread->start();
 }
 
-void IntraDatabase::updateUser() {
+void IntraDatabase::addTable(const QString &name, const std::map<QString, QVariant> &fields) {
+	QString queryString = "create table " + name + "(id INTEGER unique primary key";
+	for (auto it : fields) {
+		queryString += "," + it.first + " ";
+
+		switch (it.second.type()) {
+			case QVariant::Type::Int:
+			case QVariant::Type::UInt:      queryString += "INTEGER"; break;
+			case QVariant::Type::Bool:      queryString += "BOOLEAN"; break;
+			case QVariant::Type::ByteArray:
+			case QVariant::Type::Url:
+			case QVariant::Type::String:    queryString += "TEXT"; break;
+			case QVariant::Type::Date:      queryString += "DATE"; break;
+			case QVariant::Type::DateTime:  queryString += "DATETIME"; break;
+			default: break;
+		}
+	}
+	queryString += ")";
+
+	QSqlQuery query(queryString);
+	if (!query.isActive())
+		qWarning() << "Error: Failed to create database table '" << name << "':" << query.lastError().text();
+}
+
+void IntraDatabase::removeTable(const QString &name) {
+	QSqlDatabase database = QSqlDatabase::database();
+	if (!database.tables().contains(name))
+		return;
+
+	QSqlQuery query(QString("drop table ") + name);
+	if (!query.isActive())
+		qWarning() << "Error: Failed to remove table '" << name << "' from database:" << query.lastError().text();
+}
+
+void IntraDatabase::updateUser() const {
 	QJsonDocument json = IntraSession::getInstance().get("/user");
 	IntraUser user(json.object());
 	user.updateDatabaseTable();
 	user.writeToDatabase();
+
+	emit userUpdateFinished();
 }
 
-void IntraDatabase::updateNotifications() {
+void IntraDatabase::updateNotifications() const {
 	QJsonDocument json = IntraSession::getInstance().get("/");
 	QJsonArray notificationArray = json.object().value("history").toArray();
 	if (notificationArray.isEmpty())
@@ -131,9 +113,11 @@ void IntraDatabase::updateNotifications() {
 	}
 
 	m_database.exec("commit;");
+
+	emit notificationUpdateFinished();
 }
 
-void IntraDatabase::updateUnits() {
+void IntraDatabase::updateUnits() const {
 	QJsonDocument json = IntraSession::getInstance().get("/course/filter");
 	QJsonArray unitArray = json.array();
 	if (unitArray.isEmpty())
@@ -146,17 +130,10 @@ void IntraDatabase::updateUnits() {
 	size_t i = 0;
 	for (QJsonValue value : unitArray) {
 		IntraModule module(value.toObject());
+		module.updateDatabaseTable();
+		module.writeToDatabase();
 
 		updateActivities(module);
-
-		addTableEntry("units", module.id(),
-		                       module.name(),
-		                       module.link(),
-		                       module.semester(),
-		                       module.creditCount(),
-		                       module.isRegistrable(),
-		                       module.isRegistered(),
-		                       module.flags());
 
 		emit updateProgressed(i++ * 100 / unitArray.size());
 
@@ -170,7 +147,7 @@ void IntraDatabase::updateUnits() {
 	emit updateFinished();
 }
 
-void IntraDatabase::updateActivities(const IntraModule &unit) {
+void IntraDatabase::updateActivities(const IntraModule &unit) const {
 	QJsonDocument json = IntraSession::getInstance().get(unit.link());
 	QJsonArray activityArray = json.object().value("activites").toArray();
 	if (activityArray.isEmpty())
@@ -179,25 +156,13 @@ void IntraDatabase::updateActivities(const IntraModule &unit) {
 	size_t i = 0;
 	for (QJsonValue value : activityArray) {
 		IntraActivity activity(unit, value.toObject());
+		activity.updateDatabaseTable();
+		activity.writeToDatabase();
 
 		if (activity.isProject())
 			updateProjects(activity);
 
 		updateEvents(activity, value.toObject());
-
-		addTableEntry("activities", activity.id(),
-		                            activity.module().id(),
-		                            activity.name(),
-		                            activity.typeCode(),
-		                            activity.typeTitle(),
-		                            activity.beginDate(),
-		                            activity.endDate(),
-		                            activity.registerDate(),
-		                            activity.isRegistrable(),
-		                            activity.isAppointment(),
-		                            activity.isProject(),
-		                            activity.projectId(),
-		                            activity.projectName());
 
 		emit unitUpdateProgressed(i++ * 100 / activityArray.size());
 
@@ -206,70 +171,25 @@ void IntraDatabase::updateActivities(const IntraModule &unit) {
 	}
 
 	emit unitUpdateProgressed(i++ * 100 / activityArray.size());
+	emit unitUpdateFinished();
 }
 
-void IntraDatabase::updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject) {
+void IntraDatabase::updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject) const {
 	QJsonArray eventArray = jsonObject.value("events").toArray();
 	for (QJsonValue value : eventArray) {
 		IntraEvent event(activity, value.toObject());
-
-		addTableEntry("events", event.id(),
-		                        event.activity().id(),
-		                        event.activity().name(),
-		                        event.buildingName(),
-		                        event.roomName(),
-		                        event.beginDate(),
-		                        event.endDate(),
-		                        event.appointmentDate(),
-		                        event.isRegistrable(),
-		                        event.isRegistered(),
-		                        event.isMissed());
+		event.updateDatabaseTable();
+		event.writeToDatabase();
 
 		if (QThread::currentThread()->isInterruptionRequested())
 			return;
 	}
 }
 
-void IntraDatabase::updateProjects(const IntraActivity &activity) {
+void IntraDatabase::updateProjects(const IntraActivity &activity) const {
 	QJsonDocument json = IntraSession::getInstance().get(activity.link() + "/project");
 	IntraProject project(activity, json.object());
-
-	addTableEntry("projects", project.id(),
-	                          project.activity().id(),
-	                          project.name(),
-	                          project.isRegistrable(),
-	                          project.isRegistered());
-}
-
-void IntraDatabase::removeTable(const QString &name) {
-	if (!m_database.tables().contains(name))
-		return;
-
-	QSqlQuery query(QString("drop table ") + name);
-	if (!query.isActive())
-		qWarning() << "Error: Failed to remove table '" << name << "' from database:" << query.lastError().text();
-}
-
-void IntraDatabase::createTables() {
-	for (auto &it : m_tables) {
-		if (m_database.tables().contains(it.first.c_str())) {
-			// FIXME: Change record instead of dropping the entire table
-			if (m_database.record(it.first.c_str()).count() != it.second->size() + 1) {
-				removeTable(it.first.c_str());
-			}
-		}
-
-		if (!m_database.tables().contains(it.first.c_str())) {
-			std::string queryString = "create table " + it.first + "(id INTEGER unique primary key,";
-			for (auto field = it.second->begin() ; field != it.second->end() ; ++field) {
-				queryString += field->first + " " + field->second;
-				queryString += (std::next(field) == it.second->end()) ? ")" : ",";
-			}
-
-			QSqlQuery query(queryString.c_str());
-			if (!query.isActive())
-				qWarning() << "Error: Failed to create database table '" << it.first.c_str() << "':" << query.lastError().text();
-		}
-	}
+	project.updateDatabaseTable();
+	project.writeToDatabase();
 }
 

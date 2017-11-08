@@ -15,7 +15,6 @@
 #define INTRANOTIFICATION_HPP_
 
 #include <QDateTime>
-#include <QJsonObject>
 
 #include "IntraItem.hpp"
 
