@@ -48,6 +48,8 @@ class IntraData : public QObject {
 	Q_OBJECT
 
 	public:
+		IntraData();
+
 		void openDatabase(const QString &path);
 		void updateDatabase();
 		void reloadDatabase();

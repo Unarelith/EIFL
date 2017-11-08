@@ -21,15 +21,20 @@
 
 IntraData *IntraData::s_instance = nullptr;
 
+IntraData::IntraData() {
+	connect(m_database.get(), &IntraDatabase::updateFinished, this, &IntraData::update);
+}
+
 void IntraData::openDatabase(const QString &path) {
 	m_database->open(path);
 }
 
 void IntraData::updateDatabase() {
 	IntraDatabaseThread *thread = new IntraDatabaseThread(this, m_database);
-	connect(m_database.get(), &IntraDatabase::updateFinished, this, &IntraData::update);
 	connect(thread, &QThread::finished, thread, &QObject::deleteLater);
 	thread->start();
+
+	// m_database->update();
 }
 
 void IntraData::reloadDatabase() {
@@ -109,7 +114,7 @@ void IntraData::updateProjectList() {
 }
 
 void IntraData::updateUserList() {
-	// FIXME: Doesn't currently handle muliple users
+	// FIXME: Doesn't currently handle multiple users
 	QSqlQuery query("SELECT * FROM users");
 	if (query.next()) {
 		m_userInfo = IntraUser{query};

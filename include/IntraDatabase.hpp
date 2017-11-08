@@ -14,6 +14,8 @@
 #ifndef INTRADATABASE_HPP_
 #define INTRADATABASE_HPP_
 
+#include <functional>
+
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
@@ -21,6 +23,22 @@
 
 #include "IntraActivity.hpp"
 #include "IntraModule.hpp"
+
+#include <QDebug>
+
+// class Thread : public QThread {
+// 	public:
+// 		Thread(QObject *parent, std::function<void(void)> func) : QThread(parent), m_func(func) {}
+// 		~Thread() override {
+// 			requestInterruption();
+// 			wait();
+// 		}
+//
+// 		void run() override { m_func(); }
+//
+// 	private:
+// 		std::function<void(void)> m_func;
+// };
 
 class IntraDatabase : public QObject {
 	Q_OBJECT
@@ -59,7 +77,7 @@ class IntraDatabase : public QObject {
 		std::vector<std::pair<std::string, std::string>> m_eventFields;
 		std::vector<std::pair<std::string, std::string>> m_projectFields;
 		std::vector<std::pair<std::string, std::string>> m_unitFields;
-		std::vector<std::pair<std::string, std::string>> m_userFields;
+		// std::vector<std::pair<std::string, std::string>> m_userFields;
 		std::vector<std::pair<std::string, std::string>> m_notificationFields;
 		std::map<std::string, std::vector<std::pair<std::string, std::string>> *> m_tables;
 

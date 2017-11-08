@@ -72,16 +72,16 @@ IntraDatabase::IntraDatabase() {
 		{"flags",          "INTEGER"},
 	};
 
-	m_userFields = {
-		{"login",            "TEXT"},
-		{"last_name",        "TEXT"},
-		{"first_name",       "TEXT"},
-		{"birthday",         "DATE"},
-		{"current_semester", "INTEGER"},
-		{"credit_count",     "INTEGER"},
-		{"spice_count",      "INTEGER"},
-		{"gpa",              "REAL"},
-	};
+	// m_userFields = {
+	// 	{"login",            "TEXT"},
+	// 	{"last_name",        "TEXT"},
+	// 	{"first_name",       "TEXT"},
+	// 	{"birthday",         "DATE"},
+	// 	{"current_semester", "INTEGER"},
+	// 	{"credit_count",     "INTEGER"},
+	// 	{"spice_count",      "INTEGER"},
+	// 	{"gpa",              "REAL"},
+	// };
 
 	m_notificationFields = {
 		{"title",   "TEXT"},
@@ -94,7 +94,7 @@ IntraDatabase::IntraDatabase() {
 		{"events",        &m_eventFields},
 		{"projects",      &m_projectFields},
 		{"units",         &m_unitFields},
-		{"users",         &m_userFields},
+		// {"users",         &m_userFields},
 		{"notifications", &m_notificationFields},
 	};
 }
@@ -118,25 +118,32 @@ void IntraDatabase::clear() {
 }
 
 void IntraDatabase::update() {
-	createTables();
-	updateUser();
-	updateNotifications();
-	updateUnits();
+	// Thread *thread = new Thread(this, [this] {
+		updateUser();
+
+		createTables();
+		updateNotifications();
+		updateUnits();
+	// });
+    //
+	// thread->start();
 }
 
 void IntraDatabase::updateUser() {
 	QJsonDocument json = IntraSession::getInstance().get("/user");
 	IntraUser user(json.object());
+	user.createDatabaseTable();
+	user.writeToDatabase();
 
-	addTableEntry("users", user.id(),
-	                       user.login(),
-	                       user.lastName(),
-	                       user.firstName(),
-	                       user.birthday(),
-	                       user.currentSemester(),
-	                       user.creditCount(),
-	                       user.spiceCount(),
-	                       user.gpa());
+	// addTableEntry("users", user.id(),
+	//                        user.login(),
+	//                        user.lastName(),
+	//                        user.firstName(),
+	//                        user.birthday(),
+	//                        user.currentSemester(),
+	//                        user.creditCount(),
+	//                        user.spiceCount(),
+	//                        user.gpa());
 }
 
 void IntraDatabase::updateNotifications() {
