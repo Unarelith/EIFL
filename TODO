@@ -93,6 +93,7 @@ TODO
          ▸ TODO: Supprimer la branche ‘sql’ et créer une branche ‘dev’
          ▸ TODO: Modifier /contrib/eifl-dev-git.aur/PKGBUILD pour utiliser la branche ‘dev’
          ▸ TODO: Copier le /PKGBUILD vers le dépôt AUR et push
+   ◦ TODO: Faire une fenêtre pour l’update (pour choisir quelles parties doivent être téléchargées)
    ◦ TODO: Si le chargement de la db fail, proposer de la reload
    ◦ TODO: Ajouter un mode “hors-ligne”
       ◦ TODO: Déplacer `IntraSession::login` dans un autre thread

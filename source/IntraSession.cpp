@@ -51,7 +51,7 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 	for (auto &parameter : parameters)
 		url += "&" + parameter.first + "=" + parameter.second;
 
-	std::cout << "GET " << apiEndpoint.toStdString() << std::endl;
+	// std::cout << "GET " << apiEndpoint.toStdString() << std::endl;
 
 	emit stateChanged("Downloading intra data, this may take a while...");
 
