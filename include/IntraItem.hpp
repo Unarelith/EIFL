@@ -34,8 +34,6 @@ class IntraItem {
 		unsigned int m_id;
 
 	private:
-		void prepareQuery();
-
 		QString m_sqlTable;
 
 		std::map<QString, QVariant> m_data;

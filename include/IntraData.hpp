@@ -26,17 +26,74 @@
 #include "IntraProject.hpp"
 #include "IntraUser.hpp"
 
+template<typename... Args>
 class IntraDatabaseThread : public QThread {
-	public:
-		IntraDatabaseThread(QObject *parent, std::shared_ptr<IntraDatabase> database) : QThread(parent), m_database(database) {}
-		~IntraDatabaseThread() override {
-			requestInterruption();
-			wait();
-		}
+	using FuncType = void(IntraDatabase::*)(Args...) const;
 
-		void run() override { m_database->update(); }
+	public:
+		IntraDatabaseThread(QObject *parent, IntraDatabase *database, FuncType func, Args &&...args)
+			: QThread(parent), m_func(func), m_database(database), m_args(std::forward<Args>(args)...) {}
+
+		// ~IntraDatabaseThread() override {
+		// 	requestInterruption();
+		// 	wait();
+		// }
+
+		void run() override { call(m_database, m_func, m_args); }
 
 	private:
+		template<typename Instance, typename Function, typename Tuple, size_t... I>
+		auto call(Instance i, Function f, Tuple t, std::index_sequence<I...>) {
+			return (i->*f)(std::get<I>(t)...);
+		}
+
+		template<typename Instance, typename Function, typename Tuple>
+		auto call(Instance i, Function f, Tuple t) {
+			static constexpr auto size = std::tuple_size<Tuple>::value;
+			return call(i, f, t, std::make_index_sequence<size>{});
+		}
+
+		FuncType m_func;
+		IntraDatabase *m_database;
+		std::tuple<Args...> m_args;
+};
+
+class IntraDatabaseThreadPool : public QObject {
+	public:
+		IntraDatabaseThreadPool(std::shared_ptr<IntraDatabase> database) : m_database(database) {
+			m_database->setThreadPool(this);
+		}
+
+		~IntraDatabaseThreadPool() override {
+			for (QThread *thread : m_pool) {
+				thread->requestInterruption();
+				thread->wait();
+			}
+		}
+
+		void addThread(QThread *thread) {
+			m_pool.emplace_back(thread);
+		}
+
+		template<typename... Args>
+		void addTask(void (IntraDatabase::*func)(Args...) const, Args &&...args) {
+			m_pool.emplace_back(new IntraDatabaseThread<Args...>(nullptr, m_database.get(), func, std::forward<Args>(args)...));
+		}
+
+		template<typename... Args>
+		void runTask(void (IntraDatabase::*func)(Args...) const, Args &&...args) {
+			addTask(func, std::forward<Args>(args)...);
+			m_pool.back()->start();
+		}
+
+		void start() {
+			for (QThread *thread : m_pool)
+				if (!thread->isRunning() && !thread->isFinished())
+					thread->start();
+		}
+
+	private:
+		std::deque<QThread *> m_pool;
 		std::shared_ptr<IntraDatabase> m_database;
 };
 
@@ -89,6 +146,8 @@ class IntraData : public QObject {
 		std::map<unsigned int, IntraProject> m_projectList;
 		std::map<unsigned int, IntraNotification> m_notificationList;
 		IntraUser m_userInfo;
+
+		IntraDatabaseThreadPool m_threadPool{m_database};
 };
 
 #endif // INTRADATA_HPP_

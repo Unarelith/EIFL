@@ -58,7 +58,7 @@ flags = [
     '-I/usr/lib/qt/mkspecs/linux-g++',
     '-Wall',
     '-Wfatal-errors',
-    '-std=gnu++11',
+    '-std=gnu++14',
     '-isystem', '/usr/include/qt',
     '-isystem', '/usr/include/qt/QtConcurrent',
     '-isystem', '/usr/include/qt/QtCore',

@@ -80,6 +80,7 @@ TODO
          ▸  WIP: Repenser l’architecture du chargement
             ▹ DONE: Améliorer la manière dont les données sont stockées/chargées (`IntraItem`)
             ▹ TODO: Utiliser une thread pool et un thread par activity
+            ▹ TODO: Utiliser l’endpoint ‘/’ pour faire une update rapide et partielle ?
             ▹ TODO: Permettre une update partielle plus facile
                ▪ TODO: Update les items en background quand on cherche leurs infos
                ▪ TODO: Update la window si des infos ont été modifiées

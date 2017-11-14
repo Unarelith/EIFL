@@ -51,9 +51,11 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 	for (auto &parameter : parameters)
 		url += "&" + parameter.first + "=" + parameter.second;
 
-	// std::cout << "GET " << apiEndpoint.toStdString() << std::endl;
+	std::cout << "GET " << apiEndpoint.toStdString() << std::endl;
 
 	emit stateChanged("Downloading intra data, this may take a while...");
+
+	// QTime before = QTime::currentTime();
 
 	auto r = cpr::Get(cpr::Url{url.toStdString()}, m_cookies);
 	if (r.status_code != 200) {
@@ -63,6 +65,8 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 	// else {
 	// 	emit stateChanged("Downloading intra data... Done. (" + QString::number(r.status_code) + ")");
 	// }
+
+	// std::cout << "GET request finished in " << before.msecsTo(QTime::currentTime()) << " ms" << std::endl;
 
 	return QJsonDocument::fromJson(QByteArray::fromStdString(r.text));
 }

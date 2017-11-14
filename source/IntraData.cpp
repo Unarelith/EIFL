@@ -16,6 +16,7 @@
 #include <QJsonArray>
 #include <QProgressDialog>
 #include <QSqlRecord>
+// #include <QThreadPool>
 
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
@@ -23,10 +24,13 @@
 IntraData *IntraData::s_instance = nullptr;
 
 IntraData::IntraData() {
-	connect(m_database.get(), &IntraDatabase::updateFinished, this, &IntraData::update);
+	// connect(m_database.get(), &IntraDatabase::updateFinished, this, &IntraData::update);
+	// connect(m_database.get(), &IntraDatabase::updateFinished, this, &IntraData::updateModuleList);
 	connect(m_database.get(), &IntraDatabase::userUpdateFinished, this, &IntraData::updateUserList);
 	connect(m_database.get(), &IntraDatabase::notificationUpdateFinished, this, &IntraData::updateNotificationList);
-	connect(m_database.get(), &IntraDatabase::unitUpdateFinished, this, &IntraData::update);
+	// connect(m_database.get(), &IntraDatabase::unitUpdateFinished, this, &IntraData::updateActivityList);
+	// connect(m_database.get(), &IntraDatabase::unitUpdateFinished, this, &IntraData::updateEventList);
+	// connect(m_database.get(), &IntraDatabase::unitUpdateFinished, this, &IntraData::updateProjectList);
 }
 
 void IntraData::openDatabase(const QString &path) {
@@ -34,11 +38,25 @@ void IntraData::openDatabase(const QString &path) {
 }
 
 void IntraData::updateDatabase() {
-	IntraDatabaseThread *thread = new IntraDatabaseThread(this, m_database);
-	connect(thread, &QThread::finished, thread, &QObject::deleteLater);
-	thread->start();
+	// IntraDatabaseThread *threadUsers = new IntraDatabaseThread(this, m_database.get(), &IntraDatabase::updateUser);
+	// IntraDatabaseThread *threadNotifications = new IntraDatabaseThread(this, m_database.get(), &IntraDatabase::updateNotifications);
+	// IntraDatabaseThread *threadUnits = new IntraDatabaseThread(this, m_database.get(), &IntraDatabase::updateUnits);
+    //
+	// connect(threadUsers, &QThread::finished, threadUsers, &QObject::deleteLater);
+	// connect(threadNotifications, &QThread::finished, threadNotifications, &QObject::deleteLater);
+	// connect(threadUnits, &QThread::finished, threadUnits, &QObject::deleteLater);
+    //
+	// threadUsers->start();
+	// threadNotifications->start();
+	// threadUnits->start();
 
-	// m_database->update();
+	// m_threadPool.addTask(&IntraDatabase::updateUser);
+	// m_threadPool.addTask(&IntraDatabase::updateNotifications);
+	// m_threadPool.addTask(&IntraDatabase::updateUnits);
+    //
+	// m_threadPool.start();
+
+	m_database->update();
 }
 
 void IntraData::reloadDatabase() {

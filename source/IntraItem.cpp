@@ -27,7 +27,7 @@ IntraItem::IntraItem(const QString &sqlTable, const QSqlQuery &sqlQuery) {
 
 	m_id = sqlQuery.value(0).toUInt();
 
-	for (size_t i = 1 ; i < sqlQuery.record().count() ; ++i) {
+	for (int i = 1 ; i < sqlQuery.record().count() ; ++i) {
 		set(sqlQuery.record().fieldName(i), sqlQuery.value(i));
 	};
 }
@@ -36,7 +36,7 @@ void IntraItem::updateDatabaseTable() const {
 	QSqlDatabase database = QSqlDatabase::database();
 	if (database.tables().contains(m_sqlTable)) {
 		// FIXME: Change record instead of dropping the entire table
-		if (database.record(m_sqlTable).count() != m_data.size() + 1) {
+		if ((unsigned int)database.record(m_sqlTable).count() != m_data.size() + 1) {
 			qDebug() << "Removing deprecated table:" << m_sqlTable;
 			IntraDatabase::removeTable(m_sqlTable);
 		}

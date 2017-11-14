@@ -20,6 +20,8 @@
 #include <QStandardPaths>
 #include <QThread>
 
+#include "IntraData.hpp"
+
 #include "IntraDatabase.hpp"
 #include "IntraEvent.hpp"
 #include "IntraNotification.hpp"
@@ -45,14 +47,12 @@ void IntraDatabase::clear() const {
 	}
 }
 
-void IntraDatabase::update() const {
-	// Thread *thread = new Thread(this, [this] {
-		updateUser();
-		updateNotifications();
-		updateUnits();
-	// });
-    //
-	// thread->start();
+void IntraDatabase::update() {
+	m_threadPool->addTask(&IntraDatabase::updateUser);
+	m_threadPool->addTask(&IntraDatabase::updateNotifications);
+	m_threadPool->addTask(&IntraDatabase::updateUnits);
+
+	m_threadPool->start();
 }
 
 void IntraDatabase::addTable(const QString &name, const std::map<QString, QVariant> &fields) {
@@ -125,15 +125,14 @@ void IntraDatabase::updateUnits() const {
 
 	emit updateStarted();
 
-	m_database.exec("begin;");
-
 	size_t i = 0;
 	for (QJsonValue value : unitArray) {
 		IntraModule module(value.toObject());
 		module.updateDatabaseTable();
 		module.writeToDatabase();
 
-		updateActivities(module);
+		m_threadPool->runTask(&IntraDatabase::updateActivities, std::move(module));
+		// updateActivities(module);
 
 		emit updateProgressed(i++ * 100 / unitArray.size());
 
@@ -141,13 +140,11 @@ void IntraDatabase::updateUnits() const {
 			return;
 	}
 
-	m_database.exec("commit;");
-
 	emit updateProgressed(i++ * 100 / unitArray.size());
 	emit updateFinished();
 }
 
-void IntraDatabase::updateActivities(const IntraModule &unit) const {
+void IntraDatabase::updateActivities(IntraModule unit) const {
 	QJsonDocument json = IntraSession::getInstance().get(unit.link());
 	QJsonArray activityArray = json.object().value("activites").toArray();
 	if (activityArray.isEmpty())

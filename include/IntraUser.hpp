@@ -15,7 +15,6 @@
 #define INTRAUSER_HPP_
 
 #include <QDate>
-#include <QJsonObject>
 #include <QUrl>
 
 #include "IntraItem.hpp"

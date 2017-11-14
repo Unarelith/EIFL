@@ -57,7 +57,7 @@ IntraActivity::IntraActivity(const IntraModule &module, const QJsonObject &jsonO
 				if (eventValue.toObject().value("codeevent").toString() == "event-" + QString::number(m_id)) {
 					QJsonArray slotArray = eventValue.toObject().value("slots").toArray();
 					for (QJsonValue slotValue : slotArray) {
-						if (slotValue.toObject().value("id_team").toString().toInt() == teamId) {
+						if (slotValue.toObject().value("id_team").toString().toUInt() == teamId) {
 							set("is_appointment_registered", true);
 							set("appointment_date", QDateTime::fromString(slotValue.toObject().value("date").toString(), "yyyy-MM-dd HH:mm:ss"));
 						}

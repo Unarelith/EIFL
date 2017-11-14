@@ -24,19 +24,9 @@
 #include "IntraActivity.hpp"
 #include "IntraModule.hpp"
 
-// class Thread : public QThread {
-// 	public:
-// 		Thread(QObject *parent, std::function<void(void)> func) : QThread(parent), m_func(func) {}
-// 		~Thread() override {
-// 			requestInterruption();
-// 			wait();
-// 		}
-//
-// 		void run() override { m_func(); }
-//
-// 	private:
-// 		std::function<void(void)> m_func;
-// };
+#include <iostream>
+
+class IntraDatabaseThreadPool;
 
 class IntraDatabase : public QObject {
 	Q_OBJECT
@@ -44,7 +34,15 @@ class IntraDatabase : public QObject {
 	public:
 		void open(const QString &path);
 		void clear() const;
-		void update() const;
+		void update();
+		void updateUser() const;
+		void updateNotifications() const;
+		void updateUnits() const;
+		void updateActivities(IntraModule unit) const;
+		void updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject) const;
+		void updateProjects(const IntraActivity &activity) const;
+
+		void setThreadPool(IntraDatabaseThreadPool *threadPool) { m_threadPool = threadPool; }
 
 		static void addTable(const QString &name, const std::map<QString, QVariant> &fields);
 		static void removeTable(const QString &name);
@@ -61,14 +59,9 @@ class IntraDatabase : public QObject {
 		void unitUpdateFinished() const;
 
 	private:
-		void updateUser() const;
-		void updateNotifications() const;
-		void updateUnits() const;
-		void updateActivities(const IntraModule &unit) const;
-		void updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject) const;
-		void updateProjects(const IntraActivity &activity) const;
-
 		QSqlDatabase m_database;
+
+		IntraDatabaseThreadPool *m_threadPool;
 };
 
 #endif // INTRADATABASE_HPP_
