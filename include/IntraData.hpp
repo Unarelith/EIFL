@@ -14,10 +14,7 @@
 #ifndef INTRADATA_HPP_
 #define INTRADATA_HPP_
 
-#include <deque>
 #include <map>
-#include <memory>
-#include <vector>
 
 #include "IntraDatabase.hpp"
 #include "IntraEvent.hpp"
@@ -25,20 +22,6 @@
 #include "IntraNotification.hpp"
 #include "IntraProject.hpp"
 #include "IntraUser.hpp"
-
-class IntraDatabaseThread : public QThread {
-	public:
-		IntraDatabaseThread(QObject *parent, std::shared_ptr<IntraDatabase> database) : QThread(parent), m_database(database) {}
-		~IntraDatabaseThread() override {
-			requestInterruption();
-			wait();
-		}
-
-		void run() override { m_database->update(); }
-
-	private:
-		std::shared_ptr<IntraDatabase> m_database;
-};
 
 class IntraData : public QObject {
 	Q_OBJECT
@@ -58,7 +41,7 @@ class IntraData : public QObject {
 		void updateUserList();
 		void updateNotificationList();
 
-		const IntraDatabase &database() const { return *m_database; }
+		const IntraDatabase &database() const { return m_database; }
 
 		const std::map<unsigned int, IntraModule> &moduleList() const { return m_moduleList; }
 		const std::map<unsigned int, IntraEvent> &eventList() const { return m_eventList; }
@@ -81,7 +64,7 @@ class IntraData : public QObject {
 	private:
 		static IntraData *s_instance;
 
-		std::shared_ptr<IntraDatabase> m_database{std::make_shared<IntraDatabase>()};
+		IntraDatabase m_database;
 
 		std::map<unsigned int, IntraModule> m_moduleList;
 		std::map<unsigned int, IntraActivity> m_activityList;

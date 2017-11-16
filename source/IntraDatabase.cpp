@@ -11,14 +11,9 @@
  *
  * =====================================================================================
  */
-#include <deque>
-
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
-#include <QSqlRecord>
-#include <QStandardPaths>
-#include <QThread>
 
 #include "IntraData.hpp"
 #include "IntraEvent.hpp"
@@ -135,8 +130,10 @@ void IntraDatabase::updateUnits() const {
 
 		emit updateProgressed(i++ * 100 / unitArray.size());
 
-		if (QThread::currentThread()->isInterruptionRequested())
+		if (QThread::currentThread()->isInterruptionRequested()) {
+			m_database.exec("commit;");
 			return;
+		}
 	}
 
 	m_database.exec("commit;");

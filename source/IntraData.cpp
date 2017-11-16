@@ -17,32 +17,30 @@
 #include <QProgressDialog>
 #include <QSqlRecord>
 
+#include "IntraDatabaseThread.hpp"
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
 
 IntraData *IntraData::s_instance = nullptr;
 
 IntraData::IntraData() {
-	connect(m_database.get(), &IntraDatabase::updateFinished, this, &IntraData::update);
-	connect(m_database.get(), &IntraDatabase::userUpdateFinished, this, &IntraData::updateUserList);
-	connect(m_database.get(), &IntraDatabase::notificationUpdateFinished, this, &IntraData::updateNotificationList);
-	connect(m_database.get(), &IntraDatabase::unitUpdateFinished, this, &IntraData::update);
+	connect(&m_database, &IntraDatabase::updateFinished, this, &IntraData::update);
+	connect(&m_database, &IntraDatabase::userUpdateFinished, this, &IntraData::updateUserList);
+	connect(&m_database, &IntraDatabase::notificationUpdateFinished, this, &IntraData::updateNotificationList);
+	connect(&m_database, &IntraDatabase::unitUpdateFinished, this, &IntraData::update);
 }
 
 void IntraData::openDatabase(const QString &path) {
-	m_database->open(path);
+	m_database.open(path);
 }
 
 void IntraData::updateDatabase() {
-	IntraDatabaseThread *thread = new IntraDatabaseThread(this, m_database);
-	connect(thread, &QThread::finished, thread, &QObject::deleteLater);
+	IntraDatabaseThread *thread = new IntraDatabaseThread(&m_database);
 	thread->start();
-
-	// m_database->update();
 }
 
 void IntraData::reloadDatabase() {
-	m_database->clear();
+	m_database.clear();
 	updateDatabase();
 }
 
