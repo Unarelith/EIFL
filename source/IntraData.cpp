@@ -24,10 +24,10 @@
 IntraData *IntraData::s_instance = nullptr;
 
 IntraData::IntraData() {
-	connect(&m_database, &IntraDatabase::updateFinished, this, &IntraData::update);
-	connect(&m_database, &IntraDatabase::userUpdateFinished, this, &IntraData::updateUserList);
-	connect(&m_database, &IntraDatabase::notificationUpdateFinished, this, &IntraData::updateNotificationList);
-	connect(&m_database, &IntraDatabase::unitUpdateFinished, this, &IntraData::update);
+	connect(&m_database.loader(), &IntraDatabaseLoader::updateFinished, this, &IntraData::update);
+	connect(&m_database.loader(), &IntraDatabaseLoader::userUpdateFinished, this, &IntraData::updateUserList);
+	connect(&m_database.loader(), &IntraDatabaseLoader::notificationUpdateFinished, this, &IntraData::updateNotificationList);
+	connect(&m_database.loader(), &IntraDatabaseLoader::unitUpdateFinished, this, &IntraData::update);
 }
 
 void IntraData::openDatabase(const QString &path) {

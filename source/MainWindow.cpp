@@ -142,8 +142,8 @@ void MainWindow::setupStatusBar() {
 	statusBar->addPermanentWidget(dbUpdateBar);
 	statusBar->addPermanentWidget(unitUpdateBar);
 
-	connect(&m_intraData.database(), &IntraDatabase::updateProgressed, dbUpdateBar, &QProgressBar::setValue);
-	connect(&m_intraData.database(), &IntraDatabase::unitUpdateProgressed, unitUpdateBar, &QProgressBar::setValue);
+	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::updateProgressed, dbUpdateBar, &QProgressBar::setValue);
+	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::unitUpdateProgressed, unitUpdateBar, &QProgressBar::setValue);
 	connect(&m_intraSession, &IntraSession::stateChanged, statusBar, &QStatusBar::showMessage);
 }
 
@@ -173,8 +173,8 @@ void MainWindow::connectObjects() {
 
 	connect(&m_intraData, &IntraData::databaseUpdateFinished, this, &MainWindow::updateWidgets);
 
-	connect(&m_intraData.database(), &IntraDatabase::userUpdateFinished, &m_userInfoWidget, &UserInfoWidget::update);
-	connect(&m_intraData.database(), &IntraDatabase::notificationUpdateFinished, &m_notificationListWidget, &NotificationListWidget::update);
+	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::userUpdateFinished, &m_userInfoWidget, &UserInfoWidget::update);
+	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::notificationUpdateFinished, &m_notificationListWidget, &NotificationListWidget::update);
 }
 
 void MainWindow::updateWidgets() {

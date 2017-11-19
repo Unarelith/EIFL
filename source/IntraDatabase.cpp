@@ -12,15 +12,8 @@
  * =====================================================================================
  */
 #include <QDebug>
-#include <QJsonArray>
-#include <QJsonDocument>
 
-#include "IntraData.hpp"
-#include "IntraEvent.hpp"
-#include "IntraNotification.hpp"
-#include "IntraProject.hpp"
-#include "IntraSession.hpp"
-#include "IntraUser.hpp"
+#include "IntraDatabase.hpp"
 
 void IntraDatabase::open(const QString &path) {
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
@@ -38,12 +31,6 @@ void IntraDatabase::clear() const {
 	for (QString table : m_database.tables()) {
 		removeTable(table);
 	}
-}
-
-void IntraDatabase::update() const {
-	updateUser();
-	updateNotifications();
-	updateUnits();
 }
 
 void IntraDatabase::addTable(const QString &name, const std::map<QString, QVariant> &fields) {
@@ -78,113 +65,5 @@ void IntraDatabase::removeTable(const QString &name) {
 	QSqlQuery query(QString("drop table ") + name);
 	if (!query.isActive())
 		qWarning() << "Error: Failed to remove table '" << name << "' from database:" << query.lastError().text();
-}
-
-void IntraDatabase::updateUser() const {
-	QJsonDocument json = IntraSession::getInstance().get("/user");
-	IntraUser user(json.object());
-	user.updateDatabaseTable();
-	user.writeToDatabase();
-
-	emit userUpdateFinished();
-}
-
-void IntraDatabase::updateNotifications() const {
-	QJsonDocument json = IntraSession::getInstance().get("/");
-	QJsonArray notificationArray = json.object().value("history").toArray();
-	if (notificationArray.isEmpty())
-		return;
-
-	m_database.exec("begin;");
-
-	for (QJsonValue value : notificationArray) {
-		IntraNotification notification(value.toObject());
-		notification.updateDatabaseTable();
-		notification.writeToDatabase();
-	}
-
-	m_database.exec("commit;");
-
-	emit notificationUpdateFinished();
-}
-
-void IntraDatabase::updateUnits() const {
-	QJsonDocument json = IntraSession::getInstance().get("/course/filter");
-	QJsonArray unitArray = json.array();
-	if (unitArray.isEmpty())
-		return;
-
-	emit updateStarted();
-
-	m_database.exec("begin;");
-
-	size_t i = 0;
-	for (QJsonValue value : unitArray) {
-		IntraModule module(value.toObject());
-		if (module.semester() == 0 || module.semester() == IntraData::getInstance().userInfo().currentSemester()) {
-			module.updateDatabaseTable();
-			module.writeToDatabase();
-
-			updateActivities(module);
-		}
-
-		emit updateProgressed(i++ * 100 / unitArray.size());
-
-		if (QThread::currentThread()->isInterruptionRequested()) {
-			m_database.exec("commit;");
-			return;
-		}
-	}
-
-	m_database.exec("commit;");
-
-	emit updateProgressed(i++ * 100 / unitArray.size());
-	emit updateFinished();
-}
-
-void IntraDatabase::updateActivities(const IntraModule &unit) const {
-	QJsonDocument json = IntraSession::getInstance().get(unit.link());
-	QJsonArray activityArray = json.object().value("activites").toArray();
-	if (activityArray.isEmpty())
-		return;
-
-	size_t i = 0;
-	for (QJsonValue value : activityArray) {
-		IntraActivity activity(unit, value.toObject());
-		activity.updateDatabaseTable();
-		activity.writeToDatabase();
-
-		if (activity.isProject())
-			updateProjects(activity);
-
-		updateEvents(activity, value.toObject());
-
-		emit unitUpdateProgressed(i++ * 100 / activityArray.size());
-
-		if (QThread::currentThread()->isInterruptionRequested())
-			return;
-	}
-
-	emit unitUpdateProgressed(i++ * 100 / activityArray.size());
-	emit unitUpdateFinished();
-}
-
-void IntraDatabase::updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject) const {
-	QJsonArray eventArray = jsonObject.value("events").toArray();
-	for (QJsonValue value : eventArray) {
-		IntraEvent event(activity, value.toObject());
-		event.updateDatabaseTable();
-		event.writeToDatabase();
-
-		if (QThread::currentThread()->isInterruptionRequested())
-			return;
-	}
-}
-
-void IntraDatabase::updateProjects(const IntraActivity &activity) const {
-	QJsonDocument json = IntraSession::getInstance().get(activity.link() + "/project");
-	IntraProject project(activity, json.object());
-	project.updateDatabaseTable();
-	project.writeToDatabase();
 }
 

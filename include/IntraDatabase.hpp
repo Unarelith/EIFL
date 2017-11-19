@@ -21,8 +21,7 @@
 #include <QSqlQuery>
 #include <QThread>
 
-#include "IntraActivity.hpp"
-#include "IntraModule.hpp"
+#include "IntraDatabaseLoader.hpp"
 
 class IntraDatabase : public QObject {
 	Q_OBJECT
@@ -30,31 +29,15 @@ class IntraDatabase : public QObject {
 	public:
 		void open(const QString &path);
 		void clear() const;
-		void update() const;
 
 		static void addTable(const QString &name, const std::map<QString, QVariant> &fields);
 		static void removeTable(const QString &name);
 
-	signals:
-		void updateStarted() const;
-		void updateProgressed(int value) const;
-		void updateFinished() const;
-
-		void userUpdateFinished() const;
-		void notificationUpdateFinished() const;
-
-		void unitUpdateProgressed(int value) const;
-		void unitUpdateFinished() const;
+		const IntraDatabaseLoader &loader() const { return m_loader; }
 
 	private:
-		void updateUser() const;
-		void updateNotifications() const;
-		void updateUnits() const;
-		void updateActivities(const IntraModule &unit) const;
-		void updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject) const;
-		void updateProjects(const IntraActivity &activity) const;
-
 		QSqlDatabase m_database;
+		IntraDatabaseLoader m_loader;
 };
 
 #endif // INTRADATABASE_HPP_

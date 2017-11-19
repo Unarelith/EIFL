@@ -24,7 +24,7 @@ class IntraDatabaseThread : public QThread {
 			wait();
 		}
 
-		void run() override { m_database->update(); }
+		void run() override { m_database->loader().update(); }
 
 	private:
 		IntraDatabase *m_database;
