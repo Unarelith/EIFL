@@ -25,7 +25,7 @@ class LoginWindow : public QDialog {
 	Q_OBJECT
 
 	public:
-		LoginWindow(QWidget *parent = nullptr);
+		LoginWindow(const Keyring &keyring, QWidget *parent = nullptr);
 
 		void login();
 
@@ -35,7 +35,7 @@ class LoginWindow : public QDialog {
 		void quitButtonPressed();
 
 	private:
-		Keyring m_keyring;
+		const Keyring &m_keyring;
 
 		QLabel m_errorLabel;
 

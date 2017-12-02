@@ -24,6 +24,7 @@
 #include <QThreadPool>
 #include <QTimer>
 
+#include "LoginWindow.hpp"
 #include "MainWindow.hpp"
 
 const MainWindow *MainWindow::s_instance = nullptr;
@@ -37,9 +38,13 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	IntraData::setInstance(m_intraData);
 	IntraSession::setInstance(m_intraSession);
 
-	QTimer::singleShot(0, &m_loginWindow, &QDialog::exec);
-	connect(&m_loginWindow, &LoginWindow::quitButtonPressed, this, &MainWindow::close);
-	connect(&m_loginWindow, &QDialog::finished, this, &MainWindow::init);
+	if (m_keyring.has("eifl_login") && m_keyring.has("eifl_password")
+	 && m_intraSession.login(m_keyring) == 200) {
+		QTimer::singleShot(0, [this] { init(true); });
+	}
+	else {
+		QTimer::singleShot(0, this, &MainWindow::login);
+	}
 
 	setupWidgets();
 	setupDocks();
@@ -50,7 +55,14 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	connectObjects();
 }
 
-void MainWindow::init() {
+void MainWindow::login() {
+	auto *loginWindow = new LoginWindow(m_keyring);
+	connect(loginWindow, &LoginWindow::quitButtonPressed, this, &MainWindow::close);
+	connect(loginWindow, &QDialog::finished, this, &MainWindow::init);
+	loginWindow->exec();
+}
+
+void MainWindow::init(bool updateDatabase) {
 	QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
 	QString path = dirPath + "/intra.sqlite";
 	QFileInfo databaseInfo(path);
@@ -68,7 +80,7 @@ void MainWindow::init() {
 
 	show();
 
-	if (m_loginWindow.result())
+	if (updateDatabase)
 		m_intraData.updateDatabase();
 }
 

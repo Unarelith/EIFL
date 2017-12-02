@@ -20,7 +20,7 @@
 #include "IntraSession.hpp"
 #include "LoginWindow.hpp"
 
-LoginWindow::LoginWindow(QWidget *parent) : QDialog(parent) {
+LoginWindow::LoginWindow(const Keyring &keyring, QWidget *parent) : QDialog(parent), m_keyring(keyring) {
 	setWindowTitle("Login to Epitech Intranet");
 	resize(350, minimumSize().height());
 
@@ -47,12 +47,12 @@ void LoginWindow::login() {
 		accept();
 	}
 	else if (loginStatus == 401) {
-		m_errorLabel.setText("Bad login/password.");
+		m_errorLabel.setText("Error: Bad login/password.");
 		m_errorLabel.show();
 		m_passwordWidget.clear();
 	}
 	else {
-		m_errorLabel.setText("Login failed. (" + QString::number(loginStatus) + ")");
+		m_errorLabel.setText("Error: Failed to login. Code: " + QString::number(loginStatus));
 		m_errorLabel.show();
 		m_passwordWidget.clear();
 	}

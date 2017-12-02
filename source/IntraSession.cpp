@@ -28,12 +28,8 @@ int IntraSession::login(const Keyring &keyring) {
 	if (r.status_code == 200) {
 		m_cookies = r.cookies;
 		m_cookies["language"] = "fr";
-	}
-	else if (r.status_code == 401) {
-		std::cerr << "Error: Bad login/password." << std::endl;
-	}
-	else {
-		std::cerr << "Error: Failed to login. Code: " << r.status_code << std::endl;
+
+		m_isLoggedIn = true;
 	}
 
 	return r.status_code;

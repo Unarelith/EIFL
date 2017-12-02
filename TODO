@@ -88,7 +88,7 @@ TODO
          ▸ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
       ◦  WIP: Ajouter un mode “hors-ligne”
          ▸ DONE: Créer une vraie fenêtre de login avec un bouton “Offline mode”
-         ▸ TODO: Ne pas afficher la fenêtre de login si le mot de passe existe
+         ▸ DONE: Ne pas afficher la fenêtre de login si le mot de passe existe
          ▸ TODO: Afficher la fenêtre de login via une option de menu “Disconnect”
          ▸ TODO: Ajouter une option de menu pour activer/désactiver le mode hors-ligne
             ▹ TODO: Si l’user a lancé `eifl` en mode hors-ligne, la fenêtre de login devra pop lorsqu’il passera en ligne
