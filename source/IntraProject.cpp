@@ -27,8 +27,13 @@ IntraProject::IntraProject(unsigned int activityId, const QJsonObject &jsonObjec
 
 	set("name", jsonObject.value("title").toString());
 
-	set("is_registrable", (activity) ? !jsonObject.value("closed").toBool() && activity->registerDate().isValid() : false);
-	set("is_registered", !jsonObject.value("user_project_title").isNull());
+	set("register_state", static_cast<int>(RegisterState::Locked));
+
+	if (activity && !jsonObject.value("closed").toBool() && activity->registerDate().isValid())
+		set("register_state", static_cast<int>(RegisterState::Registrable));
+
+	if (!jsonObject.value("user_project_title").isNull())
+		set("register_state", static_cast<int>(RegisterState::Registered));
 }
 
 IntraProject::IntraProject(const QJsonObject &jsonObject) : IntraItem("projects") {
@@ -42,7 +47,9 @@ IntraProject::IntraProject(const QJsonObject &jsonObject) : IntraItem("projects"
 
 	set("name", jsonObject.value("title").toString());
 
-	set("is_registrable", activity && activity->isRegistrable());
-	set("is_registered", false);
+	set("register_state", static_cast<int>(RegisterState::Unknown));
+
+	if (activity && activity->isRegistrable())
+		set("register_state", static_cast<int>(RegisterState::Registrable));
 }
 

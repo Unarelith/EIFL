@@ -13,37 +13,30 @@
  */
 #include <iostream>
 
-#include <QInputDialog>
 #include <QStatusBar>
 
 #include "IntraSession.hpp"
 #include "MainWindow.hpp"
 
-const IntraSession *IntraSession::s_instance = nullptr;
+IntraSession *IntraSession::s_instance = nullptr;
 
-void IntraSession::login() {
-	if (!m_keyring.has("eifl_login"))
-		askLogin();
-
-	if (!m_keyring.has("eifl_password"))
-		askPassword();
-
+int IntraSession::login(const Keyring &keyring) {
 	auto r = cpr::Post(cpr::Url{baseUrl},
-	                   cpr::Payload{{"login",    m_keyring.get("eifl_login").toStdString()},
-	                                {"password", m_keyring.get("eifl_password").toStdString()},
+	                   cpr::Payload{{"login",    keyring.get("eifl_login").toStdString()},
+	                                {"password", keyring.get("eifl_password").toStdString()},
 	                                {"remind",   "on"}});
 	if (r.status_code == 200) {
 		m_cookies = r.cookies;
 		m_cookies["language"] = "fr";
 	}
 	else if (r.status_code == 401) {
-		askLogin();
-		askPassword();
-		login();
+		std::cerr << "Error: Bad login/password." << std::endl;
 	}
 	else {
 		std::cerr << "Error: Failed to login. Code: " << r.status_code << std::endl;
 	}
+
+	return r.status_code;
 }
 
 QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList &parameters) const {
@@ -69,19 +62,5 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 	// std::cout << "GET request finished in " << before.msecsTo(QTime::currentTime()) << " ms" << std::endl;
 
 	return QJsonDocument::fromJson(QByteArray::fromStdString(r.text));
-}
-
-void IntraSession::askLogin() {
-	bool ok;
-	QString text = QInputDialog::getText(nullptr, "Epitech Intra", "Login:", QLineEdit::Normal, "", &ok);
-	if (ok)
-		m_keyring.store("eifl_login", text);
-}
-
-void IntraSession::askPassword() {
-	bool ok;
-	QString text = QInputDialog::getText(nullptr, "Epitech Intra", "Password:", QLineEdit::Password, "", &ok);
-	if (ok)
-		m_keyring.store("eifl_password", text);
 }
 

@@ -80,16 +80,13 @@ TODO
          ▸  WIP: Repenser l’architecture du chargement
             ▹ DONE: Améliorer la manière dont les données sont stockées/chargées (`IntraItem`)
             ▹ DONE: Utiliser l’endpoint ‘/’ pour faire une update rapide et partielle
-            ▹ TODO: Mettre à jour les icônes de projet avec l’update partielle
+            ▹ DONE: Mettre à jour les icônes de projet avec l’update partielle
             ▹ TODO: Permettre une update partielle plus facile
                ▪ TODO: Update les items en background quand on cherche leurs infos
                ▪ TODO: Update la window si des infos ont été modifiées
          ▸ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
-      ◦ TODO: Ajouter un mode “hors-ligne”
-         ▸ TODO: Trouver une solution pour le login
-            ▹ TODO: Déplacer `IntraSession::login` dans un autre thread
-             ou
-            ▹ TODO: Créer une vraie fenêtre de login avec un bouton “Offline mode”
+      ◦  WIP: Ajouter un mode “hors-ligne”
+         ▸ DONE: Créer une vraie fenêtre de login avec un bouton “Offline mode”
          ▸ TODO: Ajouter une option de menu pour activer/désactiver le mode hors-ligne
             ▹ TODO: Si l’user a lancé `eifl` en mode hors-ligne, la fenêtre de login devra pop lorsqu’il passera en ligne
          ▸ TODO: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
@@ -156,7 +153,7 @@ TODO
 
 # UI improvements
 
-• TODO: Faire une vraie fenêtre de login
+• DONE: Faire une vraie fenêtre de login
 • TODO: Améliorer le profil utilisateur
    ◦ TODO: Afficher la photo
    ◦ TODO: Trouver une meilleure manière d’afficher les données

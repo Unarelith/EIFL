@@ -14,25 +14,63 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QFormLayout>
-#include <QLabel>
-#include <QLineEdit>
 #include <QPushButton>
 #include <QVBoxLayout>
 
+#include "IntraSession.hpp"
 #include "LoginWindow.hpp"
 
 LoginWindow::LoginWindow(QWidget *parent) : QDialog(parent) {
 	setWindowTitle("Login to Epitech Intranet");
+	resize(350, minimumSize().height());
+
+	setupWidgets();
+
+	if (m_keyring.has("eifl_login"))
+		m_loginWidget.setText(m_keyring.get("eifl_login"));
+
+	if (m_keyring.has("eifl_password")) {
+		m_passwordWidget.setText(m_keyring.get("eifl_password"));
+		m_rememberMeWidget.setCheckState(Qt::Checked);
+	}
+}
+
+void LoginWindow::login() {
+	m_keyring.store("eifl_login", m_loginWidget.text());
+	m_keyring.store("eifl_password", m_passwordWidget.text());
+
+	int loginStatus = IntraSession::getInstance().login(m_keyring);
+	if (loginStatus == 200) {
+		if (m_rememberMeWidget.checkState() == Qt::Unchecked)
+			m_keyring.remove("eifl_password");
+
+		accept();
+	}
+	else if (loginStatus == 401) {
+		m_errorLabel.setText("Bad login/password.");
+		m_errorLabel.show();
+		m_passwordWidget.clear();
+	}
+	else {
+		m_errorLabel.setText("Login failed. (" + QString::number(loginStatus) + ")");
+		m_errorLabel.show();
+		m_passwordWidget.clear();
+	}
+}
+
+void LoginWindow::setupWidgets() {
+	m_errorLabel.setStyleSheet("QLabel { color: red; }");
+	m_errorLabel.hide();
+
+	m_passwordWidget.setEchoMode(QLineEdit::Password);
 
 	auto *formLayoutWidget = new QWidget;
 	auto *formLayout = new QFormLayout(formLayoutWidget);
-	formLayout->addRow("Login:", new QLineEdit);
-	formLayout->addRow("Password:", new QLineEdit);
-
-	auto *rememberMeCheckBox = new QCheckBox("Remember my password");
+	formLayout->addRow("Login:", &m_loginWidget);
+	formLayout->addRow("Password:", &m_passwordWidget);
 
 	auto *loginButton = new QPushButton("Login");
-	connect(loginButton, &QPushButton::clicked, this, &QDialog::accept);
+	connect(loginButton, &QPushButton::clicked, this, &LoginWindow::login);
 
 	auto* line = new QFrame();
 	line->setFrameShape(QFrame::HLine);
@@ -46,8 +84,9 @@ LoginWindow::LoginWindow(QWidget *parent) : QDialog(parent) {
 	connect(quitButton, &QPushButton::clicked, this, &LoginWindow::quitButtonPressed);
 
 	auto *verticalLayout = new QVBoxLayout(this);
+	verticalLayout->addWidget(&m_errorLabel);
 	verticalLayout->addWidget(formLayoutWidget);
-	verticalLayout->addWidget(rememberMeCheckBox);
+	verticalLayout->addWidget(&m_rememberMeWidget);
 	verticalLayout->addWidget(loginButton);
 	verticalLayout->addWidget(line);
 	verticalLayout->addWidget(offlineButton);

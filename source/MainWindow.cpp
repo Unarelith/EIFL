@@ -68,10 +68,8 @@ void MainWindow::init() {
 
 	show();
 
-	if (m_loginWindow.result()) {
-		m_intraSession.login();
+	if (m_loginWindow.result())
 		m_intraData.updateDatabase();
-	}
 }
 
 void MainWindow::setupWidgets() {

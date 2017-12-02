@@ -18,14 +18,14 @@
 
 class Keyring {
 	public:
-		void store(const QString &key, const QString &value);
-		void remove(const QString &key);
+		void store(const QString &key, const QString &value) const;
+		void remove(const QString &key) const;
 
-		bool has(const QString &key);
-		QString get(const QString &key);
+		bool has(const QString &key) const;
+		QString get(const QString &key) const;
 
 	private:
-		void startJob(QKeychain::Job &job);
+		void startJob(QKeychain::Job &job) const;
 };
 
 #endif // KEYRING_HPP_

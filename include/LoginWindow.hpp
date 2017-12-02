@@ -14,7 +14,12 @@
 #ifndef LOGINWINDOW_HPP_
 #define LOGINWINDOW_HPP_
 
+#include <QCheckBox>
 #include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+
+#include "Keyring.hpp"
 
 class LoginWindow : public QDialog {
 	Q_OBJECT
@@ -22,8 +27,22 @@ class LoginWindow : public QDialog {
 	public:
 		LoginWindow(QWidget *parent = nullptr);
 
+		void login();
+
+		void setupWidgets();
+
 	signals:
 		void quitButtonPressed();
+
+	private:
+		Keyring m_keyring;
+
+		QLabel m_errorLabel;
+
+		QLineEdit m_loginWidget;
+		QLineEdit m_passwordWidget;
+
+		QCheckBox m_rememberMeWidget{"Remember my password"};
 };
 
 #endif // LOGINWINDOW_HPP_

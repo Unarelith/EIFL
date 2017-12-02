@@ -42,17 +42,21 @@ void ProjectListWidget::update() {
 			item->setText(1, it.second.name());
 			item->setText(2, QString::number(it.second.id()));
 
-			if (it.second.isRegistered()) {
-				item->setIcon(0, QIcon(":/registered.svg"));
-				item->setText(0, " 0");
-			}
-			else if (it.second.isRegistrable()) {
-				item->setIcon(0, QIcon(":/registrable.svg"));
+			if (it.second.registerState() == IntraProject::RegisterState::Locked) {
+				item->setIcon(0, QIcon(":/locked.svg"));
 				item->setText(0, " 2");
 			}
-			else {
-				item->setIcon(0, QIcon(":/locked.svg"));
+			else if (it.second.registerState() == IntraProject::RegisterState::Registered) {
+				item->setIcon(0, QIcon(":/registered.svg"));
 				item->setText(0, " 1");
+			}
+			else if (it.second.registerState() == IntraProject::RegisterState::Registrable) {
+				item->setIcon(0, QIcon(":/registrable.svg"));
+				item->setText(0, " 3");
+			}
+			else if (it.second.registerState() == IntraProject::RegisterState::Unknown) {
+				item->setIcon(0, QIcon(":/ask.svg"));
+				item->setText(0, " 0");
 			}
 		}
 	}

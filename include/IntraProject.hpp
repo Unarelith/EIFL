@@ -27,8 +27,14 @@ class IntraProject : public IntraItem {
 
 		QString name() const { return get("name").toString(); }
 
-		bool isRegistrable() const { return get("is_registrable").toBool(); }
-		bool isRegistered() const { return get("is_registered").toBool(); }
+		enum class RegisterState {
+			Unknown,
+			Locked,
+			Registered,
+			Registrable,
+		};
+
+		RegisterState registerState() const { return static_cast<RegisterState>(get("register_state").toInt()); }
 };
 
 #endif // INTRAPROJECT_HPP_

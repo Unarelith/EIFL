@@ -17,7 +17,7 @@
 
 #include "Keyring.hpp"
 
-void Keyring::store(const QString &key, const QString &value) {
+void Keyring::store(const QString &key, const QString &value) const {
 	QKeychain::WritePasswordJob job(key);
 	job.setBinaryData(value.toUtf8());
 	startJob(job);
@@ -26,7 +26,7 @@ void Keyring::store(const QString &key, const QString &value) {
 		std::cerr << "Failed to write value to keyring: " << qPrintable(job.errorString()) << std::endl;
 }
 
-void Keyring::remove(const QString &key) {
+void Keyring::remove(const QString &key) const {
 	QKeychain::DeletePasswordJob job(key);
 	startJob(job);
 
@@ -34,14 +34,14 @@ void Keyring::remove(const QString &key) {
 		std::cerr << "Failed to delete value from keyring: " << qPrintable(job.errorString()) << std::endl;
 }
 
-bool Keyring::has(const QString &key) {
+bool Keyring::has(const QString &key) const {
 	QKeychain::ReadPasswordJob job(key);
 	startJob(job);
 
 	return !job.error();
 }
 
-QString Keyring::get(const QString &key) {
+QString Keyring::get(const QString &key) const {
 	QKeychain::ReadPasswordJob job(key);
 	startJob(job);
 
@@ -51,7 +51,7 @@ QString Keyring::get(const QString &key) {
 	return job.textData();
 }
 
-void Keyring::startJob(QKeychain::Job &job) {
+void Keyring::startJob(QKeychain::Job &job) const {
 	QEventLoop loop;
 	job.setAutoDelete(false);
 	job.setKey("EpitechIntra");

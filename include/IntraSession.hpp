@@ -24,18 +24,13 @@ class IntraSession : public QObject {
 	Q_OBJECT
 
 	public:
-		void login();
+		int login(const Keyring &keyring);
 
 		using ParameterList = std::map<QString, QString>;
 		QJsonDocument get(const QString &apiEndpoint, const ParameterList &parameters = {}) const;
 
-		static const IntraSession &getInstance() {
-			return *s_instance;
-		}
-
-		static void setInstance(const IntraSession &instance) {
-			s_instance = &instance;
-		}
+		static IntraSession &getInstance() { return *s_instance; }
+		static void setInstance(IntraSession &instance) { s_instance = &instance; }
 
 		static constexpr const char *baseUrl = "https://intra.epitech.eu";
 
@@ -43,14 +38,9 @@ class IntraSession : public QObject {
 		void stateChanged(const QString &state, int timeout = 0) const;
 
 	private:
-		static const IntraSession *s_instance;
-
-		void askLogin();
-		void askPassword();
+		static IntraSession *s_instance;
 
 		cpr::Cookies m_cookies;
-
-		Keyring m_keyring;
 };
 
 #endif // INTRASESSION_HPP_
