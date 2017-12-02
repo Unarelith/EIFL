@@ -22,6 +22,7 @@
 #include <QStandardPaths>
 #include <QStatusBar>
 #include <QThreadPool>
+#include <QTimer>
 
 #include "MainWindow.hpp"
 
@@ -36,8 +37,18 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	IntraData::setInstance(m_intraData);
 	IntraSession::setInstance(m_intraSession);
 
-	m_intraSession.login();
+	QTimer::singleShot(0, &m_loginWindow, &QDialog::exec);
+	connect(&m_loginWindow, &LoginWindow::quitButtonPressed, this, &MainWindow::close);
+	connect(&m_loginWindow, &QDialog::finished, this, &MainWindow::init);
 
+	setupWidgets();
+	setupDocks();
+	setupTabs();
+	setupMenus();
+	setupStatusBar();
+}
+
+void MainWindow::init() {
 	connectObjects();
 
 	QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
@@ -46,7 +57,6 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	if (databaseInfo.exists() && databaseInfo.isFile()) {
 		m_intraData.openDatabase(path);
 		m_intraData.update();
-		m_intraData.updateDatabase();
 	}
 	else {
 		QDir dir(dirPath);
@@ -54,14 +64,14 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 			qWarning() << "Error: Failed to create directory: " + dirPath;
 
 		m_intraData.openDatabase(path);
-		m_intraData.updateDatabase();
 	}
 
-	setupWidgets();
-	setupDocks();
-	setupTabs();
-	setupMenus();
-	setupStatusBar();
+	show();
+
+	if (m_loginWindow.result()) {
+		m_intraSession.login();
+		m_intraData.updateDatabase();
+	}
 }
 
 void MainWindow::setupWidgets() {
@@ -192,6 +202,8 @@ void MainWindow::updateWidgets() {
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
+	QWidget::keyPressEvent(event);
+
 	if (event->key() == Qt::Key_Escape)
 		close();
 }

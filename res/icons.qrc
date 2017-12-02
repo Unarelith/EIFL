@@ -6,5 +6,6 @@
 	<file alias="missed.svg">icons/missed.svg</file>
 	<file alias="registered.svg">icons/registered.svg</file>
 	<file alias="registrable.svg">icons/registrable.svg</file>
+	<file alias="epitech.png">icons/epitech.png</file>
 </qresource>
 </RCC>
