@@ -82,11 +82,14 @@ TODO
             ▹ DONE: Utiliser l’endpoint ‘/’ pour faire une update rapide et partielle
             ▹ DONE: Mettre à jour les icônes de projet avec l’update partielle
             ▹ TODO: Permettre une update partielle plus facile
+               ▪ TODO: Trouver une solution pour afficher les events avant l’update complète
                ▪ TODO: Update les items en background quand on cherche leurs infos
                ▪ TODO: Update la window si des infos ont été modifiées
          ▸ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
       ◦  WIP: Ajouter un mode “hors-ligne”
          ▸ DONE: Créer une vraie fenêtre de login avec un bouton “Offline mode”
+         ▸ TODO: Ne pas afficher la fenêtre de login si le mot de passe existe
+         ▸ TODO: Afficher la fenêtre de login via une option de menu “Disconnect”
          ▸ TODO: Ajouter une option de menu pour activer/désactiver le mode hors-ligne
             ▹ TODO: Si l’user a lancé `eifl` en mode hors-ligne, la fenêtre de login devra pop lorsqu’il passera en ligne
          ▸ TODO: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra

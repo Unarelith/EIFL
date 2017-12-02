@@ -1,18 +1,27 @@
+# Editor temporary files
 \#*#
 .#*
 *~
+
+# Compiled files
 *.o
 *.a
 *.d
 a.out
+*.so
+eifl
+eifl_autogen
+
+# Debugger temporary files
 vgcore.*
 .gdb_history
-*.so
+
+# CMake temporary files
 CMakeCache.txt
 CMakeFiles/
 Makefile
 cmake_install.cmake
 compile_commands.json
-eifl
-eifl_autogen
+
+# EIFL temporary files
 *.sqlite

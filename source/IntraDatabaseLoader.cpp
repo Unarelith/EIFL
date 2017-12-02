@@ -67,16 +67,20 @@ void IntraDatabaseLoader::updateOverview() const {
 	QJsonArray projectArray = json.object().value("board").toObject().value("projets").toArray();
 	for (const QJsonValue &value : projectArray) {
 		IntraActivity activity(value.toObject());
-		activity.updateDatabaseTable();
-		activity.writeToDatabase();
+		if (!IntraData::getInstance().getActivity(activity.id())) {
+			activity.updateDatabaseTable();
+			activity.writeToDatabase();
 
-		IntraData::getInstance().setActivity(activity.id(), activity);
+			IntraData::getInstance().setActivity(activity.id(), activity);
+		}
 
 		IntraProject project(value.toObject());
-		project.updateDatabaseTable();
-		project.writeToDatabase();
+		if (!IntraData::getInstance().getProject(project.id())) {
+			project.updateDatabaseTable();
+			project.writeToDatabase();
 
-		IntraData::getInstance().setProject(project.id(), project);
+			IntraData::getInstance().setProject(project.id(), project);
+		}
 	}
 
 	emit overviewUpdateFinished();

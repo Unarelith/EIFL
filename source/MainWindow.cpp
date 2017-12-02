@@ -46,11 +46,11 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	setupTabs();
 	setupMenus();
 	setupStatusBar();
+
+	connectObjects();
 }
 
 void MainWindow::init() {
-	connectObjects();
-
 	QString dirPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
 	QString path = dirPath + "/intra.sqlite";
 	QFileInfo databaseInfo(path);
