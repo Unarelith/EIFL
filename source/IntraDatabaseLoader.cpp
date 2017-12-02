@@ -122,11 +122,10 @@ void IntraDatabaseLoader::updateActivities() const {
 	size_t i = 0;
 	auto &unitArray = IntraData::getInstance().moduleList();
 	for (auto &it : unitArray) {
-		const IntraModule &unit = it.second;
-
 		if (QThread::currentThread()->isInterruptionRequested())
 			return;
 
+		const IntraModule &unit = it.second;
 		QJsonDocument json = IntraSession::getInstance().get(unit.link());
 		QJsonArray activityArray = json.object().value("activites").toArray();
 		if (!activityArray.isEmpty()) {

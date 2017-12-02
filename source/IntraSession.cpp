@@ -38,6 +38,10 @@ int IntraSession::login(const Keyring &keyring) {
 	return r.status_code;
 }
 
+void IntraSession::logout() {
+	m_cookies = {};
+}
+
 QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList &parameters) const {
 	QString url = baseUrl + apiEndpoint + "?format=json";
 	for (auto &parameter : parameters)

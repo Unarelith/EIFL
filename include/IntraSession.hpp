@@ -25,6 +25,7 @@ class IntraSession : public QObject {
 
 	public:
 		int login(const Keyring &keyring);
+		void logout();
 
 		using ParameterList = std::map<QString, QString>;
 		QJsonDocument get(const QString &apiEndpoint, const ParameterList &parameters = {}) const;

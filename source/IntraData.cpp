@@ -26,8 +26,8 @@ IntraData::IntraData() {
 	connect(&m_database.loader(), &IntraDatabaseLoader::updateFinished, this, &IntraData::update);
 	connect(&m_database.loader(), &IntraDatabaseLoader::userUpdateFinished, this, &IntraData::updateUserList);
 	connect(&m_database.loader(), &IntraDatabaseLoader::notificationUpdateFinished, this, &IntraData::updateNotificationList);
-	connect(&m_database.loader(), &IntraDatabaseLoader::overviewUpdateFinished, this, &IntraData::databaseUpdateFinished);
-	connect(&m_database.loader(), &IntraDatabaseLoader::unitUpdateFinished, this, &IntraData::databaseUpdateFinished);
+	connect(&m_database.loader(), &IntraDatabaseLoader::overviewUpdateFinished, this, &IntraData::windowRefeshRequested);
+	connect(&m_database.loader(), &IntraDatabaseLoader::unitUpdateFinished, this, &IntraData::windowRefeshRequested);
 }
 
 void IntraData::openDatabase(const QString &path) {
@@ -40,15 +40,21 @@ void IntraData::updateDatabase() {
 }
 
 void IntraData::reloadDatabase() {
+	stopDatabaseUpdate();
 	m_database.clear();
+
 	updateDatabase();
 }
 
 void IntraData::stopDatabaseUpdate() {
-	if (m_databaseThread && m_databaseThread->isRunning())
-		m_databaseThread->requestInterruption();
+	if (m_databaseThread && m_databaseThread->isRunning()) {
+		emit stateChanged("Stopping database update...");
 
-	emit stateChanged("Database update stopped.");
+		m_databaseThread->requestInterruption();
+		m_databaseThread->wait();
+
+		emit stateChanged("Database update stopped.");
+	}
 }
 
 void IntraData::update() {
@@ -59,7 +65,7 @@ void IntraData::update() {
 	updateEventList();
 	updateProjectList();
 
-	emit databaseUpdateFinished();
+	emit windowRefeshRequested();
 }
 
 void IntraData::updateModuleList() {

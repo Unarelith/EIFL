@@ -35,6 +35,7 @@ class MainWindow : public QMainWindow {
 	public:
 		MainWindow();
 
+		void close();
 		void login();
 		void init(bool updateDatabase = false);
 

@@ -54,6 +54,11 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	connectObjects();
 }
 
+void MainWindow::close() {
+	m_intraData.stopDatabaseUpdate();
+	QMainWindow::close();
+}
+
 void MainWindow::login() {
 	m_intraData.stopDatabaseUpdate();
 
@@ -207,7 +212,7 @@ void MainWindow::connectObjects() {
 	connect(&m_moduleListWidget.moduleListWidget(), &QTreeWidget::currentItemChanged, &m_moduleInfoWidget, &ModuleInfoWidget::update);
 	connect(&m_eventListWidget.eventListWidget(), &QTreeWidget::currentItemChanged, &m_eventInfoWidget, &EventInfoWidget::update);
 
-	connect(&m_intraData, &IntraData::databaseUpdateFinished, this, &MainWindow::updateWidgets);
+	connect(&m_intraData, &IntraData::windowRefeshRequested, this, &MainWindow::updateWidgets);
 
 	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::userUpdateFinished, &m_userInfoWidget, &UserInfoWidget::update);
 	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::notificationUpdateFinished, &m_notificationListWidget, &NotificationListWidget::update);
