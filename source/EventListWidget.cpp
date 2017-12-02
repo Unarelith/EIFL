@@ -38,18 +38,21 @@ void EventListWidget::update() {
 	unsigned int eventCount = 0;
 	auto eventList = IntraData::getInstance().eventList();
 	for (auto it : eventList) {
-		if (m_semesters.contains(it.second.activity().module().semester())
+		const IntraActivity *activity = IntraData::getInstance().getActivity(it.second.activityId());
+		const IntraModule *module = IntraData::getInstance().getModule(activity ? activity->moduleId() : 0);
+
+		if (activity && module && m_semesters.contains(module->semester())
 		 && (it.second.beginDate().date() == m_date || it.second.endDate().date() == m_date)) {
-			if ((!m_isCurrentSemesterEnabled || (it.second.activity().module().semester() == IntraData::getInstance().userInfo().currentSemester() || it.second.activity().module().semester() == 0))
-		     && (!m_isRegisteredModulesEnabled || it.second.activity().module().isRegistered())
+			if ((!m_isCurrentSemesterEnabled || (module->semester() == IntraData::getInstance().userInfo().currentSemester() || module->semester() == 0))
+		     && (!m_isRegisteredModulesEnabled || module->isRegistered())
 		     && (!m_isRegisteredEventsEnabled || it.second.isRegistered())) {
 				auto *item = new QTreeWidgetItem(&m_eventListWidget);
-				item->setText(1, it.second.beginDate().toString("HH:mm") + it.second.activity().appointmentDate().toString(" (HH:mm)"));
+				item->setText(1, it.second.beginDate().toString("HH:mm") + activity->appointmentDate().toString(" (HH:mm)"));
 				item->setText(2, it.second.endDate().toString("HH:mm"));
 				item->setText(3, it.second.roomName());
-				item->setText(4, it.second.activity().typeTitle());
-				item->setText(5, it.second.activity().module().name());
-				item->setText(6, it.second.activity().name());
+				item->setText(4, activity->typeTitle());
+				item->setText(5, module->name());
+				item->setText(6, activity->name());
 
 				if (it.second.isMissed()) {
 					item->setIcon(0, QIcon(":/missed.svg"));

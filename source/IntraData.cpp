@@ -27,7 +27,8 @@ IntraData::IntraData() {
 	connect(&m_database.loader(), &IntraDatabaseLoader::updateFinished, this, &IntraData::update);
 	connect(&m_database.loader(), &IntraDatabaseLoader::userUpdateFinished, this, &IntraData::updateUserList);
 	connect(&m_database.loader(), &IntraDatabaseLoader::notificationUpdateFinished, this, &IntraData::updateNotificationList);
-	connect(&m_database.loader(), &IntraDatabaseLoader::unitUpdateFinished, this, &IntraData::update);
+	connect(&m_database.loader(), &IntraDatabaseLoader::overviewUpdateFinished, this, &IntraData::databaseUpdateFinished);
+	connect(&m_database.loader(), &IntraDatabaseLoader::unitUpdateFinished, this, &IntraData::databaseUpdateFinished);
 }
 
 void IntraData::openDatabase(const QString &path) {
@@ -70,13 +71,7 @@ void IntraData::updateActivityList() {
 	QSqlQuery query("SELECT * FROM activities");
 	while (query.next()) {
 		unsigned int moduleId = query.value(query.record().indexOf("module_id")).toUInt();
-		auto it = m_moduleList.find(moduleId);
-		if (it == m_moduleList.end()) {
-			qWarning() << "Error: Unable to find module with id" << moduleId << "for activity with id" << query.value(0).toUInt();
-			continue;
-		}
-
-		m_activityList.emplace(query.value(0).toUInt(), IntraActivity{it->second, query});
+		m_activityList.emplace(query.value(0).toUInt(), IntraActivity{moduleId, query});
 	}
 }
 
@@ -86,13 +81,7 @@ void IntraData::updateEventList() {
 	QSqlQuery query("SELECT * FROM events");
 	while (query.next()) {
 		unsigned int activityId = query.value(query.record().indexOf("activity_id")).toUInt();
-		auto it = m_activityList.find(activityId);
-		if (it == m_activityList.end()) {
-			qWarning() << "Error: Unable to find activity with id" << activityId << "for event with id" << query.value(0).toUInt();
-			continue;
-		}
-
-		m_eventList.emplace(query.value(0).toUInt(), IntraEvent{it->second, query});
+		m_eventList.emplace(query.value(0).toUInt(), IntraEvent{activityId, query});
 	}
 }
 
@@ -102,13 +91,7 @@ void IntraData::updateProjectList() {
 	QSqlQuery query("SELECT * FROM projects");
 	while (query.next()) {
 		unsigned int activityId = query.value(query.record().indexOf("activity_id")).toUInt();
-		auto it = m_activityList.find(activityId);
-		if (it == m_activityList.end()) {
-			qWarning() << "Error: Unable to find activity with id" << activityId << "for event with id" << query.value(0).toUInt();
-			continue;
-		}
-
-		m_projectList.emplace(query.value(0).toUInt(), IntraProject{it->second, query});
+		m_projectList.emplace(query.value(0).toUInt(), IntraProject{activityId, query});
 	}
 }
 

@@ -34,7 +34,10 @@ void ProjectListWidget::update() {
 
 	auto &projectList = IntraData::getInstance().projectList();
 	for (auto &it : projectList) {
-		if (it.second.activity().module().isRegistered() && it.second.activity().isCurrentlyActive()) {
+		const IntraActivity *activity = IntraData::getInstance().getActivity(it.second.activityId());
+		const IntraModule *module = IntraData::getInstance().getModule(activity ? activity->moduleId() : 0);
+
+		if (activity && (!module || module->isRegistered()) && activity->isCurrentlyActive()) {
 			auto *item = new QTreeWidgetItem(&m_projectListWidget);
 			item->setText(1, it.second.name());
 			item->setText(2, QString::number(it.second.id()));

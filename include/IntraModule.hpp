@@ -20,8 +20,8 @@
 
 class IntraModule : public IntraItem {
 	public:
-		IntraModule(const QJsonObject &jsonObject);
-		IntraModule(const QSqlQuery &sqlQuery) : IntraItem("units", sqlQuery) {}
+		explicit IntraModule(const QJsonObject &jsonObject);
+		explicit IntraModule(const QSqlQuery &sqlQuery) : IntraItem("units", sqlQuery) {}
 
 		enum Flags {
 			Optional = 1,

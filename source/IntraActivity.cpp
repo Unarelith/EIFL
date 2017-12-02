@@ -16,14 +16,21 @@
 #include <QJsonObject>
 
 #include "IntraActivity.hpp"
+#include "IntraData.hpp"
+#include "IntraModule.hpp"
 #include "IntraSession.hpp"
 
-IntraActivity::IntraActivity(const IntraModule &module, const QJsonObject &jsonObject) : IntraItem("activities"), m_module(module) {
+IntraActivity::IntraActivity(unsigned int moduleID, const QJsonObject &jsonObject) : IntraItem("activities") {
 	m_id = jsonObject.value("codeacti").toString().mid(5).toUInt();
 
-	set("module_id", module.id());
+	const IntraModule *module = nullptr;
+	if (moduleID != 0)
+		module = IntraData::getInstance().getModule(moduleID);
+
+	set("module_id", moduleID);
 
 	set("name", jsonObject.value("title").toString());
+	set("link", (module) ? module->link() + "/acti-" + QString::number(id()) : "");
 
 	set("type_code", jsonObject.value("type_code").toString());
 	set("type_title", jsonObject.value("type_title").toString());
@@ -34,7 +41,7 @@ IntraActivity::IntraActivity(const IntraModule &module, const QJsonObject &jsonO
 	set("register_date", QDateTime::fromString(jsonObject.value("end_register").toString(), "yyyy-MM-dd HH:mm:ss"));
 	set("appointment_date", {});
 
-	set("is_registrable", m_module.isRegistered() && jsonObject.value("register").toString().toUInt());
+	set("is_registrable", module && module->isRegistered() && jsonObject.value("register").toString().toUInt());
 	set("is_appointment", jsonObject.value("rdv_status").toString() == "open");
 	set("is_appointment_registered", false);
 
@@ -42,8 +49,8 @@ IntraActivity::IntraActivity(const IntraModule &module, const QJsonObject &jsonO
 	set("project_id", jsonObject.value("id_projet").toString().toUInt());
 	set("project_name", jsonObject.value("project_title").toString());
 
-	if (isAppointment() && m_module.isRegistered()) {
-		QJsonDocument json = IntraSession::getInstance().get(m_module.link() + "/acti-" + QString::number(id()) + "/rdv");
+	if (isAppointment() && module && module->isRegistered()) {
+		QJsonDocument json = IntraSession::getInstance().get(module->link() + "/acti-" + QString::number(id()) + "/rdv");
 
 		// FIXME: Find a better way to get this information
 		set("is_appointment_registered", json.object().value("student_registered").toBool()
@@ -66,5 +73,30 @@ IntraActivity::IntraActivity(const IntraModule &module, const QJsonObject &jsonO
 			}
 		}
 	}
+}
+
+IntraActivity::IntraActivity(const QJsonObject &jsonObject) : IntraItem("activities") {
+	m_id = jsonObject.value("id_activite").toString().toUInt();
+
+	set("module_id", 0);
+
+	set("name", jsonObject.value("title").toString());
+	set("link", jsonObject.value("title").toString());
+
+	set("type_code", "PRJ");
+	set("type_title", "Project");
+
+	set("begin_date", QDateTime::fromString(jsonObject.value("timeline_start").toString(), "dd/MM/yyyy, HH'h'mm"));
+	set("end_date", QDateTime::fromString(jsonObject.value("timeline_end").toString(), "dd/MM/yyyy, HH'h'mm"));
+	set("register_date", QDateTime::fromString(jsonObject.value("date_inscription").toString(), "dd/MM/yyyy, HH'h'mm"));
+	set("appointment_date", {});
+
+	set("is_registrable", QDateTime::currentDateTime() > get("begin_date").toDateTime() && QDateTime::currentDateTime() < get("register_date").toDateTime());
+	set("is_appointment", false);
+	set("is_appointment_registered", false);
+
+	set("is_project", true);
+	set("project_id", 0);
+	set("project_name", jsonObject.value("title").toString());
 }
 

@@ -14,23 +14,21 @@
 #ifndef INTRAPROJECT_HPP_
 #define INTRAPROJECT_HPP_
 
-#include "IntraActivity.hpp"
+#include "IntraItem.hpp"
 
 class IntraProject : public IntraItem {
 	public:
-		IntraProject(const IntraActivity &activity, const QJsonObject &jsonObject);
-		IntraProject(const IntraActivity &activity, const QSqlQuery &sqlQuery)
-			: IntraItem("projects", sqlQuery), m_activity(activity) {}
+		IntraProject(unsigned int activityId, const QJsonObject &jsonObject);
+		IntraProject(unsigned int activityId, const QSqlQuery &sqlQuery)
+			: IntraItem("projects", sqlQuery) {}
+		IntraProject(const QJsonObject &jsonObject);
 
-		const IntraActivity &activity() const { return m_activity; }
+		unsigned int activityId() const { return get("activity_id").toUInt(); }
 
 		QString name() const { return get("name").toString(); }
 
 		bool isRegistrable() const { return get("is_registrable").toBool(); }
 		bool isRegistered() const { return get("is_registered").toBool(); }
-
-	private:
-		const IntraActivity &m_activity;
 };
 
 #endif // INTRAPROJECT_HPP_

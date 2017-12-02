@@ -22,12 +22,6 @@ class IntraDatabaseLoader : public QObject {
 
 	public:
 		void update() const;
-		void updateUser() const;
-		void updateNotifications() const;
-		void updateUnits() const;
-		void updateActivities(const IntraModule &unit) const;
-		void updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject) const;
-		void updateProjects(const IntraActivity &activity) const;
 
 	signals:
 		void updateStarted() const;
@@ -36,9 +30,19 @@ class IntraDatabaseLoader : public QObject {
 
 		void userUpdateFinished() const;
 		void notificationUpdateFinished() const;
+		void overviewUpdateFinished() const;
 
 		void unitUpdateProgressed(int value) const;
 		void unitUpdateFinished() const;
+
+	private:
+		void updateUser() const;
+		void updateNotifications() const;
+		void updateOverview() const;
+		void updateUnits() const;
+		void updateActivities() const;
+		void updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject) const;
+		void updateProjects(const IntraActivity &activity) const;
 };
 
 #endif // INTRADATABASELOADER_HPP_

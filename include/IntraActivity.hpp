@@ -16,18 +16,19 @@
 
 #include <QDateTime>
 
-#include "IntraModule.hpp"
+#include "IntraItem.hpp"
 
 class IntraActivity : public IntraItem {
 	public:
-		IntraActivity(const IntraModule &module, const QJsonObject &jsonObject);
-		IntraActivity(const IntraModule &module, const QSqlQuery &sqlQuery)
-			: IntraItem("activities", sqlQuery), m_module(module) {}
+		IntraActivity(unsigned int moduleId, const QJsonObject &jsonObject);
+		IntraActivity(unsigned int moduleId, const QSqlQuery &sqlQuery)
+			: IntraItem("activities", sqlQuery) {}
+		IntraActivity(const QJsonObject &jsonObject);
 
-		const IntraModule &module() const { return m_module; }
+		unsigned int moduleId() const { return get("module_id").toInt(); }
 
 		QString name() const { return get("name").toString(); }
-		QString link() const { return m_module.link() + "/acti-" + QString::number(id()); }
+		QString link() const { return get("link").toString(); }
 
 		QString typeCode() const { return get("type_code").toString(); }
 		QString typeTitle() const { return get("type_title").toString(); }
@@ -45,9 +46,6 @@ class IntraActivity : public IntraItem {
 		bool isProject() const { return get("is_project").toBool(); }
 		unsigned int projectId() const { return get("project_id").toUInt(); }
 		QString projectName() const { return get("project_name").toString(); }
-
-	private:
-		const IntraModule &m_module;
 
 };
 

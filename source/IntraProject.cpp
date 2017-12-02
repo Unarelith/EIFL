@@ -13,16 +13,36 @@
  */
 #include <QJsonObject>
 
+#include "IntraData.hpp"
 #include "IntraProject.hpp"
 
-IntraProject::IntraProject(const IntraActivity &activity, const QJsonObject &jsonObject) : IntraItem("projects"), m_activity(activity) {
-	m_id = activity.id();
+IntraProject::IntraProject(unsigned int activityId, const QJsonObject &jsonObject) : IntraItem("projects") {
+	const IntraActivity *activity = nullptr;
+	if (activityId != 0)
+		activity = IntraData::getInstance().getActivity(activityId);
 
-	set("activity_id", m_activity.id());
+	m_id = activityId;
+
+	set("activity_id", activityId);
 
 	set("name", jsonObject.value("title").toString());
 
-	set("is_registrable", !jsonObject.value("closed").toBool() && m_activity.registerDate().isValid());
+	set("is_registrable", (activity) ? !jsonObject.value("closed").toBool() && activity->registerDate().isValid() : false);
 	set("is_registered", !jsonObject.value("user_project_title").isNull());
+}
+
+IntraProject::IntraProject(const QJsonObject &jsonObject) : IntraItem("projects") {
+	m_id = jsonObject.value("id_activite").toString().toUInt();
+
+	const IntraActivity *activity = nullptr;
+	if (m_id != 0)
+		activity = IntraData::getInstance().getActivity(m_id);
+
+	set("activity_id", m_id);
+
+	set("name", jsonObject.value("title").toString());
+
+	set("is_registrable", activity && activity->isRegistrable());
+	set("is_registered", false);
 }
 

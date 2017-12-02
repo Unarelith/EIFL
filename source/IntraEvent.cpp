@@ -13,16 +13,21 @@
  */
 #include <QJsonObject>
 
+#include "IntraData.hpp"
 #include "IntraEvent.hpp"
 
-IntraEvent::IntraEvent(const IntraActivity &activity, const QJsonObject &jsonObject) : IntraItem("events"), m_activity(activity) {
+IntraEvent::IntraEvent(unsigned int activityId, const QJsonObject &jsonObject) : IntraItem("events") {
+	const IntraActivity *activity = nullptr;
+	if (activityId != 0)
+		activity = IntraData::getInstance().getActivity(activityId);
+
 	m_id = jsonObject.value("code").toString().mid(6).toUInt();
 
-	set("activity_id", m_activity.id());
+	set("activity_id", activityId);
 
 	// FIXME: Find a better way to get this information
-	set("is_registrable", m_activity.isRegistrable());
-	set("is_registered", !jsonObject.value("already_register").isNull() || m_activity.isAppointmentRegistered());
+	set("is_registrable", activity && activity->isRegistrable());
+	set("is_registered", !jsonObject.value("already_register").isNull() || (activity && activity->isAppointmentRegistered()));
 	set("is_missed", jsonObject.value("user_status").toString() == "absent");
 	set("is_token_writable", jsonObject.value("allow_token").toString().toInt());
 

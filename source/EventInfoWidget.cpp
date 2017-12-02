@@ -31,12 +31,15 @@ EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event details",
 void EventInfoWidget::update(QTreeWidgetItem *item) {
 	if (item) {
 		for (auto &it : IntraData::getInstance().eventList()) {
-			if (item->text(item->columnCount() - 1) == it.second.activity().name()) {
-				m_name.setText(it.second.activity().name());
-				m_moduleName.setText(it.second.activity().module().name());
+			const IntraActivity *activity = IntraData::getInstance().getActivity(it.second.activityId());
+			const IntraModule *module = IntraData::getInstance().getModule(activity ? activity->moduleId() : 0);
 
-				m_isAppointment.setText(QString::number(it.second.activity().isAppointment()));
-				m_appointmentDate.setText(it.second.activity().appointmentDate().toString(Qt::SystemLocaleShortDate));
+			if (activity && item->text(item->columnCount() - 1) == activity->name()) {
+				m_name.setText(activity->name());
+				m_moduleName.setText(module ? module->name() : "");
+
+				m_isAppointment.setText(QString::number(activity->isAppointment()));
+				m_appointmentDate.setText(activity->appointmentDate().toString(Qt::SystemLocaleShortDate));
 			}
 		}
 	}

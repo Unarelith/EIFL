@@ -18,11 +18,11 @@
 
 class IntraEvent : public IntraItem {
 	public:
-		IntraEvent(const IntraActivity &activity, const QJsonObject &jsonObject);
-		IntraEvent(const IntraActivity &activity, const QSqlQuery &sqlQuery)
-			: IntraItem("events", sqlQuery), m_activity(activity) {}
+		IntraEvent(unsigned int activityId, const QJsonObject &jsonObject);
+		IntraEvent(unsigned int activityId, const QSqlQuery &sqlQuery)
+			: IntraItem("events", sqlQuery) {}
 
-		const IntraActivity &activity() const { return m_activity; }
+		unsigned int activityId() const { return get("activity_id").toUInt(); }
 
 		// FIXME: Some sessions require only 1 hour, not 1 day
 		bool isValid() const { return QDateTime::currentDateTime().addDays(1) < beginDate(); }
@@ -36,9 +36,6 @@ class IntraEvent : public IntraItem {
 
 		QDateTime beginDate() const { return get("begin_date").toDateTime(); }
 		QDateTime endDate() const { return get("end_date").toDateTime(); }
-
-	private:
-		const IntraActivity &m_activity;
 };
 
 #endif // INTRAEVENT_HPP_
