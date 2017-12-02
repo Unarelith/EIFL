@@ -34,6 +34,9 @@ void IntraDatabaseLoader::update() const {
 	updateActivities();
 
 	QSqlDatabase::database().exec("commit;");
+
+	emit updateProgressed(0);
+	emit unitUpdateProgressed(0);
 }
 
 void IntraDatabaseLoader::updateUser() const {
@@ -66,6 +69,9 @@ void IntraDatabaseLoader::updateOverview() const {
 	QJsonDocument json = IntraSession::getInstance().get("/");
 	QJsonArray projectArray = json.object().value("board").toObject().value("projets").toArray();
 	for (const QJsonValue &value : projectArray) {
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		IntraActivity activity(value.toObject());
 		if (!IntraData::getInstance().getActivity(activity.id())) {
 			activity.updateDatabaseTable();
@@ -94,6 +100,9 @@ void IntraDatabaseLoader::updateUnits() const {
 		return;
 
 	for (const QJsonValue &value : unitArray) {
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		IntraModule module(value.toObject());
 		if (module.semester() == 0 || module.semester() == IntraData::getInstance().userInfo().currentSemester()) {
 			module.updateDatabaseTable();
@@ -101,9 +110,6 @@ void IntraDatabaseLoader::updateUnits() const {
 
 			IntraData::getInstance().setModule(module.id(), module);
 		}
-
-		if (QThread::currentThread()->isInterruptionRequested())
-			return;
 	}
 
 	emit unitUpdateFinished();
@@ -118,11 +124,17 @@ void IntraDatabaseLoader::updateActivities() const {
 	for (auto &it : unitArray) {
 		const IntraModule &unit = it.second;
 
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		QJsonDocument json = IntraSession::getInstance().get(unit.link());
 		QJsonArray activityArray = json.object().value("activites").toArray();
 		if (!activityArray.isEmpty()) {
 			size_t j = 0;
 			for (const QJsonValue &value : activityArray) {
+				if (QThread::currentThread()->isInterruptionRequested())
+					return;
+
 				IntraActivity activity(unit.id(), value.toObject());
 				activity.updateDatabaseTable();
 				activity.writeToDatabase();
@@ -135,9 +147,6 @@ void IntraDatabaseLoader::updateActivities() const {
 				updateEvents(activity, value.toObject());
 
 				emit unitUpdateProgressed(j++ * 100 / activityArray.size());
-
-				if (QThread::currentThread()->isInterruptionRequested())
-					return;
 			}
 
 			emit unitUpdateProgressed(j++ * 100 / activityArray.size());
@@ -154,14 +163,14 @@ void IntraDatabaseLoader::updateActivities() const {
 void IntraDatabaseLoader::updateEvents(const IntraActivity &activity, const QJsonObject &jsonObject) const {
 	QJsonArray eventArray = jsonObject.value("events").toArray();
 	for (const QJsonValue &value : eventArray) {
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		IntraEvent event(activity.id(), value.toObject());
 		event.updateDatabaseTable();
 		event.writeToDatabase();
 
 		IntraData::getInstance().setEvent(event.id(), event);
-
-		if (QThread::currentThread()->isInterruptionRequested())
-			return;
 	}
 }
 
