@@ -36,6 +36,9 @@ LoginWindow::LoginWindow(const Keyring &keyring, QWidget *parent) : QDialog(pare
 }
 
 void LoginWindow::login() {
+	if (m_loginWidget.text() != m_keyring.get("eifl_login"))
+		emit databaseReloadRequested();
+
 	m_keyring.store("eifl_login", m_loginWidget.text());
 	m_keyring.store("eifl_password", m_passwordWidget.text());
 

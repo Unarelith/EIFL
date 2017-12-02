@@ -32,6 +32,7 @@ class LoginWindow : public QDialog {
 		void setupWidgets();
 
 	signals:
+		void databaseReloadRequested();
 		void quitButtonPressed();
 
 	private:
