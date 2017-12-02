@@ -19,11 +19,14 @@ void IntraDatabase::open(const QString &path) {
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE"))
 		throw std::runtime_error("SQLite required!");
 
-	m_database = QSqlDatabase::addDatabase("QSQLITE");
-	m_database.setDatabaseName(path);
-	if (!m_database.open()) {
-		qWarning() << "Error: " << m_database.lastError();
-		throw std::runtime_error("Error: Failed to load database: " + path.toStdString());
+	m_database = QSqlDatabase::database();
+	if (!m_database.isValid()) {
+		m_database = QSqlDatabase::addDatabase("QSQLITE");
+		m_database.setDatabaseName(path);
+		if (!m_database.open()) {
+			qWarning() << "Error: " << m_database.lastError();
+			throw std::runtime_error("Error: Failed to load database: " + path.toStdString());
+		}
 	}
 }
 

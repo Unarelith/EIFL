@@ -55,6 +55,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 }
 
 void MainWindow::login() {
+	m_intraData.stopDatabaseUpdate();
+
 	auto *loginWindow = new LoginWindow(m_keyring);
 	// FIXME: Stop database update if user closed the program
 	connect(loginWindow, &LoginWindow::quitButtonPressed, this, &MainWindow::close);
@@ -116,7 +118,6 @@ void MainWindow::setupTabs() {
 
 void MainWindow::setupMenus() {
 	QAction *loginAction = new QAction(tr("&Login..."), this);
-	loginAction->setDisabled(true); // FIXME
 	loginAction->setStatusTip("Login to Epitech Intranet");
 	connect(loginAction, &QAction::triggered, this, &MainWindow::login);
 
