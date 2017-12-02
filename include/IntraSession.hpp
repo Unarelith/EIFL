@@ -37,6 +37,8 @@ class IntraSession : public QObject {
 		static constexpr const char *baseUrl = "https://intra.epitech.eu";
 
 	signals:
+		void httpError(int errorCode) const;
+
 		void stateChanged(const QString &state, int timeout = 0) const;
 
 	private:

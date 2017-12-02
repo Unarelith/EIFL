@@ -38,8 +38,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	IntraData::setInstance(m_intraData);
 	IntraSession::setInstance(m_intraSession);
 
-	if (m_keyring.has("eifl_login") && m_keyring.has("eifl_password")
-	 && m_intraSession.login(m_keyring) == 200) {
+	if (m_keyring.has("eifl_login") && m_keyring.has("eifl_password") && m_intraSession.login(m_keyring) == 200) {
 		QTimer::singleShot(0, [this] { init(true); });
 	}
 	else {
@@ -57,6 +56,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 
 void MainWindow::login() {
 	auto *loginWindow = new LoginWindow(m_keyring);
+	// FIXME: Stop database update if user closed the program
 	connect(loginWindow, &LoginWindow::quitButtonPressed, this, &MainWindow::close);
 	connect(loginWindow, &QDialog::finished, this, &MainWindow::init);
 	loginWindow->exec();
@@ -115,12 +115,19 @@ void MainWindow::setupTabs() {
 }
 
 void MainWindow::setupMenus() {
+	QAction *loginAction = new QAction(tr("&Login..."), this);
+	loginAction->setDisabled(true); // FIXME
+	loginAction->setStatusTip("Login to Epitech Intranet");
+	connect(loginAction, &QAction::triggered, this, &MainWindow::login);
+
 	QAction *exitAction = new QAction(tr("&Exit"), this);
 	exitAction->setShortcut(QKeySequence::Quit);
 	exitAction->setStatusTip("Exit the program");
 	connect(exitAction, &QAction::triggered, this, &MainWindow::close);
 
 	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+	fileMenu->addAction(loginAction);
+	fileMenu->addSeparator();
 	fileMenu->addAction(exitAction);
 
 	QAction *updateAction = new QAction(tr("&Update"), this);
@@ -133,9 +140,15 @@ void MainWindow::setupMenus() {
 	reloadAction->setStatusTip("Performs a full reload of the database");
 	connect(reloadAction, &QAction::triggered, &m_intraData, &IntraData::reloadDatabase);
 
+	QAction *stopAction = new QAction(tr("&Stop"), this);
+	stopAction->setShortcut(QKeySequence::fromString("Ctrl+C"));
+	stopAction->setStatusTip("Stop database update");
+	connect(stopAction, &QAction::triggered, &m_intraData, &IntraData::stopDatabaseUpdate);
+
 	QMenu *databaseMenu = menuBar()->addMenu(tr("&Database"));
 	databaseMenu->addAction(updateAction);
 	databaseMenu->addAction(reloadAction);
+	databaseMenu->addAction(stopAction);
 
 	QAction *aboutAction = new QAction(tr("&About"), this);
 	aboutAction->setShortcut(QKeySequence::HelpContents);
@@ -162,9 +175,10 @@ void MainWindow::setupStatusBar() {
 	statusBar->addPermanentWidget(dbUpdateBar);
 	statusBar->addPermanentWidget(unitUpdateBar);
 
+	connect(&m_intraSession, &IntraSession::stateChanged, statusBar, &QStatusBar::showMessage);
+	connect(&m_intraData, &IntraData::stateChanged, statusBar, &QStatusBar::showMessage);
 	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::updateProgressed, dbUpdateBar, &QProgressBar::setValue);
 	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::unitUpdateProgressed, unitUpdateBar, &QProgressBar::setValue);
-	connect(&m_intraSession, &IntraSession::stateChanged, statusBar, &QStatusBar::showMessage);
 }
 
 void MainWindow::showStatusTip(const QString &statusString) {

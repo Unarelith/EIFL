@@ -17,6 +17,7 @@
 #include <map>
 
 #include "IntraDatabase.hpp"
+#include "IntraDatabaseThread.hpp"
 #include "IntraEvent.hpp"
 #include "IntraModule.hpp"
 #include "IntraNotification.hpp"
@@ -32,6 +33,7 @@ class IntraData : public QObject {
 		void openDatabase(const QString &path);
 		void updateDatabase();
 		void reloadDatabase();
+		void stopDatabaseUpdate();
 
 		void update();
 		void updateModuleList();
@@ -72,12 +74,14 @@ class IntraData : public QObject {
 		}
 
 	signals:
+		void stateChanged(const QString &state, int timeout = 0);
 		void databaseUpdateFinished();
 
 	private:
 		static IntraData *s_instance;
 
 		IntraDatabase m_database;
+		IntraDatabaseThread *m_databaseThread = nullptr;
 
 		template<typename T>
 		const T *getItem(unsigned int id, const std::map<unsigned int, T> &itemList) {

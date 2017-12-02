@@ -17,7 +17,6 @@
 #include <QProgressDialog>
 #include <QSqlRecord>
 
-#include "IntraDatabaseThread.hpp"
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
 
@@ -36,13 +35,20 @@ void IntraData::openDatabase(const QString &path) {
 }
 
 void IntraData::updateDatabase() {
-	IntraDatabaseThread *thread = new IntraDatabaseThread(&m_database);
-	thread->start();
+	m_databaseThread = new IntraDatabaseThread(&m_database);
+	m_databaseThread->start();
 }
 
 void IntraData::reloadDatabase() {
 	m_database.clear();
 	updateDatabase();
+}
+
+void IntraData::stopDatabaseUpdate() {
+	if (m_databaseThread && m_databaseThread->isRunning())
+		m_databaseThread->requestInterruption();
+
+	emit stateChanged("Database update stopped.");
 }
 
 void IntraData::update() {
