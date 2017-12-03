@@ -53,65 +53,20 @@ TODO
 
 # Client features
 
-• WIP: /Urgent/ Séparer la partie “Données” du reste correctement
-   ◦ WIP: Trouver une solution pour stocker activités et events
-      ◦ DONE: Stocker les données en local dans une bdd
-      ◦ DONE: Ajouter une option de menu pour update les données
-      ◦ DONE: Afficher l’avancement de l’update dans la status bar de la MainWindow
-      ◦ DONE: Stocker la bdd dans le cache de l’user
-      ◦ DONE: Régler les états d’enregistrement
-         ▸ DONE: Events
-         ▸ DONE: Projets
-         ▸ DONE: Modules
-      ◦ DONE: Rajouter les projets manquants
-      ◦ DONE: Rajouter les events manquants
-      ◦ DONE: Rajouter les modules manquants
-      ◦ DONE: Après une update, mettre à jour la liste des events
-      ◦ DONE: Fix le segfault de la status bar (causé par les lambda dans connect)
-      ◦ DONE: Fix les rdv sur les events + isRegistered
-         ▸ DONE: Fix les rdv solo
-      ◦ DONE: Ajouter une option de menu pour reload totalement la bdd
-      ◦ DONE: Quand l’intra est down, aucun moyen pour récupérer le semestre courant
-         ▸ DONE: Stocker l’user (et donc le semestre courant) dans la bdd
-         ▸ DONE: Load l’user depuis la bdd
-      ◦ DONE: Ajouter les notifications à la bdd
-      ◦ DONE: Améliorer les updates
-         ▸ DONE: Remplir progressivement les listes
-         ▸ DONE: Repenser l’architecture du chargement
-            ▹ DONE: Améliorer la manière dont les données sont stockées/chargées (`IntraItem`)
-            ▹ DONE: Utiliser l’endpoint ‘/’ pour faire une update rapide et partielle
-            ▹ DONE: Mettre à jour les icônes de projet avec l’update partielle
-         ▸ DONE: Empêcher le lancement d’une update si une autre est déjà en cours
-      ◦ DONE: Ajouter un mode “hors-ligne”
-         ▸ DONE: Créer une vraie fenêtre de login avec un bouton “Offline mode”
-         ▸ DONE: Ne pas afficher la fenêtre de login si le mot de passe existe
-         ▸ DONE: Afficher la fenêtre de login via une option de menu “Login...”
-         ▸ DONE: Afficher un icône dans la status bar pour l’état de la connexion
-         ▸ DONE: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
-         ▸ DONE: Ajouter une option de menu pour activer/désactiver le mode hors-ligne
-            ▹ DONE: Si l’user a lancé `eifl` en mode hors-ligne, la fenêtre de login devra pop lorsqu’il passera en ligne
-      ◦ DONE: Finalisation
-         ▸ DONE: Comparer avec l’ancienne version
-         ▸ DONE: Virer les messages de debug
-         ▸ DONE: Clean le code et refactoriser au possible
-         ▸ DONE: Merge avec ‘master’ quand tout est prêt
-         ▸ DONE: Supprimer la branche ‘sql’ et créer une branche ‘dev’
-         ▸ DONE: Modifier /contrib/eifl-dev-git.aur/PKGBUILD pour utiliser la branche ‘dev’
-         ▸ DONE: Copier le /PKGBUILD vers le dépôt AUR et push
-         ▸ DONE: Update le screenshot
-
 • TODO: Permettre une update partielle plus facile
    ◦ TODO: Trouver une solution pour afficher les events avant l’update complète
    ◦ TODO: Update les items en background quand on cherche leurs infos si l’user est connecté
    ◦ TODO: Update la window si des infos ont été modifiées
    ◦ TODO: Faire une fenêtre pour l’update (pour choisir quelles parties doivent être téléchargées)
 • TODO: Si le chargement de la db fail, proposer de la reload entièrement
+
 • TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
    ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
+
 • TODO: Séparer la fenêtre principale du reste du programme
    ◦ TODO: Faire un tray icon qui ferme/ouvre la fenêtre principale
    ◦ TODO: Tant que le tray icon est actif, update les données toutes les X min
-   • TODO: Vérifier que l’update fonctionne bien sans la fenêtre
+   ◦ TODO: Vérifier que l’update fonctionne bien sans la fenêtre
 
 • TODO: Analyser les données et générer des notifications avec libnotify
    ◦ TODO: Faire un vrai système de notification dans le programme
