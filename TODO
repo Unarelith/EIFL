@@ -90,15 +90,15 @@ TODO
          ▸ DONE: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
          ▸ DONE: Ajouter une option de menu pour activer/désactiver le mode hors-ligne
             ▹ DONE: Si l’user a lancé `eifl` en mode hors-ligne, la fenêtre de login devra pop lorsqu’il passera en ligne
-      ◦  WIP: Finalisation
+      ◦ DONE: Finalisation
          ▸ DONE: Comparer avec l’ancienne version
          ▸ DONE: Virer les messages de debug
          ▸ DONE: Clean le code et refactoriser au possible
-         ▸ TODO: Merge avec ‘master’ quand tout est prêt
-         ▸ TODO: Supprimer la branche ‘sql’ et créer une branche ‘dev’
-         ▸ TODO: Modifier /contrib/eifl-dev-git.aur/PKGBUILD pour utiliser la branche ‘dev’
-         ▸ TODO: Copier le /PKGBUILD vers le dépôt AUR et push
-         ▸ TODO: Update le screenshot
+         ▸ DONE: Merge avec ‘master’ quand tout est prêt
+         ▸ DONE: Supprimer la branche ‘sql’ et créer une branche ‘dev’
+         ▸ DONE: Modifier /contrib/eifl-dev-git.aur/PKGBUILD pour utiliser la branche ‘dev’
+         ▸ DONE: Copier le /PKGBUILD vers le dépôt AUR et push
+         ▸ DONE: Update le screenshot
 
 • TODO: Permettre une update partielle plus facile
    ◦ TODO: Trouver une solution pour afficher les events avant l’update complète
