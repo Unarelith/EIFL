@@ -24,7 +24,9 @@ int IntraSession::login(const Keyring &keyring) {
 	auto r = cpr::Post(cpr::Url{baseUrl},
 	                   cpr::Payload{{"login",    keyring.get("eifl_login").toStdString()},
 	                                {"password", keyring.get("eifl_password").toStdString()},
-	                                {"remind",   "on"}});
+	                                {"remind",   "on"}},
+	                   cpr::Timeout{5000});
+
 	if (r.status_code == 200) {
 		m_cookies = r.cookies;
 		m_cookies["language"] = "fr";
