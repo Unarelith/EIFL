@@ -35,6 +35,8 @@ void IntraData::openDatabase(const QString &path) {
 }
 
 void IntraData::updateDatabase() {
+	stopDatabaseUpdate();
+
 	m_databaseThread = new IntraDatabaseThread(&m_database);
 	m_databaseThread->start();
 }

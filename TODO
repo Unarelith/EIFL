@@ -85,15 +85,15 @@ TODO
                ▪ TODO: Trouver une solution pour afficher les events avant l’update complète
                ▪ TODO: Update les items en background quand on cherche leurs infos
                ▪ TODO: Update la window si des infos ont été modifiées
-         ▸ TODO: Empêcher le lancement d’une update si une autre est déjà en cours
-      ◦  WIP: Ajouter un mode “hors-ligne”
+         ▸ DONE: Empêcher le lancement d’une update si une autre est déjà en cours
+      ◦ DONE: Ajouter un mode “hors-ligne”
          ▸ DONE: Créer une vraie fenêtre de login avec un bouton “Offline mode”
          ▸ DONE: Ne pas afficher la fenêtre de login si le mot de passe existe
          ▸ DONE: Afficher la fenêtre de login via une option de menu “Login...”
          ▸ DONE: Afficher un icône dans la status bar pour l’état de la connexion
          ▸ DONE: Le programme devrait s’ouvrir même s’il est impossible de se connecter à l’intra
-         ▸ TODO: Ajouter une option de menu pour activer/désactiver le mode hors-ligne
-            ▹ TODO: Si l’user a lancé `eifl` en mode hors-ligne, la fenêtre de login devra pop lorsqu’il passera en ligne
+         ▸ DONE: Ajouter une option de menu pour activer/désactiver le mode hors-ligne
+            ▹ DONE: Si l’user a lancé `eifl` en mode hors-ligne, la fenêtre de login devra pop lorsqu’il passera en ligne
       ◦ TODO: Finalisation
          ▸ TODO: Comparer avec l’ancienne version
          ▸ TODO: Virer les messages de debug

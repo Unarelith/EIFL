@@ -50,12 +50,18 @@ void IntraDatabaseLoader::updateUser() const {
 }
 
 void IntraDatabaseLoader::updateNotifications() const {
+	if (QThread::currentThread()->isInterruptionRequested())
+		return;
+
 	QJsonDocument json = IntraSession::getInstance().get("/");
 	QJsonArray notificationArray = json.object().value("history").toArray();
 	if (notificationArray.isEmpty())
 		return;
 
 	for (QJsonValue value : notificationArray) {
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
 		IntraNotification notification(value.toObject());
 		notification.updateDatabaseTable();
 		notification.writeToDatabase();
@@ -66,6 +72,9 @@ void IntraDatabaseLoader::updateNotifications() const {
 }
 
 void IntraDatabaseLoader::updateOverview() const {
+	if (QThread::currentThread()->isInterruptionRequested())
+		return;
+
 	QJsonDocument json = IntraSession::getInstance().get("/");
 	QJsonArray projectArray = json.object().value("board").toObject().value("projets").toArray();
 	for (const QJsonValue &value : projectArray) {
@@ -94,6 +103,9 @@ void IntraDatabaseLoader::updateOverview() const {
 }
 
 void IntraDatabaseLoader::updateUnits() const {
+	if (QThread::currentThread()->isInterruptionRequested())
+		return;
+
 	QJsonDocument json = IntraSession::getInstance().get("/course/filter");
 	QJsonArray unitArray = json.array();
 	if (unitArray.isEmpty())

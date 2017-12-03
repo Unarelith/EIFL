@@ -44,6 +44,7 @@ int IntraSession::login(const Keyring &keyring) {
 
 void IntraSession::logout() {
 	m_cookies = {};
+	m_isLoggedIn = false;
 
 	emit userLoggedOut();
 }
@@ -64,6 +65,11 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 		std::cerr << "Error: Http request failed. Code: " << r.status_code << std::endl;
 		emit stateChanged("Request failed. (" + QString::number(r.status_code) + ")");
 		emit httpError(r.status_code);
+
+		if (r.status_code == 401) {
+			QThread::currentThread()->requestInterruption();
+			emit userLoginRequired();
+		}
 	}
 	// else {
 	// 	emit stateChanged("Downloading intra data... Done. (" + QString::number(r.status_code) + ")");
