@@ -45,6 +45,12 @@ void IntraData::reloadDatabase() {
 	stopDatabaseUpdate();
 	m_database.clear();
 
+	m_moduleList.clear();
+	m_activityList.clear();
+	m_eventList.clear();
+	m_projectList.clear();
+	m_notificationList.clear();
+
 	updateDatabase();
 }
 
@@ -56,6 +62,8 @@ void IntraData::stopDatabaseUpdate() {
 		m_databaseThread->wait();
 
 		emit stateChanged("Database update stopped.");
+
+		m_databaseThread = nullptr;
 	}
 }
 

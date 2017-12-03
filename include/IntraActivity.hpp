@@ -43,6 +43,8 @@ class IntraActivity : public IntraItem {
 		bool isAppointment() const { return get("is_appointment").toBool(); }
 		bool isAppointmentRegistered() const { return get("is_appointment_registered").toBool(); }
 
+		unsigned int appointmentEventId() const { return get("appointment_event_id").toUInt(); }
+
 		bool isProject() const { return get("is_project").toBool(); }
 		unsigned int projectId() const { return get("project_id").toUInt(); }
 		QString projectName() const { return get("project_name").toString(); }

@@ -45,6 +45,8 @@ IntraActivity::IntraActivity(unsigned int moduleID, const QJsonObject &jsonObjec
 	set("is_appointment", jsonObject.value("rdv_status").toString() == "open");
 	set("is_appointment_registered", false);
 
+	set("appointment_event_id", 0);
+
 	set("is_project", jsonObject.value("is_projet").toBool());
 	set("project_id", jsonObject.value("id_projet").toString().toUInt());
 	set("project_name", jsonObject.value("project_title").toString());
@@ -52,22 +54,19 @@ IntraActivity::IntraActivity(unsigned int moduleID, const QJsonObject &jsonObjec
 	if (isAppointment() && module && module->isRegistered()) {
 		QJsonDocument json = IntraSession::getInstance().get(module->link() + "/acti-" + QString::number(id()) + "/rdv");
 
-		// FIXME: Find a better way to get this information
-		set("is_appointment_registered", json.object().value("student_registered").toBool()
-		                              && json.object().value("with_project").toBool());
+		set("is_appointment_registered", json.object().value("group").isObject()
+		                              && json.object().value("group").toObject().value("inscrit").toBool());
 
 		// FIXME: Sometimes userId may be used instead of teamId, how to get current user id?
 		if (isAppointmentRegistered()) {
 			unsigned int teamId = json.object().value("group").toObject().value("id").toInt();
 			QJsonArray eventArray = json.object().value("slots").toArray();
 			for (QJsonValue eventValue : eventArray) {
-				if (eventValue.toObject().value("codeevent").toString() == "event-" + QString::number(m_id)) {
-					QJsonArray slotArray = eventValue.toObject().value("slots").toArray();
-					for (QJsonValue slotValue : slotArray) {
-						if (slotValue.toObject().value("id_team").toString().toUInt() == teamId) {
-							set("is_appointment_registered", true);
-							set("appointment_date", QDateTime::fromString(slotValue.toObject().value("date").toString(), "yyyy-MM-dd HH:mm:ss"));
-						}
+				QJsonArray slotArray = eventValue.toObject().value("slots").toArray();
+				for (QJsonValue slotValue : slotArray) {
+					if (slotValue.toObject().value("id_team").toString().toUInt() == teamId) {
+						set("appointment_date", QDateTime::fromString(slotValue.toObject().value("date").toString(), "yyyy-MM-dd HH:mm:ss"));
+						set("appointment_event_id", eventValue.toObject().value("codeevent").toString().mid(6).toInt());
 					}
 				}
 			}
@@ -94,6 +93,8 @@ IntraActivity::IntraActivity(const QJsonObject &jsonObject) : IntraItem("activit
 	set("is_registrable", QDateTime::currentDateTime() > get("begin_date").toDateTime() && QDateTime::currentDateTime() < get("register_date").toDateTime());
 	set("is_appointment", false);
 	set("is_appointment_registered", false);
+
+	set("appointment_event_id", 0);
 
 	set("is_project", true);
 	set("project_id", 0);

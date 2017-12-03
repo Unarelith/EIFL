@@ -30,16 +30,23 @@ EventInfoWidget::EventInfoWidget(QWidget *parent) : QDockWidget("Event details",
 
 void EventInfoWidget::update(QTreeWidgetItem *item) {
 	if (item) {
-		for (auto &it : IntraData::getInstance().eventList()) {
+		auto &eventList = IntraData::getInstance().eventList();
+		for (auto &it : eventList) {
 			const IntraActivity *activity = IntraData::getInstance().getActivity(it.second.activityId());
 			const IntraModule *module = IntraData::getInstance().getModule(activity ? activity->moduleId() : 0);
 
-			if (activity && item->text(item->columnCount() - 1) == activity->name()) {
+			if (activity && item->text(0).mid(4).toUInt() == it.second.id()) {
 				m_name.setText(activity->name());
 				m_moduleName.setText(module ? module->name() : "");
 
-				m_isAppointment.setText(QString::number(activity->isAppointment()));
-				m_appointmentDate.setText(activity->appointmentDate().toString(Qt::SystemLocaleShortDate));
+				if (activity->appointmentEventId() == it.second.id()) {
+					m_isAppointment.setText(QString::number(activity->isAppointment()));
+					m_appointmentDate.setText(activity->appointmentDate().toString(Qt::SystemLocaleShortDate));
+				}
+				else {
+					m_isAppointment.setText("0");
+					m_appointmentDate.setText("");
+				}
 			}
 		}
 	}

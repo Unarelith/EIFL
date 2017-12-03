@@ -57,11 +57,11 @@ class IntraData : public QObject {
 		const IntraProject *getProject(unsigned int id) { return getItem(id, m_projectList); }
 		const IntraNotification *getNotification(unsigned int id) { return getItem(id, m_notificationList); }
 
-		void setModule(unsigned int id, const IntraModule &module) { m_moduleList.emplace(id, module); }
-		void setActivity(unsigned int id, const IntraActivity &activity) { m_activityList.emplace(id, activity); }
-		void setEvent(unsigned int id, const IntraEvent &event) { m_eventList.emplace(id, event); }
-		void setProject(unsigned int id, const IntraProject &project) { m_projectList.emplace(id, project); }
-		void setNotification(unsigned int id, const IntraNotification &notification) { m_notificationList.emplace(id, notification); }
+		void setModule(unsigned int id, const IntraModule &module) { setItem(id, module, m_moduleList); }
+		void setActivity(unsigned int id, const IntraActivity &activity) { setItem(id, activity, m_activityList); }
+		void setEvent(unsigned int id, const IntraEvent &event) { setItem(id, event, m_eventList); }
+		void setProject(unsigned int id, const IntraProject &project) { setItem(id, project, m_projectList); }
+		void setNotification(unsigned int id, const IntraNotification &notification) { setItem(id, notification, m_notificationList); }
 
 		const IntraUser &userInfo() const { return m_userInfo; }
 
@@ -89,6 +89,15 @@ class IntraData : public QObject {
 			if (it == itemList.end())
 				return nullptr;
 			return &it->second;
+		}
+
+		template<typename T>
+		void setItem(unsigned int id, const T &item, std::map<unsigned int, T> &itemList) {
+			auto it = itemList.find(id);
+			if (it == itemList.end())
+				itemList.emplace(id, item);
+			else
+				it->second = item;
 		}
 
 		std::map<unsigned int, IntraModule> m_moduleList;

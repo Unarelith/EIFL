@@ -36,8 +36,8 @@ void EventListWidget::update() {
 	m_eventListWidget.clear();
 
 	unsigned int eventCount = 0;
-	auto eventList = IntraData::getInstance().eventList();
-	for (auto it : eventList) {
+	auto &eventList = IntraData::getInstance().eventList();
+	for (auto &it : eventList) {
 		const IntraActivity *activity = IntraData::getInstance().getActivity(it.second.activityId());
 		const IntraModule *module = IntraData::getInstance().getModule(activity ? activity->moduleId() : 0);
 
@@ -47,7 +47,11 @@ void EventListWidget::update() {
 		     && (!m_isRegisteredModulesEnabled || module->isRegistered())
 		     && (!m_isRegisteredEventsEnabled || it.second.isRegistered())) {
 				auto *item = new QTreeWidgetItem(&m_eventListWidget);
-				item->setText(1, it.second.beginDate().toString("HH:mm") + activity->appointmentDate().toString(" (HH:mm)"));
+				if (activity->appointmentEventId() == it.second.id())
+					item->setText(1, it.second.beginDate().toString("HH:mm") + activity->appointmentDate().toString(" (HH:mm)"));
+				else
+					item->setText(1, it.second.beginDate().toString("HH:mm"));
+
 				item->setText(2, it.second.endDate().toString("HH:mm"));
 				item->setText(3, it.second.roomName());
 				item->setText(4, activity->typeTitle());
@@ -56,22 +60,22 @@ void EventListWidget::update() {
 
 				if (it.second.isMissed()) {
 					item->setIcon(0, QIcon(":/missed.svg"));
-					item->setText(0, " 0");
+					item->setText(0, " 0 #" + QString::number(it.second.id()));
 
 					for (int i = 0 ; i < item->columnCount() ; ++i)
 						item->setBackgroundColor(i, Qt::darkRed);
 				}
 				else if (it.second.isRegistered()) {
 					item->setIcon(0, QIcon(":/registered.svg"));
-					item->setText(0, " 1");
+					item->setText(0, " 1 #" + QString::number(it.second.id()));
 				}
 				else if (it.second.isRegistrable() && it.second.isValid()) {
 					item->setIcon(0, QIcon(":/registrable.svg"));
-					item->setText(0, " 2");
+					item->setText(0, " 2 #" + QString::number(it.second.id()));
 				}
 				else {
 					item->setIcon(0, QIcon(":/locked.svg"));
-					item->setText(0, " 3");
+					item->setText(0, " 3 #" + QString::number(it.second.id()));
 				}
 			}
 

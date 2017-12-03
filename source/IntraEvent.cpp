@@ -27,7 +27,7 @@ IntraEvent::IntraEvent(unsigned int activityId, const QJsonObject &jsonObject) :
 
 	// FIXME: Find a better way to get this information
 	set("is_registrable", activity && activity->isRegistrable());
-	set("is_registered", !jsonObject.value("already_register").isNull() || (activity && activity->isAppointmentRegistered()));
+	set("is_registered", !jsonObject.value("already_register").isNull() || (activity && activity->isAppointmentRegistered() && activity->appointmentEventId() == m_id));
 	set("is_missed", jsonObject.value("user_status").toString() == "absent");
 	set("is_token_writable", jsonObject.value("allow_token").toString().toInt());
 
