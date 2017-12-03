@@ -37,6 +37,8 @@ void IntraData::openDatabase(const QString &path) {
 void IntraData::updateDatabase() {
 	stopDatabaseUpdate();
 
+	emit databaseUpdateStarted();
+
 	m_databaseThread = new IntraDatabaseThread(&m_database);
 	m_databaseThread->start();
 }
@@ -62,6 +64,7 @@ void IntraData::stopDatabaseUpdate() {
 		m_databaseThread->wait();
 
 		emit stateChanged("Database update stopped.");
+		emit databaseUpdateStopped();
 
 		m_databaseThread = nullptr;
 	}

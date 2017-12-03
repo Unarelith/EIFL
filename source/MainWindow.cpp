@@ -183,10 +183,16 @@ void MainWindow::setupMenus() {
 
 void MainWindow::setupStatusBar() {
 	QProgressBar *dbUpdateBar = new QProgressBar;
+	dbUpdateBar->hide();
 	dbUpdateBar->setRange(0, 100);
+	connect(&m_intraData, &IntraData::databaseUpdateStarted, dbUpdateBar, &QWidget::show);
+	connect(&m_intraData, &IntraData::databaseUpdateStopped, dbUpdateBar, &QWidget::hide);
 
 	QProgressBar *unitUpdateBar = new QProgressBar;
+	unitUpdateBar->hide();
 	unitUpdateBar->setRange(0, 100);
+	connect(&m_intraData, &IntraData::databaseUpdateStarted, unitUpdateBar, &QWidget::show);
+	connect(&m_intraData, &IntraData::databaseUpdateStopped, unitUpdateBar, &QWidget::hide);
 
 	QLabel *onlineStatusWidget = new QLabel;
 	onlineStatusWidget->setPixmap({":/network-offline"});

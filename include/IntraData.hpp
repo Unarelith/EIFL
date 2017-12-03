@@ -77,6 +77,9 @@ class IntraData : public QObject {
 		void stateChanged(const QString &state, int timeout = 0);
 		void windowRefeshRequested();
 
+		void databaseUpdateStarted();
+		void databaseUpdateStopped();
+
 	private:
 		static IntraData *s_instance;
 
