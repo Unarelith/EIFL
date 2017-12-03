@@ -75,16 +75,12 @@ TODO
          ▸ DONE: Stocker l’user (et donc le semestre courant) dans la bdd
          ▸ DONE: Load l’user depuis la bdd
       ◦ DONE: Ajouter les notifications à la bdd
-      ◦  WIP: Améliorer les updates
+      ◦ DONE: Améliorer les updates
          ▸ DONE: Remplir progressivement les listes
-         ▸  WIP: Repenser l’architecture du chargement
+         ▸ DONE: Repenser l’architecture du chargement
             ▹ DONE: Améliorer la manière dont les données sont stockées/chargées (`IntraItem`)
             ▹ DONE: Utiliser l’endpoint ‘/’ pour faire une update rapide et partielle
             ▹ DONE: Mettre à jour les icônes de projet avec l’update partielle
-            ▹ TODO: Permettre une update partielle plus facile
-               ▪ TODO: Trouver une solution pour afficher les events avant l’update complète
-               ▪ TODO: Update les items en background quand on cherche leurs infos
-               ▪ TODO: Update la window si des infos ont été modifiées
          ▸ DONE: Empêcher le lancement d’une update si une autre est déjà en cours
       ◦ DONE: Ajouter un mode “hors-ligne”
          ▸ DONE: Créer une vraie fenêtre de login avec un bouton “Offline mode”
@@ -103,14 +99,19 @@ TODO
          ▸ TODO: Modifier /contrib/eifl-dev-git.aur/PKGBUILD pour utiliser la branche ‘dev’
          ▸ TODO: Copier le /PKGBUILD vers le dépôt AUR et push
          ▸ TODO: Update le screenshot
+
+• TODO: Permettre une update partielle plus facile
+   ◦ TODO: Trouver une solution pour afficher les events avant l’update complète
+   ◦ TODO: Update les items en background quand on cherche leurs infos si l’user est connecté
+   ◦ TODO: Update la window si des infos ont été modifiées
    ◦ TODO: Faire une fenêtre pour l’update (pour choisir quelles parties doivent être téléchargées)
-   ◦ TODO: Si le chargement de la db fail, proposer de la reload
-   ◦ TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
-      ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
-   ◦ TODO: Séparer la fenêtre principale du reste du programme
-      ◦ TODO: Faire un tray icon qui ferme/ouvre la fenêtre principale
-      ◦ TODO: Tant que le tray icon est actif, update les données toutes les X min
-         ▸ TODO: Vérifier que l’update fonctionne bien sans la fenêtre
+• TODO: Si le chargement de la db fail, proposer de la reload entièrement
+• TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
+   ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
+• TODO: Séparer la fenêtre principale du reste du programme
+   ◦ TODO: Faire un tray icon qui ferme/ouvre la fenêtre principale
+   ◦ TODO: Tant que le tray icon est actif, update les données toutes les X min
+   • TODO: Vérifier que l’update fonctionne bien sans la fenêtre
 
 • TODO: Analyser les données et générer des notifications avec libnotify
    ◦ TODO: Faire un vrai système de notification dans le programme
