@@ -32,6 +32,8 @@ int IntraSession::login(const Keyring &keyring) {
 		m_cookies["language"] = "fr";
 
 		m_isLoggedIn = true;
+
+		emit userLoggedIn();
 	}
 	else {
 		emit httpError(r.status_code);
@@ -42,6 +44,8 @@ int IntraSession::login(const Keyring &keyring) {
 
 void IntraSession::logout() {
 	m_cookies = {};
+
+	emit userLoggedOut();
 }
 
 QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList &parameters) const {

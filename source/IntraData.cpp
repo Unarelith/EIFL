@@ -110,8 +110,9 @@ void IntraData::updateProjectList() {
 void IntraData::updateUserList() {
 	// FIXME: Doesn't currently handle multiple users
 	QSqlQuery query("SELECT * FROM users");
-	if (query.next()) {
-		m_userInfo = IntraUser{query};
+	while (query.next()) {
+		if (query.value(0).toUInt())
+			m_userInfo = IntraUser{query};
 	}
 }
 

@@ -6,6 +6,11 @@
 	<file alias="missed.svg">icons/missed.svg</file>
 	<file alias="registered.svg">icons/registered.svg</file>
 	<file alias="registrable.svg">icons/registrable.svg</file>
+
 	<file alias="epitech.png">icons/epitech.png</file>
+
+	<file alias="network-online">icons/network-online.png</file>
+	<file alias="network-offline">icons/network-offline.png</file>
+	<file alias="network-error">icons/network-error.png</file>
 </qresource>
 </RCC>

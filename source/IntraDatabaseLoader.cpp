@@ -140,6 +140,9 @@ void IntraDatabaseLoader::updateActivities() const {
 
 				IntraData::getInstance().setActivity(activity.id(), activity);
 
+				if (QThread::currentThread()->isInterruptionRequested())
+					return;
+
 				if (activity.isProject())
 					updateProjects(activity);
 

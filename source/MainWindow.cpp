@@ -38,13 +38,6 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	IntraData::setInstance(m_intraData);
 	IntraSession::setInstance(m_intraSession);
 
-	if (m_keyring.has("eifl_login") && m_keyring.has("eifl_password") && m_intraSession.login(m_keyring) == 200) {
-		QTimer::singleShot(0, [this] { init(true); });
-	}
-	else {
-		QTimer::singleShot(0, this, &MainWindow::login);
-	}
-
 	setupWidgets();
 	setupDocks();
 	setupTabs();
@@ -52,6 +45,13 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	setupStatusBar();
 
 	connectObjects();
+
+	if (m_keyring.has("eifl_login") && m_keyring.has("eifl_password") && m_intraSession.login(m_keyring) == 200) {
+		QTimer::singleShot(0, [this] { init(true); });
+	}
+	else {
+		QTimer::singleShot(0, this, &MainWindow::login);
+	}
 }
 
 void MainWindow::close() {
@@ -60,6 +60,7 @@ void MainWindow::close() {
 }
 
 void MainWindow::login() {
+	m_intraSession.logout();
 	m_intraData.stopDatabaseUpdate();
 
 	auto *loginWindow = new LoginWindow(m_keyring);
@@ -124,12 +125,20 @@ void MainWindow::setupTabs() {
 
 void MainWindow::setupMenus() {
 	QAction *loginAction = new QAction(tr("&Login..."), this);
-	loginAction->setStatusTip("Login to Epitech Intranet");
+	loginAction->setStatusTip(tr("Login to Epitech Intranet"));
 	connect(loginAction, &QAction::triggered, this, &MainWindow::login);
+	connect(&m_intraSession, &IntraSession::userLoggedIn, [loginAction] {
+		loginAction->setText(tr("&Disconnect..."));
+		loginAction->setStatusTip(tr("Disconnect from Epitech Intranet"));
+	});
+	connect(&m_intraSession, &IntraSession::userLoggedOut, [loginAction] {
+		loginAction->setText(tr("&Login..."));
+		loginAction->setStatusTip(tr("Login to Epitech Intranet"));
+	});
 
 	QAction *exitAction = new QAction(tr("&Exit"), this);
 	exitAction->setShortcut(QKeySequence::Quit);
-	exitAction->setStatusTip("Exit the program");
+	exitAction->setStatusTip(tr("Exit the program"));
 	connect(exitAction, &QAction::triggered, this, &MainWindow::close);
 
 	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
@@ -178,9 +187,17 @@ void MainWindow::setupStatusBar() {
 	QProgressBar *unitUpdateBar = new QProgressBar;
 	unitUpdateBar->setRange(0, 100);
 
+	QLabel *onlineStatusWidget = new QLabel;
+	onlineStatusWidget->setPixmap({":/network-offline"});
+
+	connect(&m_intraSession, &IntraSession::userLoggedOut, [onlineStatusWidget] { onlineStatusWidget->setPixmap({":/network-offline"}); });
+	connect(&m_intraSession, &IntraSession::userLoggedIn, [onlineStatusWidget] { onlineStatusWidget->setPixmap({":/network-online"}); });
+	connect(&m_intraSession, &IntraSession::httpError, [onlineStatusWidget] { onlineStatusWidget->setPixmap({":/network-error"}); });
+
 	QStatusBar *statusBar = QMainWindow::statusBar();
 	statusBar->addPermanentWidget(dbUpdateBar);
 	statusBar->addPermanentWidget(unitUpdateBar);
+	statusBar->addPermanentWidget(onlineStatusWidget);
 
 	connect(&m_intraSession, &IntraSession::stateChanged, statusBar, &QStatusBar::showMessage);
 	connect(&m_intraData, &IntraData::stateChanged, statusBar, &QStatusBar::showMessage);

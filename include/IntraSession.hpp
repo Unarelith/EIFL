@@ -40,6 +40,9 @@ class IntraSession : public QObject {
 	signals:
 		void httpError(int errorCode) const;
 
+		void userLoggedIn();
+		void userLoggedOut();
+
 		void stateChanged(const QString &state, int timeout = 0) const;
 
 	private:
