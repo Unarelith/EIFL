@@ -42,8 +42,9 @@ class MainWindow : public QMainWindow {
 		void setupWidgets();
 		void setupDocks();
 		void setupTabs();
-		void setupMenus();
+		void setupMenuBar();
 		void setupStatusBar();
+		void setupTrayIcon();
 
 		void connectObjects();
 

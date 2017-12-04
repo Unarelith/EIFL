@@ -63,8 +63,8 @@ TODO
 • TODO: Utiliser un `QSettings` pour stocker les filtres du calendrier, le path de la bdd, etc..
    ◦ TODO: Faire une fenêtre de paramètres pour modifier le path de la bdd par ex
 
-• TODO: Séparer la fenêtre principale du reste du programme
-   ◦ TODO: Faire un tray icon qui ferme/ouvre la fenêtre principale
+•  WIP: Séparer la fenêtre principale du reste du programme
+   ◦ DONE: Faire un tray icon qui ferme/ouvre la fenêtre principale
    ◦ TODO: Tant que le tray icon est actif, update les données toutes les X min
    ◦ TODO: Vérifier que l’update fonctionne bien sans la fenêtre
 

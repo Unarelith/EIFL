@@ -21,7 +21,7 @@
 #include <QProgressBar>
 #include <QStandardPaths>
 #include <QStatusBar>
-#include <QThreadPool>
+#include <QSystemTrayIcon>
 #include <QTimer>
 
 #include "LoginWindow.hpp"
@@ -41,8 +41,9 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	setupWidgets();
 	setupDocks();
 	setupTabs();
-	setupMenus();
+	setupMenuBar();
 	setupStatusBar();
+	setupTrayIcon();
 
 	connectObjects();
 
@@ -124,7 +125,7 @@ void MainWindow::setupTabs() {
 	setCentralWidget(tabWidget);
 }
 
-void MainWindow::setupMenus() {
+void MainWindow::setupMenuBar() {
 	QAction *loginAction = new QAction(tr("&Login..."), this);
 	loginAction->setStatusTip(tr("Login to Epitech Intranet"));
 	connect(loginAction, &QAction::triggered, this, &MainWindow::login);
@@ -210,6 +211,21 @@ void MainWindow::setupStatusBar() {
 	connect(&m_intraData, &IntraData::stateChanged, statusBar, &QStatusBar::showMessage);
 	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::updateProgressed, dbUpdateBar, &QProgressBar::setValue);
 	connect(&m_intraData.database().loader(), &IntraDatabaseLoader::unitUpdateProgressed, unitUpdateBar, &QProgressBar::setValue);
+}
+
+void MainWindow::setupTrayIcon() {
+	auto *trayIconMenu = new QMenu(this);
+	QAction *exitAction = trayIconMenu->addAction("Exit");
+	connect(exitAction, &QAction::triggered, this, &MainWindow::close);
+
+	auto *trayIcon = new QSystemTrayIcon(QIcon(":/epitech.png"), this);
+	trayIcon->setContextMenu(trayIconMenu);
+	trayIcon->show();
+
+	connect(trayIcon, &QSystemTrayIcon::activated, [this] (QSystemTrayIcon::ActivationReason reason) {
+		if (reason == QSystemTrayIcon::ActivationReason::Trigger)
+			setVisible(!isVisible());
+	});
 }
 
 void MainWindow::showStatusTip(const QString &statusString) {
