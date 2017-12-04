@@ -84,6 +84,7 @@ void MainWindow::init(bool updateDatabase) {
 	}
 
 	show();
+	updateWidgets();
 
 	if (updateDatabase)
 		m_intraData.updateDatabase();
