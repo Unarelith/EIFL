@@ -54,10 +54,13 @@ void LoginWindow::login() {
 		m_errorLabel.show();
 		m_passwordWidget.clear();
 	}
+	else if (loginStatus == 0) {
+		m_errorLabel.setText("Error: Request has timeout. Intra may be down.");
+		m_errorLabel.show();
+	}
 	else {
 		m_errorLabel.setText("Error: Failed to login. Code: " + QString::number(loginStatus));
 		m_errorLabel.show();
-		m_passwordWidget.clear();
 	}
 }
 
