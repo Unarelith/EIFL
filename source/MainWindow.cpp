@@ -259,8 +259,6 @@ void MainWindow::connectObjects() {
 void MainWindow::updateWidgets() {
 	if (isVisible()) {
 		m_projectListWidget.update();
-		m_userInfoWidget.update();
-		m_notificationListWidget.update();
 
 		unsigned int currentSemester = IntraData::getInstance().userInfo().currentSemester();
 		if (currentSemester == 0)

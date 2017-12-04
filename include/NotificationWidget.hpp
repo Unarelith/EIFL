@@ -14,7 +14,7 @@
 #ifndef NOTIFICATIONWIDGET_HPP_
 #define NOTIFICATIONWIDGET_HPP_
 
-#include <QTextEdit>
+#include <QLabel>
 
 #include "IntraNotification.hpp"
 
@@ -25,7 +25,8 @@ class NotificationWidget : public QWidget {
 		void update(const IntraNotification &notification);
 
 	private:
-		QTextEdit m_textWidget{this};
+		QLabel *m_dateWidget;
+		QLabel *m_titleWidget;
 };
 
 #endif // NOTIFICATIONWIDGET_HPP_

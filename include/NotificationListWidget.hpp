@@ -14,8 +14,9 @@
 #ifndef NOTIFICATIONLISTWIDGET_HPP_
 #define NOTIFICATIONLISTWIDGET_HPP_
 
-#include <QStandardItemModel>
-#include <QTreeView>
+#include <QVBoxLayout>
+
+#include "NotificationWidget.hpp"
 
 class NotificationListWidget : public QWidget {
 	public:
@@ -23,11 +24,9 @@ class NotificationListWidget : public QWidget {
 
 		void update();
 
-		const QTreeView &view() const { return m_view; }
-
 	private:
-		QStandardItemModel m_model;
-		QTreeView m_view;
+		QVBoxLayout *m_layout = nullptr;
+		QList<NotificationWidget *> m_widgetList;
 };
 
 #endif // NOTIFICATIONLISTWIDGET_HPP_

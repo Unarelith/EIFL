@@ -11,47 +11,41 @@
  *
  * =====================================================================================
  */
-#include <QHBoxLayout>
 #include <QHeaderView>
+#include <QHBoxLayout>
+#include <QScrollArea>
 
-#include "HtmlDelegate.hpp"
 #include "IntraData.hpp"
 #include "NotificationListWidget.hpp"
 
-#include <QLabel>
-
 NotificationListWidget::NotificationListWidget(QWidget *parent) : QWidget(parent) {
-	m_model.setHorizontalHeaderLabels({"Date", "Title"});
+	auto *layoutWidget = new QWidget;
+	m_layout = new QVBoxLayout(layoutWidget);
 
-	m_view.setRootIsDecorated(false);
-	m_view.setSortingEnabled(true);
-	m_view.sortByColumn(0, Qt::DescendingOrder);
-	m_view.setModel(&m_model);
-	m_view.setItemDelegate(new HtmlDelegate());
-	m_view.setEditTriggers(QAbstractItemView::EditTrigger::NoEditTriggers);
+	auto *scrollArea = new QScrollArea;
+	scrollArea->setWidget(layoutWidget);
+	scrollArea->setWidgetResizable(true);
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->addWidget(&m_view);
+	auto *globalLayout = new QHBoxLayout(this);
+	globalLayout->addWidget(scrollArea);
 }
 
 void NotificationListWidget::update() {
-	m_model.clear();
-	m_model.setHorizontalHeaderLabels({"Date", "Title"});
+	QLayoutItem *item;
+	while ((item = m_layout->takeAt(0)) != NULL) {
+		delete item->widget();
+		delete item;
+	}
+
+	m_widgetList.clear();
 
 	QModelIndex parentItem;
 	auto &notificationList = IntraData::getInstance().notificationList();
-	for (auto &it : notificationList) {
-		QList<QStandardItem *> items = {
-			new QStandardItem(it.second.date().toString("yyyy/MM/dd HH:mm:ss")),
-			new QStandardItem(it.second.title())
-		};
-
-		m_model.appendRow(items);
+	for (auto it = notificationList.rbegin() ; it != notificationList.rend() ; ++it) {
+		auto *widget = new NotificationWidget;
+		widget->update(it->second);
+		m_layout->addWidget(widget);
+		m_widgetList.append(widget);
 	}
-
-	m_view.update();
-	m_view.header()->resizeSection(0, 160);
-	// m_view.header()->setStretchLastSection(false);
-	// m_view.header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
