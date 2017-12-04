@@ -13,6 +13,7 @@
  */
 #include <QVBoxLayout>
 
+#include "IntraSession.hpp"
 #include "NotificationWidget.hpp"
 
 NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent) {
@@ -46,6 +47,10 @@ NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent) {
 void NotificationWidget::update(const IntraNotification &notification) {
 	// m_dateWidget->setText(notification.date().toString("yyyy/MM/dd HH:mm:ss"));
 	m_dateWidget->setText(notification.date().toString("dddd dd MMMM HH:mm:ss"));
-	m_titleWidget->setText(notification.title());
+
+	QString title = notification.title();
+	title.replace("href=\"/", QString("href=\"") + IntraSession::baseUrl + "/");
+	title.replace("href='/", QString("href='") + IntraSession::baseUrl + "/");
+	m_titleWidget->setText(title);
 }
 
