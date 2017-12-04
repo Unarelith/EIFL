@@ -20,38 +20,48 @@ NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent) {
 	setObjectName("notificationWidget");
 	setStyleSheet("QWidget#notificationWidget {"
 		"border-style: outset;"
-		"border-width: 1px;"
+		"border-width: 2px;"
 		"border-radius: 6px;"
 		"border-color: grey;"
 		"padding: 6px;"
 	"}");
-
-	m_dateWidget = new QLabel;
-
-	auto* line = new QFrame;
-	line->setFrameShape(QFrame::HLine);
-	line->setFrameShadow(QFrame::Sunken);
 
 	m_titleWidget = new QLabel;
 	m_titleWidget->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	m_titleWidget->setOpenExternalLinks(true);
 	m_titleWidget->setWordWrap(true);
 
-	auto* line2 = new QFrame;
-	line2->setFrameShape(QFrame::HLine);
-	line2->setFrameShadow(QFrame::Sunken);
+	auto font = m_titleWidget->font();
+	font.setBold(true);
+	m_titleWidget->setFont(font);
+
+	auto* line = new QFrame;
+	line->setFrameShape(QFrame::HLine);
+	line->setFrameShadow(QFrame::Sunken);
 
 	m_contentWidget = new QLabel;
 	m_contentWidget->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	m_contentWidget->setOpenExternalLinks(true);
 	m_contentWidget->setWordWrap(true);
 
+	auto font2 = m_contentWidget->font();
+	font.setBold(true);
+	font.setPixelSize(13);
+	m_contentWidget->setFont(font);
+
+	auto* line2 = new QFrame;
+	line2->setFrameShape(QFrame::HLine);
+	line2->setFrameShadow(QFrame::Sunken);
+
+	m_dateWidget = new QLabel;
+	m_dateWidget->setAlignment(Qt::AlignRight);
+
 	auto *layout = new QVBoxLayout(this);
-	layout->addWidget(m_dateWidget);
-	layout->addWidget(line);
 	layout->addWidget(m_titleWidget);
-	layout->addWidget(line2);
+	layout->addWidget(line);
 	layout->addWidget(m_contentWidget);
+	layout->addWidget(line2);
+	layout->addWidget(m_dateWidget);
 }
 
 void NotificationWidget::update(const IntraNotification &notification) {
