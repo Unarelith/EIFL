@@ -39,11 +39,15 @@ void NotificationListWidget::update() {
 
 	m_widgetList.clear();
 
+    auto notificationList = IntraData::getInstance().notificationList();
+	std::vector<IntraNotification> notifications;
+	std::transform(notificationList.begin(), notificationList.end(), std::back_inserter(notifications), [] (auto it) { return it.second; });
+	std::sort(notifications.begin(), notifications.end(), [&] (auto &a, auto &b) { return a.date() > b.date(); });
+
 	QModelIndex parentItem;
-	auto &notificationList = IntraData::getInstance().notificationList();
-	for (auto it = notificationList.rbegin() ; it != notificationList.rend() ; ++it) {
+	for (auto &notification : notifications) {
 		auto *widget = new NotificationWidget;
-		widget->update(it->second);
+		widget->update(notification);
 		m_layout->addWidget(widget);
 		m_widgetList.append(widget);
 	}
