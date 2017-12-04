@@ -20,14 +20,14 @@
 #include "IntraData.hpp"
 
 EventListWidget::EventListWidget(QWidget *parent) : QDockWidget(tr("Events"), parent) {
-	m_eventListWidget.setColumnCount(7);
-	m_eventListWidget.setHeaderLabels({"", tr("Start"), tr("End"), tr("Room"), tr("Type"), tr("Module"), tr("Name")});
+	m_eventListWidget.setHeaderLabels({"", tr("Start"), tr("End"), tr("Room"), tr("Type"), tr("Module"), tr("Name"), tr("ID")});
 	m_eventListWidget.setRootIsDecorated(false);
 	m_eventListWidget.setSortingEnabled(true);
 	m_eventListWidget.header()->setSectionResizeMode(QHeaderView::Fixed);
-	m_eventListWidget.sortItems(1, Qt::AscendingOrder);
 	m_eventListWidget.setColumnWidth(0, 27);
 	m_eventListWidget.setColumnWidth(5, 2 * m_eventListWidget.columnWidth(5));
+	m_eventListWidget.sortItems(1, Qt::AscendingOrder);
+	m_eventListWidget.hideColumn(7);
 
 	setWidget(&m_eventListWidget);
 }
@@ -57,25 +57,26 @@ void EventListWidget::update() {
 				item->setText(4, activity->typeTitle());
 				item->setText(5, module->name());
 				item->setText(6, activity->name());
+				item->setText(7, QString::number(it.second.id()));
 
 				if (it.second.isMissed()) {
 					item->setIcon(0, QIcon(":/missed.svg"));
-					item->setText(0, " 0 #" + QString::number(it.second.id()));
+					item->setText(0, " 0");
 
 					for (int i = 0 ; i < item->columnCount() ; ++i)
 						item->setBackgroundColor(i, Qt::darkRed);
 				}
 				else if (it.second.isRegistered()) {
 					item->setIcon(0, QIcon(":/registered.svg"));
-					item->setText(0, " 1 #" + QString::number(it.second.id()));
+					item->setText(0, " 1");
 				}
 				else if (it.second.isRegistrable() && it.second.isValid()) {
 					item->setIcon(0, QIcon(":/registrable.svg"));
-					item->setText(0, " 2 #" + QString::number(it.second.id()));
+					item->setText(0, " 2");
 				}
 				else {
 					item->setIcon(0, QIcon(":/locked.svg"));
-					item->setText(0, " 3 #" + QString::number(it.second.id()));
+					item->setText(0, " 3");
 				}
 			}
 

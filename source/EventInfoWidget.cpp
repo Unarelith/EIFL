@@ -35,7 +35,7 @@ void EventInfoWidget::update(QTreeWidgetItem *item) {
 			const IntraActivity *activity = IntraData::getInstance().getActivity(it.second.activityId());
 			const IntraModule *module = IntraData::getInstance().getModule(activity ? activity->moduleId() : 0);
 
-			if (activity && item->text(0).mid(4).toUInt() == it.second.id()) {
+			if (activity && item->text(item->columnCount() - 1).toUInt() == it.second.id()) {
 				m_name.setText(activity->name());
 				m_moduleName.setText(module ? module->name() : "");
 

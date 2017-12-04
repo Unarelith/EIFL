@@ -61,7 +61,6 @@ void MainWindow::login() {
 	m_intraData.stopDatabaseUpdate();
 
 	auto *loginWindow = new LoginWindow(m_keyring);
-	// FIXME: Stop database update if user closed the program
 	connect(loginWindow, &LoginWindow::quitButtonPressed, this, &MainWindow::close);
 	connect(loginWindow, &QDialog::finished, this, &MainWindow::init);
 	connect(loginWindow, &LoginWindow::databaseReloadRequested, &m_intraData, &IntraData::reloadDatabase);
