@@ -223,8 +223,11 @@ void MainWindow::setupTrayIcon() {
 	trayIcon->show();
 
 	connect(trayIcon, &QSystemTrayIcon::activated, [this] (QSystemTrayIcon::ActivationReason reason) {
-		if (reason == QSystemTrayIcon::ActivationReason::Trigger)
+		if (reason == QSystemTrayIcon::ActivationReason::Trigger) {
 			setVisible(!isVisible());
+			if (isVisible())
+				updateWidgets();
+		}
 	});
 }
 
@@ -259,17 +262,19 @@ void MainWindow::connectObjects() {
 }
 
 void MainWindow::updateWidgets() {
-	m_projectListWidget.update();
-	m_userInfoWidget.update();
-	m_notificationListWidget.update();
+	if (isVisible()) {
+		m_projectListWidget.update();
+		m_userInfoWidget.update();
+		m_notificationListWidget.update();
 
-	unsigned int currentSemester = IntraData::getInstance().userInfo().currentSemester();
-	if (currentSemester == 0)
-		qDebug() << "Failed to get current semester!";
+		unsigned int currentSemester = IntraData::getInstance().userInfo().currentSemester();
+		if (currentSemester == 0)
+			qDebug() << "Failed to get current semester!";
 
-	m_eventListWidget.setSemesters({0, currentSemester});
-	m_moduleListWidget.setSemesters({0, currentSemester});
-	m_calendarSettingsWidget.setSemesters({0, currentSemester});
+		m_eventListWidget.setSemesters({0, currentSemester});
+		m_moduleListWidget.setSemesters({0, currentSemester});
+		m_calendarSettingsWidget.setSemesters({0, currentSemester});
+	}
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
