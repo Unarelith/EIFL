@@ -31,9 +31,9 @@ NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent) {
 	m_titleWidget->setOpenExternalLinks(true);
 	m_titleWidget->setWordWrap(true);
 
-	auto font = m_titleWidget->font();
-	font.setBold(true);
-	m_titleWidget->setFont(font);
+	auto titleFont = m_titleWidget->font();
+	titleFont.setBold(true);
+	m_titleWidget->setFont(titleFont);
 
 	auto* line = new QFrame;
 	line->setFrameShape(QFrame::HLine);
@@ -44,10 +44,9 @@ NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent) {
 	m_contentWidget->setOpenExternalLinks(true);
 	m_contentWidget->setWordWrap(true);
 
-	auto font2 = m_contentWidget->font();
-	font.setBold(true);
-	font.setPixelSize(13);
-	m_contentWidget->setFont(font);
+	auto contentFont = m_contentWidget->font();
+	contentFont.setPixelSize(13);
+	m_contentWidget->setFont(contentFont);
 
 	auto* line2 = new QFrame;
 	line2->setFrameShape(QFrame::HLine);
