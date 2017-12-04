@@ -86,6 +86,9 @@ void MainWindow::init(bool updateDatabase) {
 	show();
 	updateWidgets();
 
+	m_userInfoWidget.update();
+	m_notificationListWidget.update();
+
 	if (updateDatabase)
 		m_intraData.updateDatabase();
 }
