@@ -27,6 +27,7 @@ class NotificationWidget : public QWidget {
 	private:
 		QLabel *m_dateWidget;
 		QLabel *m_titleWidget;
+		QLabel *m_contentWidget;
 };
 
 #endif // NOTIFICATIONWIDGET_HPP_

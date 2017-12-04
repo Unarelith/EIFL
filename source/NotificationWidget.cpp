@@ -27,7 +27,6 @@ NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent) {
 	"}");
 
 	m_dateWidget = new QLabel;
-	m_dateWidget->setObjectName("dateWidget");
 
 	auto* line = new QFrame;
 	line->setFrameShape(QFrame::HLine);
@@ -36,12 +35,23 @@ NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent) {
 	m_titleWidget = new QLabel;
 	m_titleWidget->setTextInteractionFlags(Qt::TextBrowserInteraction);
 	m_titleWidget->setOpenExternalLinks(true);
-	m_titleWidget->setObjectName("titleWidget");
+	m_titleWidget->setWordWrap(true);
+
+	auto* line2 = new QFrame;
+	line2->setFrameShape(QFrame::HLine);
+	line2->setFrameShadow(QFrame::Sunken);
+
+	m_contentWidget = new QLabel;
+	m_contentWidget->setTextInteractionFlags(Qt::TextBrowserInteraction);
+	m_contentWidget->setOpenExternalLinks(true);
+	m_contentWidget->setWordWrap(true);
 
 	auto *layout = new QVBoxLayout(this);
 	layout->addWidget(m_dateWidget);
 	layout->addWidget(line);
 	layout->addWidget(m_titleWidget);
+	layout->addWidget(line2);
+	layout->addWidget(m_contentWidget);
 }
 
 void NotificationWidget::update(const IntraNotification &notification) {
@@ -52,5 +62,10 @@ void NotificationWidget::update(const IntraNotification &notification) {
 	title.replace("href=\"/", QString("href=\"") + IntraSession::baseUrl + "/");
 	title.replace("href='/", QString("href='") + IntraSession::baseUrl + "/");
 	m_titleWidget->setText(title);
+
+	QString content = notification.content();
+	content.replace("href=\"/", QString("href=\"") + IntraSession::baseUrl + "/");
+	content.replace("href='/", QString("href='") + IntraSession::baseUrl + "/");
+	m_contentWidget->setText(content);
 }
 
