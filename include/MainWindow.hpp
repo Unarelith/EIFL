@@ -35,7 +35,6 @@ class MainWindow : public QMainWindow {
 	public:
 		MainWindow();
 
-		void close();
 		void login();
 		void init(bool updateDatabase = false);
 
@@ -52,6 +51,7 @@ class MainWindow : public QMainWindow {
 
 		void showStatusTip(const QString &statusString);
 
+		void closeEvent(QCloseEvent *event) override;
 		void keyPressEvent(QKeyEvent *event) override;
 
 		static const MainWindow &getInstance() {

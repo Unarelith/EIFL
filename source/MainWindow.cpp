@@ -56,11 +56,6 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	}
 }
 
-void MainWindow::close() {
-	m_intraData.stopDatabaseUpdate();
-	QMainWindow::close();
-}
-
 void MainWindow::login() {
 	m_intraSession.logout();
 	m_intraData.stopDatabaseUpdate();
@@ -277,8 +272,14 @@ void MainWindow::updateWidgets() {
 	}
 }
 
+void MainWindow::closeEvent(QCloseEvent *event) {
+	m_intraData.stopDatabaseUpdate();
+
+	QMainWindow::closeEvent(event);
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-	QWidget::keyPressEvent(event);
+	QMainWindow::keyPressEvent(event);
 
 	if (event->key() == Qt::Key_Escape)
 		close();
