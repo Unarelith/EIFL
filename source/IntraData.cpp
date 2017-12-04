@@ -16,6 +16,7 @@
 #include <QJsonArray>
 #include <QProgressDialog>
 #include <QSqlRecord>
+#include <QTimer>
 
 #include "IntraData.hpp"
 #include "IntraSession.hpp"
@@ -40,6 +41,7 @@ void IntraData::updateDatabase() {
 	emit databaseUpdateStarted();
 
 	m_databaseThread = new IntraDatabaseThread(&m_database);
+	connect(m_databaseThread, &QThread::finished, this, &IntraData::databaseUpdateFinished);
 	m_databaseThread->start();
 }
 
@@ -68,6 +70,16 @@ void IntraData::stopDatabaseUpdate() {
 
 		m_databaseThread = nullptr;
 	}
+}
+
+void IntraData::databaseUpdateFinished() {
+	emit databaseUpdateStopped();
+
+	// Wait 30 minutes and update database
+	QTimer::singleShot(30 * 60 * 1000, [this] {
+		if (IntraSession::getInstance().isLoggedIn())
+			updateDatabase();
+	});
 }
 
 void IntraData::update() {

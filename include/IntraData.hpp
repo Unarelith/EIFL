@@ -35,6 +35,8 @@ class IntraData : public QObject {
 		void reloadDatabase();
 		void stopDatabaseUpdate();
 
+		void databaseUpdateFinished();
+
 		void update();
 		void updateModuleList();
 		void updateActivityList();

@@ -65,7 +65,7 @@ TODO
 
 •  WIP: Séparer la fenêtre principale du reste du programme
    ◦ DONE: Faire un tray icon qui ferme/ouvre la fenêtre principale
-   ◦ TODO: Tant que le tray icon est actif, update les données toutes les X min
+   ◦ DONE: Tant que le tray icon est actif, update les données toutes les X min
    ◦ TODO: Vérifier que l’update fonctionne bien sans la fenêtre
 
 • TODO: Analyser les données et générer des notifications avec libnotify
