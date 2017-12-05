@@ -18,13 +18,6 @@
 
 NotificationWidget::NotificationWidget(QWidget *parent) : QWidget(parent) {
 	setObjectName("notificationWidget");
-	setStyleSheet("QWidget#notificationWidget {"
-		"border-style: outset;"
-		"border-width: 2px;"
-		"border-radius: 6px;"
-		"border-color: grey;"
-		"padding: 6px;"
-	"}");
 
 	m_titleWidget = new QLabel;
 	m_titleWidget->setTextInteractionFlags(Qt::TextBrowserInteraction);

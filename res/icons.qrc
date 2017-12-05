@@ -12,5 +12,7 @@
 	<file alias="network-online">icons/network-online.png</file>
 	<file alias="network-offline">icons/network-offline.png</file>
 	<file alias="network-error">icons/network-error.png</file>
+
+	<file alias="theme-default">themes/default.qss</file>
 </qresource>
 </RCC>

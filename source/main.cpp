@@ -12,6 +12,7 @@
  * =====================================================================================
  */
 #include <QApplication>
+#include <QFile>
 
 #include "MainWindow.hpp"
 
@@ -21,8 +22,12 @@ std::ostream &operator<<(std::ostream &stream, const QString &str) {
 
 int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
-	MainWindow win;
 
+	QFile style(":/theme-default");
+	style.open(QIODevice::OpenModeFlag::ReadOnly);
+	app.setStyleSheet(style.readAll());
+
+	MainWindow win;
 	return app.exec();
 }
 

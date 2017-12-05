@@ -1,0 +1,9 @@
+QWidget#notificationWidget {
+	border-style: outset;
+	border-width: 2px;
+	border-radius: 6px;
+	border-color: grey;
+	padding: 6px;
+}
+
+/* vim:syntax=css */
