@@ -1,9 +1,25 @@
+/* === EIFL style === */
+
 QWidget#notificationWidget {
 	border-style: outset;
 	border-width: 2px;
 	border-radius: 6px;
 	border-color: grey;
 	padding: 6px;
+}
+
+/* === QTabBar === */
+
+QTabBar::tab {
+	color: #9E9E9E;
+}
+
+QTabBar::tab::hover {
+	color: #E0E0E0;
+}
+
+QTabBar::tab::selected {
+	color: #FFFFFF;
 }
 
 /* vim:syntax=css */
