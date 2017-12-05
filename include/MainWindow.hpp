@@ -27,6 +27,7 @@
 #include "NotificationListWidget.hpp"
 #include "ProjectInfoWidget.hpp"
 #include "ProjectListWidget.hpp"
+#include "SideBar.hpp"
 #include "UserInfoWidget.hpp"
 
 class MainWindow : public QMainWindow {
@@ -73,6 +74,8 @@ class MainWindow : public QMainWindow {
 		IntraData m_intraData;
 		IntraSession m_intraSession;
 		Keyring m_keyring;
+
+		SideBar m_sideBar;
 
 		ProjectInfoWidget m_projectInfoWidget;
 		ProjectListWidget m_projectListWidget;

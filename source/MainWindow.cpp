@@ -107,10 +107,13 @@ void MainWindow::setupDocks() {
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventInfoWidget, Qt::Horizontal);
 
 	addDockWidget(Qt::LeftDockWidgetArea, &m_calendarSettingsWidget, Qt::Vertical);
+	// addDockWidget(Qt::LeftDockWidgetArea, &m_sideBar, Qt::Vertical);
 
+	// tabifyDockWidget(&m_calendarSettingsWidget, &m_sideBar);
 	tabifyDockWidget(&m_projectListWidget, &m_moduleListWidget);
 
 	m_projectListWidget.raise();
+	// m_sideBar.raise();
 }
 
 void MainWindow::setupTabs() {
@@ -263,7 +266,10 @@ void MainWindow::updateWidgets() {
 	if (isVisible()) {
 		m_projectListWidget.update();
 
-		unsigned int currentSemester = IntraData::getInstance().userInfo().currentSemester();
+		const IntraUser &userInfo = IntraData::getInstance().userInfo();
+		m_sideBar.update(userInfo);
+
+		unsigned int currentSemester = userInfo.currentSemester();
 		if (currentSemester == 0)
 			qDebug() << "Failed to get current semester!";
 

@@ -10,16 +10,16 @@ QWidget#notificationWidget {
 
 /* === QTabBar === */
 
-QTabBar::tab {
-	color: #9E9E9E;
-}
-
-QTabBar::tab::hover {
-	color: #E0E0E0;
-}
-
-QTabBar::tab::selected {
-	color: #FFFFFF;
-}
+/* QTabBar::tab { */
+/* 	color: #9E9E9E; */
+/* } */
+/*  */
+/* QTabBar::tab::hover { */
+/* 	color: #E0E0E0; */
+/* } */
+/*  */
+/* QTabBar::tab::selected { */
+/* 	color: #FFFFFF; */
+/* } */
 
 /* vim:syntax=css */

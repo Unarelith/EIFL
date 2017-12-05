@@ -80,3 +80,14 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 	return QJsonDocument::fromJson(QByteArray::fromStdString(r.text));
 }
 
+QPixmap IntraSession::getProfilePicture(const QUrl &pictureLink) {
+	auto r = cpr::Get(cpr::Url{pictureLink.toString().toStdString()}, m_cookies, cpr::Timeout{1000});
+	if (r.status_code != 200) {
+		emit httpError(r.status_code);
+	}
+
+	QPixmap pixmap;
+	pixmap.loadFromData(QByteArray::fromStdString(r.text));
+	return pixmap;
+}
+

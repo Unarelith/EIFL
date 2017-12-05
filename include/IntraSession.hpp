@@ -30,6 +30,8 @@ class IntraSession : public QObject {
 		using ParameterList = std::map<QString, QString>;
 		QJsonDocument get(const QString &apiEndpoint, const ParameterList &parameters = {}) const;
 
+		QPixmap getProfilePicture(const QUrl &pictureLink);
+
 		bool isLoggedIn() const { return m_isLoggedIn; }
 
 		static IntraSession &getInstance() { return *s_instance; }
