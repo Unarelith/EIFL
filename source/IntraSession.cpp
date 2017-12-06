@@ -81,13 +81,19 @@ QJsonDocument IntraSession::get(const QString &apiEndpoint, const ParameterList 
 }
 
 QPixmap IntraSession::getProfilePicture(const QUrl &pictureLink) {
+	QPixmap pixmap;
+
 	auto r = cpr::Get(cpr::Url{pictureLink.toString().toStdString()}, m_cookies, cpr::Timeout{1000});
 	if (r.status_code != 200) {
 		emit httpError(r.status_code);
+
+		pixmap.load(":/user-unknown");
+	}
+	else {
+		// pixmap.loadFromData(QByteArray::fromStdString(r.text));
+		pixmap.load(":/user-unknown");
 	}
 
-	QPixmap pixmap;
-	pixmap.loadFromData(QByteArray::fromStdString(r.text));
 	return pixmap;
 }
 

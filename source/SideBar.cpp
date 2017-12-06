@@ -12,6 +12,7 @@
  * =====================================================================================
  */
 #include <QHBoxLayout>
+#include <QPainter>
 #include <QPushButton>
 #include <QVBoxLayout>
 
@@ -24,7 +25,8 @@ SideBar::SideBar(QWidget *parent) : QDockWidget("Side bar (WIP)", parent) {
 }
 
 void SideBar::setupWidgets() {
-	m_profilePicture.setMaximumSize(160 / 2, 190 / 2);
+	m_profilePicture.setObjectName("profilePicture");
+	m_profilePicture.setMaximumSize(80, 80);
 	m_profilePicture.setScaledContents(true);
 
 	auto lastNameFont = m_lastNameLabel.font();
@@ -36,11 +38,20 @@ void SideBar::setupWidgets() {
 	m_creditLabel.setFont(creditFont);
 	m_creditLabel.setAlignment(Qt::AlignCenter);
 
+	QList<QPushButton *> buttonList;
+	QStringList nameList = {"Units", "Projects", "Planning"};
+	for (auto &name : nameList) {
+		buttonList.push_back(new QPushButton(name));
+		buttonList.back()->setObjectName("sideBarButton");
+	}
+
 	m_buttonListWidget = new QWidget;
 	auto *buttonListLayout = new QVBoxLayout(m_buttonListWidget);
-	buttonListLayout->addWidget(new QPushButton(tr("Units")));
-	buttonListLayout->addWidget(new QPushButton(tr("Projects")));
-	buttonListLayout->addWidget(new QPushButton(tr("Planning")));
+	buttonListLayout->setSpacing(0);
+	buttonListLayout->setMargin(0);
+	buttonListLayout->setContentsMargins(0, 0, 0, 0);
+	for (auto &button : buttonList)
+		buttonListLayout->addWidget(button);
 }
 
 void SideBar::setupLayout() {
@@ -61,10 +72,21 @@ void SideBar::setupLayout() {
 	subLayout->addWidget(&m_creditLabel, 1);
 	subLayout->addWidget(&m_spiceLabel);
 
+	auto* line = new QFrame();
+	line->setFrameShape(QFrame::HLine);
+	line->setFrameShadow(QFrame::Sunken);
+
+	auto *profileLayoutWidget = new QWidget;
+	auto *profileLayout = new QVBoxLayout(profileLayoutWidget);
+	profileLayout->addWidget(pictureLayoutWidget);
+	profileLayout->addWidget(subLayoutWidget);
+	profileLayout->addWidget(line);
+
 	auto *mainLayoutWidget = new QWidget;
 	auto *mainLayout = new QVBoxLayout(mainLayoutWidget);
-	mainLayout->addWidget(pictureLayoutWidget);
-	mainLayout->addWidget(subLayoutWidget);
+	mainLayout->setContentsMargins(0, 0, 0, 0);
+	mainLayout->setMargin(0);
+	mainLayout->addWidget(profileLayoutWidget);
 	mainLayout->addWidget(m_buttonListWidget);
 	mainLayout->addStretch(1);
 
@@ -72,7 +94,20 @@ void SideBar::setupLayout() {
 }
 
 void SideBar::update(const IntraUser &user) {
-	m_profilePicture.setPixmap(IntraSession::getInstance().getProfilePicture(user.pictureLink()));
+	QPixmap picturePixmap = IntraSession::getInstance().getProfilePicture(user.pictureLink());
+	unsigned int minSize = std::min(picturePixmap.width(), picturePixmap.height());
+	unsigned int rX = picturePixmap.width() - minSize;
+	unsigned int rY = picturePixmap.height() - minSize;
+
+	QPixmap targetPixmap(minSize, minSize);
+	targetPixmap.fill(QColor(0, 0, 0, 0));
+
+	QPainter painter(&targetPixmap);
+	QRegion region(QRect(0, 0, picturePixmap.width() - rX, picturePixmap.height() - rY), QRegion::Ellipse);
+	painter.setClipRegion(region);
+	painter.drawPixmap(0, 0, picturePixmap);
+
+	m_profilePicture.setPixmap(targetPixmap);
 
 	m_firstNameLabel.setText(user.firstName());
 	m_lastNameLabel.setText(user.lastName());

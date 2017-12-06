@@ -107,13 +107,13 @@ void MainWindow::setupDocks() {
 	addDockWidget(Qt::BottomDockWidgetArea, &m_eventInfoWidget, Qt::Horizontal);
 
 	addDockWidget(Qt::LeftDockWidgetArea, &m_calendarSettingsWidget, Qt::Vertical);
-	// addDockWidget(Qt::LeftDockWidgetArea, &m_sideBar, Qt::Vertical);
+	addDockWidget(Qt::LeftDockWidgetArea, &m_sideBar, Qt::Vertical);
 
-	// tabifyDockWidget(&m_calendarSettingsWidget, &m_sideBar);
+	tabifyDockWidget(&m_calendarSettingsWidget, &m_sideBar);
 	tabifyDockWidget(&m_projectListWidget, &m_moduleListWidget);
 
 	m_projectListWidget.raise();
-	// m_sideBar.raise();
+	m_sideBar.raise();
 }
 
 void MainWindow::setupTabs() {

@@ -13,6 +13,8 @@
 	<file alias="network-offline">icons/network-offline.png</file>
 	<file alias="network-error">icons/network-error.png</file>
 
+	<file alias="user-unknown">misc/unknown_user.png</file>
+
 	<file alias="theme-default">themes/default.qss</file>
 </qresource>
 </RCC>

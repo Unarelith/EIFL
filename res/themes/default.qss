@@ -8,6 +8,36 @@ QWidget#notificationWidget {
 	padding: 6px;
 }
 
+QWidget#profilePicture {
+	border-style: solid;
+	border-radius: 40px;
+	border-width: 3px;
+	border-color: #9E9E9E;
+	padding: -1px;
+}
+
+QPushButton#sideBarButton {
+	outline: 0;
+	/* border: 1px solid #000000; */
+	border: 0;
+	min-width: 80px;
+	text-align: left;
+	padding: 4px;
+	padding-left: 10px;
+	/* color: #9E9E9E; */
+	margin-bottom: 2px;
+}
+
+QPushButton#sideBarButton::hover {
+	padding-left: 9px;
+	border: 1px solid #E0E0E0;
+	/* color: #E0E0E0; */
+}
+
+QPushButton#sideBarButton::pressed {
+	padding-left: 12px;
+}
+
 /* === QTabBar === */
 
 /* QTabBar::tab { */
