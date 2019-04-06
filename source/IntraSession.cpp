@@ -39,6 +39,7 @@ int IntraSession::login(const Keyring &keyring) {
 		emit userLoggedIn();
 	}
 	else {
+		std::cerr << "Error: Connection to https://intra.epitech.eu has failed." << std::endl;
 		emit httpError(r.status_code);
 	}
 

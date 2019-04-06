@@ -170,7 +170,9 @@ void IntraDatabaseLoader::updateActivities() const {
 		emit updateProgressed(i++ * 100 / unitArray.size());
 	}
 
-	emit updateProgressed(i++ * 100 / unitArray.size());
+	if (!unitArray.empty())
+		emit updateProgressed(i++ * 100 / unitArray.size());
+
 	emit updateFinished();
 }
 

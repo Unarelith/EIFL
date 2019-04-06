@@ -48,7 +48,8 @@ MainWindow::MainWindow() : QMainWindow(nullptr, Qt::Dialog) {
 	connectObjects();
 
 	connect(&m_intraSession, &IntraSession::userLoginRequired, this, &MainWindow::login);
-	if (m_keyring.has("eifl_login") && m_keyring.has("eifl_password") && m_intraSession.login(m_keyring) == 200) {
+	// if (m_keyring.has("eifl_login") && m_keyring.has("eifl_password") && m_intraSession.login(m_keyring) == 200) {
+	if (m_keyring.has("eifl_autologin") && m_intraSession.login(m_keyring) == 200) {
 		QTimer::singleShot(0, [this] { init(true); });
 	}
 	else {

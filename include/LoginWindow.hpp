@@ -38,13 +38,14 @@ class LoginWindow : public QDialog {
 	private:
 		const Keyring &m_keyring;
 
+		QLabel m_autologinHelp;
 		QLabel m_errorLabel;
 
 		QLineEdit m_autologinWidget;
 		// QLineEdit m_loginWidget;
 		// QLineEdit m_passwordWidget;
 
-		QCheckBox m_rememberMeWidget{"Remember my password"};
+		// QCheckBox m_rememberMeWidget{"Remember me"};
 };
 
 #endif // LOGINWINDOW_HPP_

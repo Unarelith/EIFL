@@ -26,9 +26,13 @@ LoginWindow::LoginWindow(const Keyring &keyring, QWidget *parent) : QDialog(pare
 
 	setupWidgets();
 
+	// m_keyring.remove("eifl_autologin");
+	// m_keyring.remove("eifl_login");
+	// m_keyring.remove("eifl_password");
+
 	if (m_keyring.has("eifl_autologin")) {
 		m_autologinWidget.setText(m_keyring.get("eifl_autologin"));
-		m_rememberMeWidget.setCheckState(Qt::Checked);
+		// m_rememberMeWidget.setCheckState(Qt::Checked);
 	}
 
 	// if (m_keyring.has("eifl_login"))
@@ -43,8 +47,6 @@ LoginWindow::LoginWindow(const Keyring &keyring, QWidget *parent) : QDialog(pare
 void LoginWindow::login() {
 	// if (m_loginWidget.text() != m_keyring.get("eifl_login"))
 	// 	emit databaseReloadRequested();
-	if (m_autologinWidget.text() != m_keyring.get("eifl_autologin"))
-		emit databaseReloadRequested();
 
 	m_keyring.store("eifl_autologin", m_autologinWidget.text());
 	// m_keyring.store("eifl_login", m_loginWidget.text());
@@ -52,12 +54,15 @@ void LoginWindow::login() {
 
 	int loginStatus = IntraSession::getInstance().login(m_keyring);
 	if (loginStatus == 200) {
-		if (m_rememberMeWidget.checkState() == Qt::Unchecked) {
+		// if (m_rememberMeWidget.checkState() == Qt::Unchecked) {
 			// m_keyring.remove("eifl_password");
-			m_keyring.remove("eifl_autologin");
-		}
+			// m_keyring.remove("eifl_autologin");
+		// }
 
 		accept();
+
+		if (m_autologinWidget.text() != m_keyring.get("eifl_autologin"))
+			emit databaseReloadRequested();
 	}
 	else if (loginStatus == 401) {
 		// m_errorLabel.setText("Error: Bad login/password.");
@@ -80,6 +85,9 @@ void LoginWindow::setupWidgets() {
 	m_errorLabel.setStyleSheet("QLabel { color: red; }");
 	m_errorLabel.hide();
 
+	m_autologinHelp.setText("<a href='https://intra.epitech.eu/admin/autolog'>Click here to get your autologin link.</a>");
+	m_autologinHelp.setOpenExternalLinks(true);
+
 	// m_passwordWidget.setEchoMode(QLineEdit::Password);
 
 	auto *formLayoutWidget = new QWidget;
@@ -95,6 +103,14 @@ void LoginWindow::setupWidgets() {
 	line->setFrameShape(QFrame::HLine);
 	line->setFrameShadow(QFrame::Sunken);
 
+	auto* line1 = new QFrame();
+	line1->setFrameShape(QFrame::HLine);
+	line1->setFrameShadow(QFrame::Sunken);
+
+	auto* line2 = new QFrame();
+	line2->setFrameShape(QFrame::HLine);
+	line2->setFrameShadow(QFrame::Sunken);
+
 	auto *offlineButton = new QPushButton("Offline mode");
 	connect(offlineButton, &QPushButton::clicked, this, &QDialog::reject);
 
@@ -105,9 +121,12 @@ void LoginWindow::setupWidgets() {
 	auto *verticalLayout = new QVBoxLayout(this);
 	verticalLayout->addWidget(&m_errorLabel);
 	verticalLayout->addWidget(formLayoutWidget);
-	verticalLayout->addWidget(&m_rememberMeWidget);
-	verticalLayout->addWidget(loginButton);
+	// verticalLayout->addWidget(&m_rememberMeWidget);
 	verticalLayout->addWidget(line);
+	verticalLayout->addWidget(&m_autologinHelp);
+	verticalLayout->addWidget(line1);
+	verticalLayout->addWidget(loginButton);
+	verticalLayout->addWidget(line2);
 	verticalLayout->addWidget(offlineButton);
 	verticalLayout->addWidget(quitButton);
 }
