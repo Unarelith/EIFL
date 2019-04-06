@@ -26,33 +26,45 @@ LoginWindow::LoginWindow(const Keyring &keyring, QWidget *parent) : QDialog(pare
 
 	setupWidgets();
 
-	if (m_keyring.has("eifl_login"))
-		m_loginWidget.setText(m_keyring.get("eifl_login"));
-
-	if (m_keyring.has("eifl_password")) {
-		m_passwordWidget.setText(m_keyring.get("eifl_password"));
+	if (m_keyring.has("eifl_autologin")) {
+		m_autologinWidget.setText(m_keyring.get("eifl_autologin"));
 		m_rememberMeWidget.setCheckState(Qt::Checked);
 	}
+
+	// if (m_keyring.has("eifl_login"))
+	// 	m_loginWidget.setText(m_keyring.get("eifl_login"));
+    //
+	// if (m_keyring.has("eifl_password")) {
+	// 	m_passwordWidget.setText(m_keyring.get("eifl_password"));
+	// 	m_rememberMeWidget.setCheckState(Qt::Checked);
+	// }
 }
 
 void LoginWindow::login() {
-	if (m_loginWidget.text() != m_keyring.get("eifl_login"))
+	// if (m_loginWidget.text() != m_keyring.get("eifl_login"))
+	// 	emit databaseReloadRequested();
+	if (m_autologinWidget.text() != m_keyring.get("eifl_autologin"))
 		emit databaseReloadRequested();
 
-	m_keyring.store("eifl_login", m_loginWidget.text());
-	m_keyring.store("eifl_password", m_passwordWidget.text());
+	m_keyring.store("eifl_autologin", m_autologinWidget.text());
+	// m_keyring.store("eifl_login", m_loginWidget.text());
+	// m_keyring.store("eifl_password", m_passwordWidget.text());
 
 	int loginStatus = IntraSession::getInstance().login(m_keyring);
 	if (loginStatus == 200) {
-		if (m_rememberMeWidget.checkState() == Qt::Unchecked)
-			m_keyring.remove("eifl_password");
+		if (m_rememberMeWidget.checkState() == Qt::Unchecked) {
+			// m_keyring.remove("eifl_password");
+			m_keyring.remove("eifl_autologin");
+		}
 
 		accept();
 	}
 	else if (loginStatus == 401) {
-		m_errorLabel.setText("Error: Bad login/password.");
+		// m_errorLabel.setText("Error: Bad login/password.");
+		m_errorLabel.setText("Error: Bad autologin link.");
 		m_errorLabel.show();
-		m_passwordWidget.clear();
+		// m_passwordWidget.clear();
+		m_autologinWidget.clear();
 	}
 	else if (loginStatus == 0) {
 		m_errorLabel.setText("Error: Request has timeout. Intra may be down.");
@@ -68,12 +80,13 @@ void LoginWindow::setupWidgets() {
 	m_errorLabel.setStyleSheet("QLabel { color: red; }");
 	m_errorLabel.hide();
 
-	m_passwordWidget.setEchoMode(QLineEdit::Password);
+	// m_passwordWidget.setEchoMode(QLineEdit::Password);
 
 	auto *formLayoutWidget = new QWidget;
 	auto *formLayout = new QFormLayout(formLayoutWidget);
-	formLayout->addRow("Login:", &m_loginWidget);
-	formLayout->addRow("Password:", &m_passwordWidget);
+	formLayout->addRow("Autologin link:", &m_autologinWidget);
+	// formLayout->addRow("Login:", &m_loginWidget);
+	// formLayout->addRow("Password:", &m_passwordWidget);
 
 	auto *loginButton = new QPushButton("Login");
 	connect(loginButton, &QPushButton::clicked, this, &LoginWindow::login);

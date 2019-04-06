@@ -32,11 +32,16 @@ void SideBar::setupWidgets() {
 	auto lastNameFont = m_lastNameLabel.font();
 	lastNameFont.setPointSize(16);
 	m_lastNameLabel.setFont(lastNameFont);
+	// m_lastNameLabel.setObjectName("lastNameLabel");
+	// m_firstNameLabel.setObjectName("firstNameLabel");
 
 	auto creditFont = m_creditLabel.font();
 	creditFont.setPointSize(18);
 	m_creditLabel.setFont(creditFont);
 	m_creditLabel.setAlignment(Qt::AlignCenter);
+	// m_creditLabel.setObjectName("creditLabel");
+	// m_gpaLabel.setObjectName("gpaLabel");
+	// m_spiceLabel.setObjectName("spiceLabel");
 
 	QList<QPushButton *> buttonList;
 	QStringList nameList = {"Units", "Projects", "Planning"};
@@ -83,6 +88,7 @@ void SideBar::setupLayout() {
 	profileLayout->addWidget(line);
 
 	auto *mainLayoutWidget = new QWidget;
+	mainLayoutWidget->setObjectName("sideBar");
 	auto *mainLayout = new QVBoxLayout(mainLayoutWidget);
 	mainLayout->setContentsMargins(0, 0, 0, 0);
 	mainLayout->setMargin(0);
@@ -91,6 +97,7 @@ void SideBar::setupLayout() {
 	mainLayout->addStretch(1);
 
 	setWidget(mainLayoutWidget);
+
 }
 
 void SideBar::update(const IntraUser &user) {

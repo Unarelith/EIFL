@@ -21,10 +21,13 @@
 IntraSession *IntraSession::s_instance = nullptr;
 
 int IntraSession::login(const Keyring &keyring) {
-	auto r = cpr::Post(cpr::Url{baseUrl},
-	                   cpr::Payload{{"login",    keyring.get("eifl_login").toStdString()},
-	                                {"password", keyring.get("eifl_password").toStdString()},
-	                                {"remind",   "on"}},
+	// auto r = cpr::Post(cpr::Url{baseUrl},
+	//                    cpr::Payload{{"login",    keyring.get("eifl_login").toStdString()},
+	//                                 {"password", keyring.get("eifl_password").toStdString()},
+	//                                 {"remind",   "on"}},
+	//                    cpr::Timeout{5000});
+
+	auto r = cpr::Post(cpr::Url{keyring.get("eifl_autologin").toStdString()},
 	                   cpr::Timeout{5000});
 
 	if (r.status_code == 200) {

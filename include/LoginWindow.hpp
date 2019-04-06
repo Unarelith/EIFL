@@ -40,8 +40,9 @@ class LoginWindow : public QDialog {
 
 		QLabel m_errorLabel;
 
-		QLineEdit m_loginWidget;
-		QLineEdit m_passwordWidget;
+		QLineEdit m_autologinWidget;
+		// QLineEdit m_loginWidget;
+		// QLineEdit m_passwordWidget;
 
 		QCheckBox m_rememberMeWidget{"Remember my password"};
 };

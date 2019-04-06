@@ -16,6 +16,11 @@ QWidget#profilePicture {
 	padding: -1px;
 }
 
+/* QWidget#sideBar, QWidget#sideBar * { */
+/* 	background-color: #212121; */
+/* 	color: #ffffff; */
+/* } */
+
 QPushButton#sideBarButton {
 	outline: 0;
 	/* border: 1px solid #000000; */
