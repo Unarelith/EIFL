@@ -96,7 +96,7 @@ void IntraData::update() {
 void IntraData::updateModuleList() {
 	m_moduleList.clear();
 
-	QSqlQuery query("SELECT * FROM units");
+	QSqlQuery query("SELECT * FROM units", IntraDatabase::getDatabase());
 	while (query.next()) {
 		m_moduleList.emplace(query.value(0).toUInt(), query);
 	}
@@ -105,7 +105,7 @@ void IntraData::updateModuleList() {
 void IntraData::updateActivityList() {
 	m_activityList.clear();
 
-	QSqlQuery query("SELECT * FROM activities");
+	QSqlQuery query("SELECT * FROM activities", IntraDatabase::getDatabase());
 	while (query.next()) {
 		unsigned int moduleId = query.value(query.record().indexOf("module_id")).toUInt();
 		m_activityList.emplace(query.value(0).toUInt(), IntraActivity{moduleId, query});
@@ -115,7 +115,7 @@ void IntraData::updateActivityList() {
 void IntraData::updateEventList() {
 	m_eventList.clear();
 
-	QSqlQuery query("SELECT * FROM events");
+	QSqlQuery query("SELECT * FROM events", IntraDatabase::getDatabase());
 	while (query.next()) {
 		unsigned int activityId = query.value(query.record().indexOf("activity_id")).toUInt();
 		m_eventList.emplace(query.value(0).toUInt(), IntraEvent{activityId, query});
@@ -125,7 +125,7 @@ void IntraData::updateEventList() {
 void IntraData::updateProjectList() {
 	m_projectList.clear();
 
-	QSqlQuery query("SELECT * FROM projects");
+	QSqlQuery query("SELECT * FROM projects", IntraDatabase::getDatabase());
 	while (query.next()) {
 		unsigned int activityId = query.value(query.record().indexOf("activity_id")).toUInt();
 		m_projectList.emplace(query.value(0).toUInt(), IntraProject{activityId, query});
@@ -134,7 +134,7 @@ void IntraData::updateProjectList() {
 
 void IntraData::updateUserList() {
 	// FIXME: Doesn't currently handle multiple users
-	QSqlQuery query("SELECT * FROM users");
+	QSqlQuery query("SELECT * FROM users", IntraDatabase::getDatabase());
 	while (query.next()) {
 		if (query.value(0).toUInt())
 			m_userInfo = IntraUser{query};
@@ -144,7 +144,7 @@ void IntraData::updateUserList() {
 void IntraData::updateNotificationList() {
 	m_notificationList.clear();
 
-	QSqlQuery query("SELECT * FROM notifications");
+	QSqlQuery query("SELECT * FROM notifications", IntraDatabase::getDatabase());
 	while (query.next()) {
 		IntraNotification notification{query};
 		m_notificationList.emplace(notification.id(), std::move(notification));

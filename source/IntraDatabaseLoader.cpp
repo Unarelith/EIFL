@@ -29,11 +29,11 @@ void IntraDatabaseLoader::update() const {
 	updateOverview();
 	updateUnits();
 
-	QSqlDatabase::database().exec("begin;");
+	IntraDatabase::getDatabase().exec("begin;");
 
 	updateActivities();
 
-	QSqlDatabase::database().exec("commit;");
+	IntraDatabase::getDatabase().exec("commit;");
 
 	emit updateProgressed(0);
 	emit unitUpdateProgressed(0);

@@ -33,11 +33,15 @@ class IntraDatabase : public QObject {
 		static void addTable(const QString &name, const std::map<QString, QVariant> &fields);
 		static void removeTable(const QString &name);
 
+		static QSqlDatabase getDatabase();
+
 		const IntraDatabaseLoader &loader() const { return m_loader; }
 
 	private:
-		QSqlDatabase m_database;
+		// QSqlDatabase m_database;
 		IntraDatabaseLoader m_loader;
+
+		static QString s_path;
 };
 
 #endif // INTRADATABASE_HPP_

@@ -33,7 +33,7 @@ IntraItem::IntraItem(const QString &sqlTable, const QSqlQuery &sqlQuery) {
 }
 
 void IntraItem::updateDatabaseTable() const {
-	QSqlDatabase database = QSqlDatabase::database();
+	QSqlDatabase database = IntraDatabase::getDatabase();
 	if (database.tables().contains(m_sqlTable)) {
 		// FIXME: Change record instead of dropping the entire table
 		if ((unsigned int)database.record(m_sqlTable).count() != m_data.size() + 1) {
@@ -56,7 +56,7 @@ void IntraItem::writeToDatabase() {
 	}
 	insertQueryStringRight += ")";
 
-	QSqlQuery insertQuery;
+	QSqlQuery insertQuery(IntraDatabase::getDatabase());
 	insertQuery.prepare(insertQueryStringLeft + insertQueryStringRight);
 
 	unsigned int i = 0;
